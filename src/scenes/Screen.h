@@ -21,7 +21,7 @@ public:
 private:
     std::unique_ptr<tson::Map> map;
     Texture2D tileatlas_Texture;
-    std::string levelmap_Path ="assets/graphics/data/Testmap1.json";
+    std::string levelmap_Path ="assets/graphics/Tiled/Level2/Json/Level2.json";
 };
 
 
