@@ -24,7 +24,7 @@ namespace game {
         // Define if the game uses a mouse/mouse pointer
         // The mouse position is then accessible in game::core::Store in the mouse_position attribute
         // Please do not use the Raylib function GetMousePosition()
-        inline static constexpr const bool kUseMouse = false;
+        inline static constexpr const bool kUseMouse = true;
 
         // Raylib window config flags, e.g. for resizable window and vertical synchronisation
         // Default: GAME_CONFIG_FLAGS FLAG_WINDOW_RESIZABLE | FLAG_VSYNC_HINT | FLAG_MSAA_4X_HINT
@@ -48,7 +48,7 @@ namespace game {
         // Player_Class_One
         inline static constexpr const char* player_Class_One_Sprite_Path = "assets/graphics/player/class1_sheet.png";
         inline static constexpr int player_Class_One_Max_Health = 120;
-        inline static constexpr float player_Class_One_Movement_Speed = 100.0f;
+        inline static constexpr float player_Class_One_Movement_Speed = 20.0f;
         inline static constexpr int player_Class_One_Damage = 12;
         inline static constexpr float player_Class_One_Projectile_Speed = 300.0f;
         inline static constexpr const char* player_Projectile_Sprite_Path = "assets/graphics/ball.png"; //PLACEHOLDER Pfad für Player-Projectile
@@ -76,7 +76,7 @@ namespace game {
         //Cam stuff
         inline static constexpr const int cam_start_pos_x = 0;
         inline static constexpr const int cam_start_pos_y = 0;
-        inline static constexpr const float cam_zoom = 1;
+        inline static constexpr const float cam_zoom = 3;
 
          // Levelmap-file paths
                 // Lvl_Nbr gets changed on level transition, thus also altering the path where Screen.Draw_Level() loads the
@@ -84,7 +84,7 @@ namespace game {
                 inline static std::string GetLevelMapPath(int Lvl_Nbr) {
                     switch (Lvl_Nbr) {
                         case 1:
-                            return "../../assets/Tiled/Levelmaps/Testmap.json";
+                            return "../../assets/graphics/Tiled/Level1/Json/Level1v2.json";
                         case 2:
                             return "../../assets/Tiled/Levelmaps/lvl2.json";
                         case 3:
