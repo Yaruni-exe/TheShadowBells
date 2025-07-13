@@ -17,8 +17,9 @@ using namespace std::string_literals;
 game::scenes::GameScene::GameScene()
 {
     dtm.Start();
+    objectManager.AddObject(&mp);
     cam=std::make_shared<Cam>(this->mp);
-    screen.Load_Tiled_Objects(objectManager);
+    screen.LoadGameObjects(objectManager);
 
     // Your scene initialization code here...
 
@@ -37,11 +38,14 @@ void game::scenes::GameScene::Update()
     if (IsKeyPressed(KEY_L)){
         ToggleFullscreen();
     }
-    mp.Tick(dtm.Get_Dt());
 
+
+    for (int i = 0; i < objectManager.managed_objects.size(); ++i) {
+        objectManager.managed_objects[i]->Tick(dtm.Get_Dt());
+    }
     this->cam->Cam_Movement(dtm.Get_Dt());
+    this->p_cm->Check_Collisions();
     objectManager.Cleanup_Objects();
-    p_cm->Check_Collisions();
     dtm.Update();
 }
 
@@ -49,8 +53,10 @@ void game::scenes::GameScene::Draw()
 {
     BeginDrawing();
     ClearBackground(WHITE);
-    screen.Draw_Level(this->cam);
+    screen.Draw_Level(this->cam, false);
     BeginMode2D(cam->cam);
     mp.Draw();
+    objectManager.managed_objects[1]->Draw();
 
+    screen.Draw_Level(this->cam, true);
 }
