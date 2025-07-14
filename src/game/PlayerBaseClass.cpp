@@ -81,7 +81,7 @@ void Player_Base_Class::Tick(float delta_time)
 }
 
 // Phase 3 :: Kollisionsreaktion falls der Collisionmanager eine Kollision mit einem anderen Objekt feststellt
-void Player_Base_Class::On_Collision(Collidable* other)
+void Player_Base_Class::On_Collision(std::shared_ptr<Collidable> other)
 {
 	Collision_Type otherType = other->Get_Collision_Type();
 
@@ -131,13 +131,12 @@ void Player_Base_Class::Ranged_Attack()
         };
 
         // Erstelle ein neues Projektil und füge es dem Vektor hinzu
-        std::shared_ptr<game::Player_Projectile> sp_temp_projectile=std::make_shared<game::Player_Projectile>(
+        std::shared_ptr<game::Player_Projectile> sp_temp_projectile(new game::Player_Projectile(
                 Vector2{this->hitbox.x, this->hitbox.y},
                 fire_direction,
-                this->projectile_Speed,
                 this->player_Damage,
-                game::Config::player_Projectile_Sprite_Path);
-        om.AddObject(sp_temp_projectile.get());
+                game::Config::player_Projectile_Sprite_Path));
+        om.AddObject(sp_temp_projectile);
         sp_projectiles.push_back(sp_temp_projectile);
 
 

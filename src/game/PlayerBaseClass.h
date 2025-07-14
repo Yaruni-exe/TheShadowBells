@@ -50,7 +50,7 @@ public:
 	~Player_Base_Class() override;
 	void Player_Input();
 	void Tick(float delta_time) override;
-	void On_Collision(Collidable* other) override;
+	void On_Collision(std::shared_ptr<Collidable> other) override;
 	virtual void Draw() override;
 
 	void Update_Previous_Position();

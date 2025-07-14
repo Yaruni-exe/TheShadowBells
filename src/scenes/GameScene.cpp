@@ -17,8 +17,9 @@ using namespace std::string_literals;
 game::scenes::GameScene::GameScene()
 {
     dtm.Start();
-    objectManager.AddObject(&mp);
-    cam=std::make_shared<Cam>(this->mp);
+    this->sp_mp=std::make_shared<Player_Class_One>(sp,objectManager);
+    objectManager.AddObject(sp_mp);
+    cam=std::make_shared<Cam>(sp_mp);
     screen.LoadGameObjects(objectManager);
 
     // Your scene initialization code here...
