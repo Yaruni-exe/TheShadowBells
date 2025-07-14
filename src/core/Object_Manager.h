@@ -4,12 +4,7 @@
 #include <algorithm>
 
 #include "../game/Collidable.h"
-#include "../game/Walls.h"
-#include "../game/EnemyBaseClass.h"
-#include "../game/Consumables.h"
-#include "../game/PlayerProjectile.h"
-#include "../game/EnemyProjectile.h"
-#include "../game/PlayerClassOne.h"
+
 
 class Object_Manager
 {

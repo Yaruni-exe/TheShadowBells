@@ -7,11 +7,11 @@
 #include "Store.h"
 
 // Konstruktor
-Player_Base_Class::Player_Base_Class(int max_Health, float movement_Speed, int damage, Vector2 start_Position)
+Player_Base_Class::Player_Base_Class(int max_Health, float movement_Speed, int damage, Vector2 start_Position, Object_Manager& om)
     : player_Max_Health(max_Health), player_Health((float)max_Health), player_Movement_Speed(movement_Speed),
       player_Damage(damage),
       previous_Position(start_Position), melee_Cooldown(0.0f), ranged_Cooldown(0.0f),
-      inventory_Is_Full(false), facing_Direction(Facing_Direction::DOWN), is_Moving(false)
+      inventory_Is_Full(false), facing_Direction(Facing_Direction::DOWN), is_Moving(false),om(om)
 {
     hitbox={start_Position.x,start_Position.y,static_cast<float >(maintex.width),static_cast<float >(maintex.height)};
     // 2. Registriere Objekt beim Manager
@@ -73,7 +73,7 @@ void Player_Base_Class::Tick(float delta_time)
 
     Update_Facing_Direction();
 
-    if (ranged_Cooldown>0&& IsKeyDown(game::Config::key_Ranged_Attack)){
+    if (ranged_Cooldown<=0&& IsKeyDown(game::Config::key_Ranged_Attack)){
         Ranged_Attack();
     }
     if (melee_Cooldown > 0) melee_Cooldown -= delta_time;
@@ -131,13 +131,16 @@ void Player_Base_Class::Ranged_Attack()
         };
 
         // Erstelle ein neues Projektil und füge es dem Vektor hinzu
-        sp_projectiles.push_back(std::make_unique<game::Player_Projectile>(
+        std::shared_ptr<game::Player_Projectile> sp_temp_projectile=std::make_shared<game::Player_Projectile>(
                 Vector2{this->hitbox.x, this->hitbox.y},
                 fire_direction,
                 this->projectile_Speed,
                 this->player_Damage,
-                game::Config::player_Projectile_Sprite_Path
-        ));
+                game::Config::player_Projectile_Sprite_Path);
+        om.AddObject(sp_temp_projectile.get());
+        sp_projectiles.push_back(sp_temp_projectile);
+
+
 
         // Setze den Cooldown zurück
         ranged_Cooldown = 0.5f; //PLACEHOLDER ZAHL - darf man ändern.
@@ -188,5 +191,5 @@ void Player_Base_Class::Take_Damage(int damage_amount)
     player_Health -= damage_amount;
 }
 Vector2 Player_Base_Class::Get_Player_Center() {
-    return Vector2{player_Pos.x+maintex.width/2,player_Pos.y+maintex.height/2};
+    return Vector2{player_Pos.x+hitbox.width/2,player_Pos.y+hitbox.height/2};
 }

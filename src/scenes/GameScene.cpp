@@ -55,8 +55,10 @@ void game::scenes::GameScene::Draw()
     ClearBackground(WHITE);
     screen.Draw_Level(this->cam, false);
     BeginMode2D(cam->cam);
-    mp.Draw();
-    objectManager.managed_objects[1]->Draw();
+
+    for (int i = 0; i < objectManager.managed_objects.size(); ++i) {
+        objectManager.managed_objects[i]->Draw();
+    }
 
     screen.Draw_Level(this->cam, true);
 }

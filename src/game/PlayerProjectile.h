@@ -5,6 +5,7 @@
 #pragma once
 #include "raylib.h"
 #include "Collidable.h"
+#include "Object_Manager.h"
 
 namespace game {
     /**
