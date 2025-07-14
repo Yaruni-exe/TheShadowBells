@@ -65,8 +65,8 @@ void Player_Base_Class::Tick(float delta_time)
         move_Direction = Vector2Normalize(move_Direction);
     }
 
-    hitbox.x += floor(move_Direction.x * player_Movement_Speed * delta_time);
-    hitbox.y += floor(move_Direction.y * player_Movement_Speed * delta_time);
+    hitbox.x += (move_Direction.x * player_Movement_Speed * delta_time);
+    hitbox.y += (move_Direction.y * player_Movement_Speed * delta_time);
     player_Pos.x=hitbox.x;
     player_Pos.y=hitbox.y;
 
@@ -188,5 +188,5 @@ void Player_Base_Class::Take_Damage(int damage_amount)
     player_Health -= damage_amount;
 }
 Vector2 Player_Base_Class::Get_Player_Center() {
-    return (Vector2){player_Pos.x+maintex.width/2,player_Pos.y+maintex.height/2};
+    return Vector2{player_Pos.x+maintex.width/2,player_Pos.y+maintex.height/2};
 }
