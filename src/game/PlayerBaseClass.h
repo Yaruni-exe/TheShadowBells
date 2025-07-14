@@ -26,6 +26,7 @@ protected:
 
     Vector2 player_Pos;
 	Vector2 previous_Position;
+	Collision_Manager* manager_Ptr;
 
 	float melee_Cooldown;
 	float ranged_Cooldown;
@@ -34,16 +35,14 @@ protected:
 	bool is_Moving;
 
 
-    Texture2D maintex;
+    Texture2D maintex= LoadTexture("assets/graphics/ball.png");
 
     float projectile_Speed;
     std::vector<std::unique_ptr<game::Player_Projectile>> sp_projectiles;
 
-    Object_Manager& om;
-
 public:
 	// Konstruktor
-	Player_Base_Class(int max_Health, float movement_Speed, int damage, Vector2 start_Position, Object_Manager& om);
+	Player_Base_Class(int max_Health, float movement_Speed, int damage, Vector2 start_Position);
 
 	// Destruktor
 	~Player_Base_Class() override;
