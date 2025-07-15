@@ -27,7 +27,6 @@ Player_Class_One::Player_Class_One(Vector2 start_Position)
     // Set the initial animation
     current_animation = &Run_Front;
 }
-
 Player_Class_One::~Player_Class_One() {
     // If RepeatAnimation handles LoadTexture/UnloadTexture internally,
     // its destructors will be called automatically when Player_Class_One is destroyed.
