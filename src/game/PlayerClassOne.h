@@ -5,25 +5,35 @@
 #ifndef PLAYERCLASSONE_H
 #define PLAYERCLASSONE_H
 
-
-
 #include "PlayerBaseClass.h"
 #include "Animations.h"
 #include "RepeatAnimation.h"
 
+#include "raylib.h" // Für Vector2
+
+
 class Player_Class_One : public Player_Base_Class
 {
 private:
-    Vector2 size{80,80};
+    // Deklariere die Größen-Member ohne Initialisierung hier.
+    // Sie werden im Konstruktor initialisiert.
+    Vector2 size_top_down;
+    Vector2 size_left_right;
 
+    RepeatAnimation* current_animation;
 
 public:
-    RepeatAnimation test_animation{size,"assets/graphics/anim_sprite.png",9,3};
-    Player_Class_One(Vector2 start_Position,Object_Manager& om);
+    // Deklariere die RepeatAnimation Instanzen hier,
+    // initialisiere sie aber NICHT direkt.
+    RepeatAnimation Run_Front;
+    RepeatAnimation Run_Back;
+    RepeatAnimation Run_Left;
+    RepeatAnimation Run_Right;
+
+    Player_Class_One(Vector2 start_Position);
     ~Player_Class_One();
     void Draw() override;
 
 };
-
 
 #endif //PLAYERCLASSONE_H
