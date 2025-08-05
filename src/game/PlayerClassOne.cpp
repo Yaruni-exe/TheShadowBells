@@ -1,6 +1,3 @@
-//
-// Created by $Will on 22.06.2025.
-//
 
 #include "PlayerClassOne.h"
 #include "../config.h.in"
