@@ -1800,7 +1800,7 @@
         {
          "columns":16,
          "firstgid":1,
-         "image":"\/TilemapLevel1.png",
+         "image":"..\/Tileset-pngs\/TilemapLevel1.png",
          "imageheight":320,
          "imagewidth":520,
          "margin":0,
