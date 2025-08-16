@@ -44,6 +44,8 @@ namespace game {
         // Player Settings
         inline static constexpr bool enable_Health_Drain = true; // HP-Drain durch Zeit an/aus
         inline static constexpr float player_Health_Drain_Rate = 1.0f; // HP-Verlust pro Sekunde
+        inline static constexpr int Player_Hitbox_Width = 18; // Player Hitbox
+        inline static constexpr int Player_Hitbox_Height = 30; // Player Hitbox
 
         // Player_Class_One
         inline static constexpr const char* player_Class_One_Sprite_Path = "assets/graphics/player/class1_sheet.png";
@@ -73,10 +75,10 @@ namespace game {
         inline static constexpr const int key_Ranged_Attack = KEY_K;
         inline static constexpr const int key_Use_Item = KEY_L;
 
-        //Cam stuff
+        //Cam stuffd
         inline static constexpr const int cam_start_pos_x = 0;
         inline static constexpr const int cam_start_pos_y = 0;
-        inline static constexpr const float cam_zoom = 1;
+        inline static constexpr const float cam_zoom = 2;
 
          // Levelmap-file paths
                 // Lvl_Nbr gets changed on level transition, thus also altering the path where Screen.Draw_Level() loads the
@@ -84,7 +86,7 @@ namespace game {
                 inline static std::string GetLevelMapPath(int Lvl_Nbr) {
                     switch (Lvl_Nbr) {
                         case 1:
-                            return "../../assets/Tiled/Levelmaps/Level1.json";
+                            return "assets/Tiled/Levelmaps/Level1v2.json";
                         case 2:
                             return "../../assets/Tiled/Levelmaps/lvl2.json";
                         case 3:

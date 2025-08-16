@@ -13,4 +13,5 @@ Player_Class_One::~Player_Class_One() {}
 void Player_Class_One::Draw() {
     test_animation.Draw_Current_Frame(this->player_Pos);
     test_animation.Next_Frame();
+
 }

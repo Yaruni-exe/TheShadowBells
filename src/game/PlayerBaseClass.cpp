@@ -4,6 +4,8 @@
 
 #include <iostream>
 #include "PlayerBaseClass.h"
+
+#include "CollisionResponse.h"
 #include "Store.h"
 
 // Konstruktor
@@ -13,7 +15,7 @@ Player_Base_Class::Player_Base_Class(int max_Health, float movement_Speed, int d
       previous_Position(start_Position), melee_Cooldown(0.0f), ranged_Cooldown(0.0f),
       inventory_Is_Full(false), facing_Direction(Facing_Direction::DOWN), is_Moving(false),om(om)
 {
-    hitbox={start_Position.x,start_Position.y,static_cast<float >(maintex.width),static_cast<float >(maintex.height)};
+    hitbox={start_Position.x,start_Position.y,game::Config::Player_Hitbox_Width,game::Config::Player_Hitbox_Height};
     // 2. Registriere Objekt beim Manager
 
 }
@@ -81,6 +83,7 @@ void Player_Base_Class::Tick(float delta_time)
 }
 
 // Phase 3 :: Kollisionsreaktion falls der Collisionmanager eine Kollision mit einem anderen Objekt feststellt
+/*
 void Player_Base_Class::On_Collision(std::shared_ptr<Collidable> other)
 {
 	Collision_Type otherType = other->Get_Collision_Type();
@@ -90,6 +93,7 @@ void Player_Base_Class::On_Collision(std::shared_ptr<Collidable> other)
         otherType == Collision_Type::ENEMY)
     {
 		Rectangle wall_Hitbox = other->Get_Hitbox();
+
         if (CheckCollisionRecs({hitbox.x, previous_Position.y, hitbox.width, hitbox.height}, wall_Hitbox))
         {
             hitbox.y = previous_Position.y;
@@ -98,8 +102,25 @@ void Player_Base_Class::On_Collision(std::shared_ptr<Collidable> other)
         {
             hitbox.x = previous_Position.x;
 		}
+
 	}
 }
+*/
+
+void Player_Base_Class::On_Collision(std::shared_ptr<Collidable> other)
+{
+    // Für ALLE soliden Objekte (Wände, Gegner, Spawner)
+    // benutze die "Gleiten"-Logik mit Resolve_Overlap
+    Collision_Type otherType = other->Get_Collision_Type();
+
+    if (otherType == Collision_Type::WALL ||
+        otherType == Collision_Type::ENEMY_SPAWNER ||
+        otherType == Collision_Type::ENEMY)
+    {
+        CollisionResponse::Resolve_Overlap(shared_from_this(), other);
+    }
+}
+
 
 // Draw Methode ist noch nicht klar, wie das mit der Visualisierung laufen wird
 void Player_Base_Class::Draw()

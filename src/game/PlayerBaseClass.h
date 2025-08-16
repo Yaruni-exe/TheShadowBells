@@ -11,12 +11,13 @@
 #include "raymath.h"
 #include "PlayerProjectile.h"
 #include "Object_Manager.h"
+#include <memory>
 
 class Collision_Manager;
 
 enum Facing_Direction {UP, DOWN, LEFT, RIGHT, UP_RIGHT, UP_LEFT, DOWN_RIGHT, DOWN_LEFT};
 
-class Player_Base_Class : public Collidable
+class Player_Base_Class : public Collidable, public std::enable_shared_from_this<Player_Base_Class>
 {
 protected:
 

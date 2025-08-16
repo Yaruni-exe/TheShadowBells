@@ -1,0 +1,44 @@
+#pragma once
+
+#include <raylib.h>
+#include <string>
+#include <vector>
+#include "game/enemys/enemys_list.h"
+
+// Eine Struktur, um die Eigenschaften eines spawn-baren Gegners zu definieren.
+struct SpawnableEnemy {
+    enemy::EnemyType type;
+    int weight; // Die Spawn-Chance. Höher = häufiger.
+    int max_on_field; // Wie viele von diesem Typ dürfen maximal gleichzeitig auf dem Feld sein.
+};
+
+namespace game {
+    class EnemyConfig final {
+    public:
+        // ----------------------------------------------- SPAWNERS ----------------------------------------------------
+
+        // ---  SPAWNER1 (spawn1) ---
+        inline static constexpr float kSpawner1_SpawnRate = 30.0f; // Spawnt alle XX Sekunden einen Gegner.
+        inline static constexpr int kSpawner1_MaxEnemies = 5;      // Jeder Spawner darf maximal XX Gegner gleichzeitig aktiv haben.
+
+        // Der Pool an Gegnern die dieser Spawner erzeugen kann.
+        inline static const std::vector<SpawnableEnemy> kSpawner1_EnemyPool = {
+            { enemy::EnemyType::STANDARD_VAMPIRE, 100, 5 } // Passen Sie den Gegnertyp hier an.
+        };
+
+        // ... der Rest Ihrer Konfigurationen (z.B. für den Standardvampir) ...
+
+        // ====================================================================================
+        // I. STANDARD VAMPIRE (Der Standardgegner)
+        // ====================================================================================
+        inline static constexpr int kStandardVampireHealth = 100;
+        inline static constexpr float kStandardVampireMovementSpeed = 50.0f;
+        inline static constexpr int kStandardVampireDamage = 10;
+        inline static constexpr int kStandardVampireValue = 50;
+        inline static constexpr int kStandardVampireHitboxWidth = 32;
+        inline static constexpr int kStandardVampireHitboxHeight = 32;
+        inline static constexpr float kStandardVampireAttackCooldown = 1.0f;
+        inline static constexpr float kStandardVampireAttackRange = 40.0f;
+        inline static constexpr const char* kStandardVampireSpritePath = "assets/vampire.png";
+    };
+}

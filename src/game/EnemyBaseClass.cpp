@@ -140,4 +140,11 @@ void Enemy_Base_Class::Draw()
 {
 
 }
+    void Enemy_Base_Class::Range_Attack() {
+    // Diese Methode hat noch keine Logik
+}
+
+    void Enemy_Base_Class::Melee_Attack() {
+}
+
 }
