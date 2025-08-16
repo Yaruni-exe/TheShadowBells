@@ -30,7 +30,7 @@ public:
 
     void Draw() override;
     // Die Tick-Methode muss die Mausposition in Weltkoordinaten erhalten
-    void Tick(float delta_time, Vector2 worldMousePos) override;
+    void Tick(float delta_time, Vector2 worldMousePos);
 };
 
 #endif // GUNSLINGER_H

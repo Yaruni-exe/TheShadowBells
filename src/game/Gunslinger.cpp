@@ -1,18 +1,52 @@
 #include "Gunslinger.h"
 #include "../config.h.in"
 #include "raymath.h"
+#include <string>
 
-// ... (Pfade für Animationen bleiben gleich)
+// Arrays with file paths for each of the 8 directions
+const std::string idle_paths[8] = {
+    "assets/graphics/Characters/Gunslinger/Idle/Gunslinger_Idle_Right.png",
+    "assets/graphics/Characters/Gunslinger/Idle/Gunslinger_Idle_UpRight.png",
+    "assets/graphics/Characters/Gunslinger/Idle/Gunslinger_Idle_Up.png",
+    "assets/graphics/Characters/Gunslinger/Idle/Gunslinger_Idle_UpLeft.png",
+    "assets/graphics/Characters/Gunslinger/Idle/Gunslinger_Idle_Left.png",
+    "assets/graphics/Characters/Gunslinger/Idle/Gunslinger_Idle_DownLeft.png",
+    "assets/graphics/Characters/Gunslinger/Idle/Gunslinger_Idle_Down.png",
+    "assets/graphics/Characters/Gunslinger/Idle/Gunslinger_Idle_DownRight.png"
+};
 
-// Der Konstruktor ist jetzt identisch zur Player_Class_One
+const std::string run_paths[8] = {
+    "assets/graphics/Characters/Gunslinger/Run/Gunslinger_Run_Right.png",
+    "assets/graphics/Characters/Gunslinger/Run/Gunslinger_Run_UpRight.png",
+    "assets/graphics/Characters/Gunslinger/Run/Gunslinger_Run_Up.png",
+    "assets/graphics/Characters/Gunslinger/Run/Gunslinger_Run_UpLeft.png",
+    "assets/graphics/Characters/Gunslinger/Run/Gunslinger_Run_Left.png",
+    "assets/graphics/Characters/Run/Gunslinger_Run_DownLeft.png",
+    "assets/graphics/Characters/Run/Gunslinger_Run_Down.png",
+    "assets/graphics/Characters/Run/Gunslinger_Run_DownRight.png"
+};
+
+const std::string attack_paths[8] = {
+    "assets/graphics/Characters/Gunslinger/Attack/Gunslinger_Attack_Right.png",
+    "assets/graphics/Characters/Gunslinger/Attack/Gunslinger_Attack_UpRight.png",
+    "assets/graphics/Characters/Gunslinger/Attack/Gunslinger_Attack_Up.png",
+    "assets/graphics/Characters/Gunslinger/Attack/Gunslinger_Attack_UpLeft.png",
+    "assets/graphics/Characters/Attack/Gunslinger_Attack_Left.png",
+    "assets/graphics/Characters/Attack/Gunslinger_Attack_DownLeft.png",
+    "assets/graphics/Characters/Attack/Gunslinger_Attack_Down.png",
+    "assets/graphics/Characters/Attack/Gunslinger_Attack_DownRight.png"
+};
+
 Gunslinger::Gunslinger(Vector2 start_Position, Object_Manager& om)
     : Player_Base_Class(game::Config::player_Class_One_Max_Health, game::Config::player_Class_One_Movement_Speed,
         game::Config::player_Class_One_Damage, start_Position, om)
 {
+    // Die Pfade werden nun basierend auf der Richtung geladen
     for (int i = 0; i < 8; ++i) {
-        idle_animations.emplace_back(size, "assets/graphics/Characters/Gunslinger/Gunslinger_Idle_Front.png", 7, 7);
-        run_animations.emplace_back(size, "assets/graphics/Characters/Gunslinger/Gunslinger_Run_Cycle_Right.png", 7, 7);
-        attack_animations.emplace_back(size, "assets/graphics/Characters/Gunslinger/Gunslinger_Attack_Right.png", 7, 7);
+        // Explizite Konvertierung des std::string zu einem C-Style-String
+        idle_animations.emplace_back(size, idle_paths[i].c_str(), 7, 7);
+        run_animations.emplace_back(size, run_paths[i].c_str(), 7, 7);
+        attack_animations.emplace_back(size, attack_paths[i].c_str(), 7, 7);
     }
 }
 

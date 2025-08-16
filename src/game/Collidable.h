@@ -1,4 +1,3 @@
-//
 // Created by $Will on 11.06.2025.
 //
 
@@ -21,7 +20,7 @@ enum class Collision_Type
     ENEMY_SPAWNER
 };
 
-class Collidable
+class Collidable : public std::enable_shared_from_this<Collidable>
 {
 protected:
     Rectangle hitbox;
@@ -34,7 +33,7 @@ public:
     virtual void Tick(float delta_time) = 0;
     virtual void Draw()=0;
     virtual void On_Collision(std::shared_ptr<Collidable> other) = 0;
-    virtual void Set_Position(Vector2 position){}
+    virtual void Set_Position(Vector2 position) { hitbox.x = position.x; hitbox.y = position.y; }
 
 
     virtual void Mark_For_Destruction() { this->is_Marked_For_Destruction = true; }

@@ -17,7 +17,7 @@ class Collision_Manager;
 
 enum Facing_Direction {UP, DOWN, LEFT, RIGHT, UP_RIGHT, UP_LEFT, DOWN_RIGHT, DOWN_LEFT};
 
-class Player_Base_Class : public Collidable, public std::enable_shared_from_this<Player_Base_Class>
+class Player_Base_Class : public Collidable
 {
 protected:
 
