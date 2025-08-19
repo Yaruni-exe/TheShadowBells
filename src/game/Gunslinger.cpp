@@ -2,8 +2,8 @@
 #include "../config.h.in"
 #include "raymath.h"
 #include <string>
+#include <cmath>
 
-// Arrays with file paths for each of the 8 directions
 const std::string idle_paths[8] = {
     "assets/graphics/Characters/Gunslinger/Idle/Gunslinger_Idle_Right.png",
     "assets/graphics/Characters/Gunslinger/Idle/Gunslinger_Idle_UpRight.png",
@@ -16,34 +16,32 @@ const std::string idle_paths[8] = {
 };
 
 const std::string run_paths[8] = {
-    "assets/graphics/Characters/Gunslinger/Run/Gunslinger_Run_Right.png",
-    "assets/graphics/Characters/Gunslinger/Run/Gunslinger_Run_UpRight.png",
-    "assets/graphics/Characters/Gunslinger/Run/Gunslinger_Run_Up.png",
-    "assets/graphics/Characters/Gunslinger/Run/Gunslinger_Run_UpLeft.png",
-    "assets/graphics/Characters/Gunslinger/Run/Gunslinger_Run_Left.png",
-    "assets/graphics/Characters/Run/Gunslinger_Run_DownLeft.png",
-    "assets/graphics/Characters/Run/Gunslinger_Run_Down.png",
-    "assets/graphics/Characters/Run/Gunslinger_Run_DownRight.png"
+    "assets/graphics/Characters/Gunslinger/brightBlue.png",
+    "assets/graphics/Characters/Gunslinger/brown.png",
+    "assets/graphics/Characters/Gunslinger/darkBlue.png",
+    "assets/graphics/Characters/Gunslinger/green.png",
+    "assets/graphics/Characters/Gunslinger/grey.png",
+    "assets/graphics/Characters/Gunslinger/pink.png",
+    "assets/graphics/Characters/Gunslinger/red.png",
+    "assets/graphics/Characters/Gunslinger/yellow.png"
 };
 
 const std::string attack_paths[8] = {
-    "assets/graphics/Characters/Gunslinger/Attack/Gunslinger_Attack_Right.png",
-    "assets/graphics/Characters/Gunslinger/Attack/Gunslinger_Attack_UpRight.png",
-    "assets/graphics/Characters/Gunslinger/Attack/Gunslinger_Attack_Up.png",
-    "assets/graphics/Characters/Gunslinger/Attack/Gunslinger_Attack_UpLeft.png",
-    "assets/graphics/Characters/Attack/Gunslinger_Attack_Left.png",
-    "assets/graphics/Characters/Attack/Gunslinger_Attack_DownLeft.png",
-    "assets/graphics/Characters/Attack/Gunslinger_Attack_Down.png",
-    "assets/graphics/Characters/Attack/Gunslinger_Attack_DownRight.png"
+    "assets/graphics/Characters/Gunslinger/attack.png",
+    "assets/graphics/Characters/Gunslinger/attack.png",
+    "assets/graphics/Characters/Gunslinger/attack.png",
+    "assets/graphics/Characters/Gunslinger/attack.png",
+    "assets/graphics/Characters/Gunslinger/attack.png",
+    "assets/graphics/Characters/Gunslinger/attack.png",
+    "assets/graphics/Characters/Gunslinger/attack.png",
+    "assets/graphics/Characters/Gunslinger/attack.png",
 };
 
 Gunslinger::Gunslinger(Vector2 start_Position, Object_Manager& om)
     : Player_Base_Class(game::Config::player_Class_One_Max_Health, game::Config::player_Class_One_Movement_Speed,
         game::Config::player_Class_One_Damage, start_Position, om)
 {
-    // Die Pfade werden nun basierend auf der Richtung geladen
     for (int i = 0; i < 8; ++i) {
-        // Explizite Konvertierung des std::string zu einem C-Style-String
         idle_animations.emplace_back(size, idle_paths[i].c_str(), 7, 7);
         run_animations.emplace_back(size, run_paths[i].c_str(), 7, 7);
         attack_animations.emplace_back(size, attack_paths[i].c_str(), 7, 7);
@@ -52,14 +50,13 @@ Gunslinger::Gunslinger(Vector2 start_Position, Object_Manager& om)
 
 Gunslinger::~Gunslinger() {}
 
-// Die Tick-Methode erhält nun die Mausposition als Argument
 void Gunslinger::Tick(float delta_time, Vector2 worldMousePos) {
     Player_Base_Class::Tick(delta_time);
 
-    // Die Mausposition muss nicht mehr umgerechnet werden, sie wird direkt verwendet
     mouseLook.Update(this->player_Pos, worldMousePos);
 
-    // 1. Angriff hat Priorität
+    mouse_World_Position = worldMousePos;
+
     if (currentState == PlayerState::ATTACK) {
         attackFrameCounter++;
         if (attackFrameCounter >= attackFrameCountTotal) {
@@ -69,7 +66,6 @@ void Gunslinger::Tick(float delta_time, Vector2 worldMousePos) {
         return;
     }
 
-    // 2. Zustand basierend auf Input ändern
     bool is_attacking = IsMouseButtonPressed(MOUSE_LEFT_BUTTON);
 
     if (is_attacking) {
@@ -100,5 +96,28 @@ void Gunslinger::Draw() {
     if (current_animation) {
         current_animation->Draw_Current_Frame(this->player_Pos);
         current_animation->Next_Frame();
+    }
+}
+
+void Gunslinger::Ranged_Attack() {
+    Vector2 target_Position = this->mouse_World_Position;
+
+    float delta_vector_x = target_Position.x - this->hitbox.x;
+    float delta_vector_y = target_Position.y - this->hitbox.y;
+    float distance_to_target = std::sqrt(delta_vector_x * delta_vector_x + delta_vector_y * delta_vector_y);
+
+    if (distance_to_target > 0) {
+        Vector2 fire_direction = {
+                delta_vector_x / distance_to_target,
+                delta_vector_y / distance_to_target
+        };
+        std::shared_ptr<game::Player_Projectile> sp_temp_projectile(new game::Player_Projectile(
+                Vector2{this->hitbox.x, this->hitbox.y},
+                fire_direction,
+                this->player_Damage,
+                game::Config::player_Projectile_Sprite_Path));
+        om.AddObject(sp_temp_projectile);
+        sp_projectiles.push_back(sp_temp_projectile);
+        ranged_Cooldown = 0.5f;
     }
 }

@@ -4,16 +4,20 @@
 #include "../../config_enemys.h.in"
 #include "../PlayerProjectile.h"
 #include <numeric>
+#include <raymath.h>
 
+// Der spawner_self-Parameter wurde aus dem Konstruktor entfernt
 Level1_Spawner::Level1_Spawner(Rectangle spawner_Area,
                                const std::vector<Rectangle>& obstacle_List,
                                std::vector<enemy::Enemy_Base_Class*>& enemy_List,
                                float spawn_Rate,
                                int max_Enemies,
-                               Object_Manager& om)
+                               Object_Manager& om,
+                               std::shared_ptr<Player_Base_Class> player_ptr)
   : Enemy_Spawner(spawner_Area, obstacle_List, enemy_List, game::EnemyConfig::kSpawner1_SpawnRate, game::EnemyConfig::kSpawner1_MaxEnemies),
       object_manager_ref(om),
-      spawn_timer(game::EnemyConfig::kSpawner1_SpawnRate), // Startet voll um sofort spawnen zu können
+      player_ptr_(player_ptr),
+      spawn_timer(game::EnemyConfig::kSpawner1_SpawnRate),
       max_enemies_per_instance_(game::EnemyConfig::kSpawner1_MaxEnemies),
       health_(1)
 {
@@ -35,14 +39,12 @@ void Level1_Spawner::Update_And_Count_Spawned_Enemies(std::map<enemy::EnemyType,
     spawned_enemies_.erase(std::remove_if(spawned_enemies_.begin(), spawned_enemies_.end(),
         [&counts](const std::weak_ptr<enemy::Enemy_Base_Class>& e) {
             if (auto locked_enemy = e.lock()) {
-                // Zähle die Typen der lebenden Gegner
                 if (auto insect = std::dynamic_pointer_cast<enemy::StandardVampire>(locked_enemy)) {
                     counts[enemy::EnemyType::STANDARD_VAMPIRE]++;
                 }
-                // Hier weitere else-if für andere Gegnertypen
-                return false; // Behalte in der Liste
+                return false;
             }
-            return true; // Entferne aus der Liste, da abgelaufen
+            return true;
         }), spawned_enemies_.end());
 }
 
@@ -77,24 +79,63 @@ void Level1_Spawner::Tick(float delta_time)
                     cumulative_weight += spawn_info.weight;
                     if (random_value < cumulative_weight)
                     {
-                        Vector2 spawn_pos = {
-                            hitbox.x + GetRandomValue(0, (int)hitbox.width - 32),
-                            hitbox.y + GetRandomValue(0, (int)hitbox.height - 32)
-                        };
+                        Vector2 spawn_pos = {0.0f, 0.0f};
+                        bool valid_pos_found = false;
+                        const int max_tries = 10;
+                        for (int i = 0; i < max_tries; ++i) {
+                            spawn_pos = {
+                                hitbox.x + (float)GetRandomValue(0, (int)hitbox.width - game::Config::Player_Hitbox_Width),
+                                hitbox.y + (float)GetRandomValue(0, (int)hitbox.height - game::Config::Player_Hitbox_Height)
+                            };
 
-                        // Hier wird die Logik zur Gegnererstellung direkt aufgerufen
-                        enemy::Enemy_Base_Class* new_enemy_raw = nullptr;
-                        switch (spawn_info.type) {
-                            case enemy::EnemyType::STANDARD_VAMPIRE:
-                                new_enemy_raw = new enemy::StandardVampire(spawn_pos);
-                                break;
-                            // Hier weitere cases für andere Gegner
+                            Rectangle new_enemy_hitbox = {spawn_pos.x, spawn_pos.y, game::Config::Player_Hitbox_Width, game::Config::Player_Hitbox_Height};
+
+                            // Kollision mit Wänden prüfen (Dieser Code war das Problem!)
+                            bool collision_with_wall = false;
+                            for (const auto& wall_hitbox : obstacle_List) {
+                                if (CheckCollisionRecs(new_enemy_hitbox, wall_hitbox)) {
+                                    collision_with_wall = true;
+                                    break;
+                                }
+                            }
+                            if (collision_with_wall) continue;
+
+                            // Kollision mit dem Spieler prüfen
+                            if (auto player = player_ptr_.lock()) {
+                                if (CheckCollisionRecs(new_enemy_hitbox, player->Get_Hitbox())) {
+                                    continue;
+                                }
+                            }
+
+                            // Kollision mit bereits gespawnten Gegnern prüfen
+                            bool collision_with_enemy = false;
+                            for (const auto& enemy_weak_ptr : spawned_enemies_) {
+                                if (auto enemy_shared_ptr = enemy_weak_ptr.lock()) {
+                                    if (CheckCollisionRecs(new_enemy_hitbox, enemy_shared_ptr->Get_Hitbox())) {
+                                        collision_with_enemy = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (collision_with_enemy) continue;
+
+                            valid_pos_found = true;
+                            break;
                         }
 
-                        if (new_enemy_raw) {
-                            auto new_enemy_shared = std::shared_ptr<enemy::Enemy_Base_Class>(new_enemy_raw);
-                            object_manager_ref.AddObject(new_enemy_shared);
-                            spawned_enemies_.push_back(new_enemy_shared);
+                        if (valid_pos_found) {
+                            enemy::Enemy_Base_Class* new_enemy_raw = nullptr;
+                            switch (spawn_info.type) {
+                                case enemy::EnemyType::STANDARD_VAMPIRE:
+                                    new_enemy_raw = new enemy::StandardVampire(spawn_pos);
+                                    break;
+                            }
+
+                            if (new_enemy_raw) {
+                                auto new_enemy_shared = std::shared_ptr<enemy::Enemy_Base_Class>(new_enemy_raw);
+                                object_manager_ref.AddObject(new_enemy_shared);
+                                spawned_enemies_.push_back(new_enemy_shared);
+                            }
                         }
                         break;
                     }
@@ -106,17 +147,13 @@ void Level1_Spawner::Tick(float delta_time)
 
 void Level1_Spawner::Draw()
 {
-    // Zeichne das Spawner-Sprite mit der korrekten Transparenz für den Nebel.
     DrawTextureV(this->spawner_sprite, {(float)this->hitbox.x, (float)this->hitbox.y}, WHITE);
 }
 
-// On_Collision Implementierung
 void Level1_Spawner::On_Collision(std::shared_ptr<Collidable> other)
 {
-    // Spawner reagieren NUR auf Spieler-Projektile
     if (other->Get_Collision_Type() == Collision_Type::PLAYER_PROJECTILE)
     {
-        // Wir prüfen nicht, ob es eine Bombe oder ein Speer ist, sondern einfach, ob es ein Spieler-Angriff ist.
         this->health_--;
         if (health_ <= 0)
         {

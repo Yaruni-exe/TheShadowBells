@@ -14,6 +14,7 @@
 
 Cam::Cam(std::shared_ptr<Player_Base_Class> mp):pao(mp) {
 
+
 }
 void Cam::Cam_Movement(double dtm) {
     Vector2 mpp=pao->Get_Player_Center();
@@ -22,3 +23,5 @@ void Cam::Cam_Movement(double dtm) {
     this->cam.offset.x=game::Config::kStageWidth/2;
     this->cam.offset.y=game::Config::kStageHeight/2;
 }//(Vector2){mpp.x+game::Config::kStageWidth/2,mpp.y+game::Config::kStageHeight/2}
+
+

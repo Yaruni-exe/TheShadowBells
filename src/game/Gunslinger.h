@@ -12,6 +12,7 @@ class Gunslinger : public Player_Base_Class
 private:
     Vector2 size{20, 32};
     MouseLook mouseLook;
+    Vector2 mouse_World_Position;
 
     std::vector<RepeatAnimation> idle_animations;
     std::vector<RepeatAnimation> run_animations;
@@ -31,6 +32,7 @@ public:
     void Draw() override;
     // Die Tick-Methode muss die Mausposition in Weltkoordinaten erhalten
     void Tick(float delta_time, Vector2 worldMousePos);
+    void Ranged_Attack() override;
 };
 
 #endif // GUNSLINGER_H

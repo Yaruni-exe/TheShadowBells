@@ -21,6 +21,10 @@ add_library(core STATIC game.h game.cpp store.h ../scenes/Scene.h stage.h stage.
         ../game/PlayerClassOne.cpp
         ../game/PlayerClassOne.h
         ../game/PlayerBaseClass.cpp
+        ../game/Gunslinger.cpp
+        ../game/Gunslinger.h
+        ../game/MouseLook.cpp
+        ../game/MouseLook.h
         Animations.cpp
         Animations.h
         Object_Manager.cpp

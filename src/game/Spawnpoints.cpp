@@ -9,23 +9,20 @@
 Spawnpoints::Spawnpoints(Vector2 position, int hits)
 {
     this->spawner_Hits = hits;
-    this->hitbox = { position.x, position.y, 64, 64 }; // Annahme einer festen Größe
-
-
+    this->hitbox = { position.x, position.y, 30, 30 }; // Annahme einer festen Größe
 
 }
 
 Spawnpoints::~Spawnpoints()
 {
-    // NEU: Abmelde-Logik
-
+    //Abmelde-Logik
 }
 
 
 
 Collision_Type Spawnpoints::Get_Collision_Type() const
 {
-    return Collision_Type::ENEMY_SPAWNER; // KORRIGIERT (war vorher ENEMY)
+    return Collision_Type::ENEMY_SPAWNER;
 }
 
 bool Spawnpoints::Is_Destroyed() const { return spawner_Hits <= 0; }

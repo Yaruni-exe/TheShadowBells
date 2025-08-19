@@ -16,7 +16,6 @@ Player_Base_Class::Player_Base_Class(int max_Health, float movement_Speed, int d
       inventory_Is_Full(false), facing_Direction(Facing_Direction::DOWN), is_Moving(false),om(om)
 {
     hitbox={start_Position.x,start_Position.y,game::Config::Player_Hitbox_Width,game::Config::Player_Hitbox_Height};
-    // 2. Registriere Objekt beim Manager
 
 }
 
@@ -107,6 +106,7 @@ void Player_Base_Class::On_Collision(std::shared_ptr<Collidable> other)
 }
 */
 
+//Neue Collision
 void Player_Base_Class::On_Collision(std::shared_ptr<Collidable> other)
 {
     // Für ALLE soliden Objekte (Wände, Gegner, Spawner)
@@ -114,7 +114,7 @@ void Player_Base_Class::On_Collision(std::shared_ptr<Collidable> other)
     Collision_Type otherType = other->Get_Collision_Type();
 
     if (otherType == Collision_Type::WALL ||
-        otherType == Collision_Type::ENEMY_SPAWNER ||
+        //otherType == Collision_Type::ENEMY_SPAWNER ||
         otherType == Collision_Type::ENEMY)
     {
         CollisionResponse::Resolve_Overlap(shared_from_this(), other);
