@@ -12,11 +12,8 @@ class Level1_Spawner : public Enemy_Spawner
 {
 public:
     Level1_Spawner(Rectangle spawner_Area,
-                   const std::vector<Rectangle>& obstacle_List,
-                   std::vector<enemy::Enemy_Base_Class*>& enemy_List,
-                   float spawn_Rate,
-                   int max_Enemies,
                    Object_Manager& om,
+                   std::vector<enemy::Enemy_Base_Class*>& enemy_List,
                    std::shared_ptr<Player_Base_Class> player_ptr);
 
     ~Level1_Spawner() override;
@@ -28,7 +25,6 @@ private:
     void Update_And_Count_Spawned_Enemies(std::map<enemy::EnemyType, int>& counts);
     enemy::Enemy_Base_Class* createEnemy(Vector2 position) override;
 
-    Object_Manager& object_manager_ref;
     std::weak_ptr<Player_Base_Class> player_ptr_;
     float spawn_timer;
     int max_enemies_per_instance_;

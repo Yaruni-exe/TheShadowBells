@@ -18,7 +18,7 @@ namespace game {
         // ----------------------------------------------- SPAWNERS ----------------------------------------------------
 
         // ---  SPAWNER1 (spawn1) ---
-        inline static constexpr float kSpawner1_SpawnRate = 30.0f; // Spawnt alle XX Sekunden einen Gegner.
+        inline static constexpr float kSpawner1_SpawnRate = 10.0f; // Spawnt alle XX Sekunden einen Gegner.
         inline static constexpr int kSpawner1_MaxEnemies = 5;      // Jeder Spawner darf maximal XX Gegner gleichzeitig aktiv haben.
 
         // Der Pool an Gegnern die dieser Spawner erzeugen kann.

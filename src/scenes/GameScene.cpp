@@ -21,39 +21,29 @@ game::scenes::GameScene::GameScene()
 {
     dtm.Start();
 
-    // 1. Spieler erstellen und hinzufügen
     this->sp_mp = std::make_shared<Gunslinger>(sp, objectManager);
     objectManager.AddObject(sp_mp);
 
-    // 2. Kamera erstellen und mit Spieler verbinden
     cam = std::make_shared<Cam>(sp_mp);
     screen.LoadGameObjects(objectManager);
 
-    // Initialisiere die Fensterbreite und -höhe
     windowWidth = GetScreenWidth();
     windowHeight = GetScreenHeight();
 
-    // Setze den Kamera-Offset initial auf die Hälfte der Fenstergröße
     cam->cam.offset.x = windowWidth / 2.0f;
     cam->cam.offset.y = windowHeight / 2.0f;
 
-    // 3. Spawner erstellen und hinzufügen
     Rectangle spawner_area = { 200, 200, 300, 300 };
-    std::vector<Rectangle> obstacle_List = {};
+
     std::vector<enemy::Enemy_Base_Class*> enemy_List;
 
-    // Erstellen des Spawners
     auto spawner = std::make_shared<Level1_Spawner>(
         spawner_area,
-        obstacle_List,
-        enemy_List,
-        game::EnemyConfig::kSpawner1_SpawnRate,
-        game::EnemyConfig::kSpawner1_MaxEnemies,
         objectManager,
+        enemy_List,
         sp_mp
     );
 
-    // Fügen Sie den Spawner dem ObjectManager hinzu.
     objectManager.AddObject(spawner);
 }
 
@@ -69,17 +59,14 @@ void game::scenes::GameScene::Update()
         ToggleFullscreen();
     }
 
-    // Prüfe, ob sich die Fenstergröße geändert hat, und aktualisiere die Kamera
     if (GetScreenWidth() != windowWidth || GetScreenHeight() != windowHeight) {
         windowWidth = GetScreenWidth();
         windowHeight = GetScreenHeight();
 
-        // Aktualisiere den Kamera-Offset dynamisch
         cam->cam.offset.x = windowWidth / 2.0f;
         cam->cam.offset.y = windowHeight / 2.0f;
     }
 
-    // Wandle die Mausposition in Weltkoordinaten um
     Vector2 screenMousePos = GetMousePosition();
     Vector2 worldMousePos = GetScreenToWorld2D(screenMousePos, cam->cam);
 
@@ -108,7 +95,6 @@ void game::scenes::GameScene::Draw()
         objectManager.managed_objects[i]->Draw();
     }
 
-    // Hitbox anzeigen
     for (const auto& p_object : objectManager.managed_objects)
     {
         if (p_object != nullptr)

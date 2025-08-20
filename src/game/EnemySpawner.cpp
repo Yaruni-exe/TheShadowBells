@@ -1,14 +1,17 @@
 #include "EnemySpawner.h"
 #include "raylib.h"
 #include "CollisionManager.h"
+#include <iostream>
 
-Enemy_Spawner::Enemy_Spawner(Rectangle spawner_Area, const std::vector<Rectangle>& obstacle_List,
-                 std::vector<enemy::Enemy_Base_Class*>& enemy_List, float spawn_Rate, int max_Enemies)
-    : spawner_Area(spawner_Area), obstacle_List(obstacle_List), enemy_List(enemy_List),  spawn_Rate_(spawn_Rate),
-      max_Enemies_(max_Enemies), time_Since_Last_Spawn_(0.0f) {}
+Enemy_Spawner::Enemy_Spawner(Rectangle spawner_Area, Object_Manager& om,
+                             std::vector<enemy::Enemy_Base_Class*>& enemy_List,
+                             float spawn_Rate, int max_Enemies)
+    : spawner_Area(spawner_Area), object_manager_ref(om), enemy_List(enemy_List),
+      spawn_Rate_(spawn_Rate), max_Enemies_(max_Enemies), time_Since_Last_Spawn_(0.0f) {}
 
 void Enemy_Spawner::Tick(float delta_Time)
 {
+    // Diese generische Tick-Methode wird von der abgeleiteten Klasse aufgerufen.
     time_Since_Last_Spawn_ += delta_Time;
 
     if (time_Since_Last_Spawn_ >= (1.0f / spawn_Rate_) &&
@@ -19,50 +22,42 @@ void Enemy_Spawner::Tick(float delta_Time)
             static_cast<float>(GetRandomValue((int)spawner_Area.y, (int)(spawner_Area.y + spawner_Area.height - 32)))
         };
 
-        Try_Spawn(spawnPos);
+        if (Is_Space_Free({ spawnPos.x, spawnPos.y, 32.0f, 32.0f })) {
+            enemy::Enemy_Base_Class* new_Enemy = createEnemy(spawnPos);
+            if (new_Enemy) {
+                object_manager_ref.AddObject(std::shared_ptr<enemy::Enemy_Base_Class>(new_Enemy));
+            }
+        }
         time_Since_Last_Spawn_ = 0.0f;
-    }
-}
-
-void Enemy_Spawner::Try_Spawn(Vector2 spawn_Position)
-{
-
-    if (!CheckCollisionPointRec(spawn_Position, spawner_Area))
-        return;
-
-    Rectangle new_Hitbox = { spawn_Position.x, spawn_Position.y, 32.0f, 32.0f };
-
-    if (!Is_Space_Free(new_Hitbox))
-        return;
-
-    enemy::Enemy_Base_Class* new_Enemy = createEnemy(spawn_Position);
-
-    if (new_Enemy) {
-        enemy_List.push_back(new_Enemy);
     }
 }
 
 bool Enemy_Spawner::Is_Space_Free(const Rectangle& newHitbox) const
 {
-    for (const auto& obstacle : obstacle_List) {
-        if (CheckCollisionRecs(newHitbox, obstacle)) {
-            return false;
+    for (const auto& obj : object_manager_ref.managed_objects) {
+        if (obj->Get_Collision_Type() == Collision_Type::ENEMY_SPAWNER && CheckCollisionRecs(newHitbox, obj->Get_Hitbox())) {
+            continue;
         }
-    }
 
-    for (const auto& e : enemy_List) {
-        if (CheckCollisionRecs(newHitbox, e->Get_Hitbox())) {}
-        {
-            return false;
+        if (obj->Get_Collision_Type() == Collision_Type::WALL || obj->Get_Collision_Type() == Collision_Type::ENEMY) {
+            if (CheckCollisionRecs(newHitbox, obj->Get_Hitbox())) {
+                return false;
+            }
         }
     }
     return true;
 }
 
-void Enemy_Spawner::Draw_Spawner_Area() const
+Collision_Type Enemy_Spawner::Get_Collision_Type() const
+{
+    return Collision_Type::ENEMY_SPAWNER;
+}
+
+void Enemy_Spawner::Draw()
 {
     DrawRectangleLinesEx(spawner_Area, 2, GREEN);
 }
+
 void Enemy_Spawner::On_Collision(std::shared_ptr<Collidable> other) {
 
 }

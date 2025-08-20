@@ -5,17 +5,13 @@
 #include "../PlayerProjectile.h"
 #include <numeric>
 #include <raymath.h>
+#include <map>
 
-// Der spawner_self-Parameter wurde aus dem Konstruktor entfernt
 Level1_Spawner::Level1_Spawner(Rectangle spawner_Area,
-                               const std::vector<Rectangle>& obstacle_List,
-                               std::vector<enemy::Enemy_Base_Class*>& enemy_List,
-                               float spawn_Rate,
-                               int max_Enemies,
                                Object_Manager& om,
+                               std::vector<enemy::Enemy_Base_Class*>& enemy_List,
                                std::shared_ptr<Player_Base_Class> player_ptr)
-  : Enemy_Spawner(spawner_Area, obstacle_List, enemy_List, game::EnemyConfig::kSpawner1_SpawnRate, game::EnemyConfig::kSpawner1_MaxEnemies),
-      object_manager_ref(om),
+  : Enemy_Spawner(spawner_Area, om, enemy_List, game::EnemyConfig::kSpawner1_SpawnRate, game::EnemyConfig::kSpawner1_MaxEnemies),
       player_ptr_(player_ptr),
       spawn_timer(game::EnemyConfig::kSpawner1_SpawnRate),
       max_enemies_per_instance_(game::EnemyConfig::kSpawner1_MaxEnemies),
@@ -33,6 +29,7 @@ Level1_Spawner::~Level1_Spawner()
     }
 }
 
+// **DIESE FUNKTION FEHLTE VERMUTLICH IN IHRER DATEI**
 void Level1_Spawner::Update_And_Count_Spawned_Enemies(std::map<enemy::EnemyType, int>& counts)
 {
     counts.clear();
@@ -51,6 +48,11 @@ void Level1_Spawner::Update_And_Count_Spawned_Enemies(std::map<enemy::EnemyType,
 void Level1_Spawner::Tick(float delta_time)
 {
     if (health_ <= 0) return;
+
+    // Rufen Sie die Tick-Methode der Basisklasse auf, die die Kollisionsprüfung durchführt
+    //Enemy_Spawner::Tick(delta_time);
+
+    // Ihre ursprüngliche Logik zur Verwaltung der gespawnten Feinde
     spawn_timer -= delta_time;
     if (spawn_timer <= 0.0f)
     {
@@ -90,37 +92,27 @@ void Level1_Spawner::Tick(float delta_time)
 
                             Rectangle new_enemy_hitbox = {spawn_pos.x, spawn_pos.y, game::Config::Player_Hitbox_Width, game::Config::Player_Hitbox_Height};
 
-                            // Kollision mit Wänden prüfen (Dieser Code war das Problem!)
-                            bool collision_with_wall = false;
-                            for (const auto& wall_hitbox : obstacle_List) {
-                                if (CheckCollisionRecs(new_enemy_hitbox, wall_hitbox)) {
-                                    collision_with_wall = true;
-                                    break;
-                                }
-                            }
-                            if (collision_with_wall) continue;
-
-                            // Kollision mit dem Spieler prüfen
-                            if (auto player = player_ptr_.lock()) {
-                                if (CheckCollisionRecs(new_enemy_hitbox, player->Get_Hitbox())) {
-                                    continue;
-                                }
-                            }
-
-                            // Kollision mit bereits gespawnten Gegnern prüfen
-                            bool collision_with_enemy = false;
-                            for (const auto& enemy_weak_ptr : spawned_enemies_) {
-                                if (auto enemy_shared_ptr = enemy_weak_ptr.lock()) {
-                                    if (CheckCollisionRecs(new_enemy_hitbox, enemy_shared_ptr->Get_Hitbox())) {
-                                        collision_with_enemy = true;
-                                        break;
+                            if (Is_Space_Free(new_enemy_hitbox)) {
+                                if (auto player = player_ptr_.lock()) {
+                                    if (CheckCollisionRecs(new_enemy_hitbox, player->Get_Hitbox())) {
+                                        continue;
                                     }
                                 }
-                            }
-                            if (collision_with_enemy) continue;
 
-                            valid_pos_found = true;
-                            break;
+                                bool collision_with_enemy = false;
+                                for (const auto& enemy_weak_ptr : spawned_enemies_) {
+                                    if (auto enemy_shared_ptr = enemy_weak_ptr.lock()) {
+                                        if (CheckCollisionRecs(new_enemy_hitbox, enemy_shared_ptr->Get_Hitbox())) {
+                                            collision_with_enemy = true;
+                                            break;
+                                        }
+                                    }
+                                }
+                                if (collision_with_enemy) continue;
+
+                                valid_pos_found = true;
+                                break;
+                            }
                         }
 
                         if (valid_pos_found) {
@@ -144,6 +136,7 @@ void Level1_Spawner::Tick(float delta_time)
         }
     }
 }
+
 
 void Level1_Spawner::Draw()
 {
