@@ -3,6 +3,9 @@
 #include "raymath.h"
 #include <string>
 #include <cmath>
+#include "PlayerProjectile.h"
+#include <algorithm>
+#include <iostream>
 
 const std::string idle_paths[8] = {
     "assets/graphics/Characters/Gunslinger/Idle/Gunslinger_Idle_Right.png",
@@ -117,7 +120,8 @@ void Gunslinger::Ranged_Attack() {
                 this->player_Damage,
                 game::Config::player_Projectile_Sprite_Path));
         om.AddObject(sp_temp_projectile);
-        sp_projectiles.push_back(sp_temp_projectile);
         ranged_Cooldown = 0.5f;
     }
 }
+
+// Die Methode Clean_Up_Projectiles() wurde komplett entfernt.

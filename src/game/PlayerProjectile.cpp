@@ -1,63 +1,60 @@
-//
-// Created by Manza on 7/4/2025.
-//
-
 #include "PlayerProjectile.h"
+#include <raymath.h>
+#include "EnemyBaseClass.h"
 
 namespace game {
-    // Konstruktor
     Player_Projectile::Player_Projectile(Vector2 start_position, Vector2 direction, int damage, const char* sprite_path)
             : position(start_position),
-              is_active(true),
-              damage(damage) {
-
-        // Die endgültige Geschwindigkeit wird aus Richtung und Speed berechnet
+              // is_active(true), <-- ENTFERNEN SIE DIESE ZEILE
+              damage(damage),
+              total_Distance_Traveled(0.0f) {
         this->velocity.x = direction.x * game::Config::player_Class_One_Projectile_Speed;
         this->velocity.y = direction.y * game::Config::player_Class_One_Projectile_Speed;
-
-        // Lädt die Textur und erstellt die Hitbox basierend auf der Texturgröße
         this->sprite = LoadTexture(sprite_path);
         this->hitbox = { position.x, position.y, (float)this->sprite.width, (float)this->sprite.height };
     }
 
-    // Destruktor
     Player_Projectile::~Player_Projectile() {
         if (sprite.id > 0) {
             UnloadTexture(sprite);
         }
     }
 
-    // Tick
     void Player_Projectile::Tick(float delta_time) {
-        if (!is_active) return; // Inaktive Projektile werden nicht bewegt
+        if (Is_Marked_For_Destruction()) return; // <-- NEU: Überprüft die Markierung der Basisklasse
 
-        // Bewegt das Projektil
         position.x += velocity.x * delta_time;
         position.y += velocity.y * delta_time;
-
-        // Aktualisiert die Hitbox-Position damit sie mitwandert
         hitbox.x = position.x;
         hitbox.y = position.y;
+
+        float distance_this_frame = Vector2Length(Vector2Scale(velocity, delta_time));
+        total_Distance_Traveled += distance_this_frame;
+
+        if (total_Distance_Traveled >= game::Config::player_Projectile_Max_Range) {
+            Mark_For_Destruction(); // <-- NEU: Ruft die Methode der Basisklasse auf
+        }
     }
 
-    // Draw
     void Player_Projectile::Draw() {
-        if (!is_active) return; // Inaktive Projektile werden nicht gezeichnet
+        if (Is_Marked_For_Destruction()) return;
         DrawTextureV(sprite, position, WHITE);
     }
 
-
-
-    // Get_Collision_Type: Sagt dem CollisionManager um welchen Typ es sich handelt
     Collision_Type Player_Projectile::Get_Collision_Type() const {
         return Collision_Type::PLAYER_PROJECTILE;
     }
 
-    // On_Collision: Definiert was passiert wenn das Projektil etwas trifft
     void Player_Projectile::On_Collision(std::shared_ptr<Collidable> other) {
-        // Wenn es eine Wand oder einen Gegner trifft wird es inaktiv
-        if (other->Get_Collision_Type() == Collision_Type::WALL || other->Get_Collision_Type() == Collision_Type::ENEMY) {
-            is_active = false;
+        if (other->Get_Collision_Type() == Collision_Type::ENEMY) {
+            // Safely cast the 'other' object to an Enemy_Base_Class
+            std::shared_ptr<enemy::Enemy_Base_Class> enemy_ptr = std::dynamic_pointer_cast<enemy::Enemy_Base_Class>(other);
+            if (enemy_ptr) {
+                enemy_ptr->Take_Damage(this->damage);
+            }
+            Mark_For_Destruction(); // Destroy the projectile after it hits.
+        } else if (other->Get_Collision_Type() == Collision_Type::WALL) {
+            Mark_For_Destruction();
         }
     }
 }

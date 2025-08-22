@@ -40,7 +40,7 @@ protected:
     Texture2D maintex= LoadTexture("assets/graphics/ball.png");
 
     float projectile_Speed;
-    std::vector<std::shared_ptr<game::Player_Projectile>> sp_projectiles;
+
     Object_Manager& om;
 
 public:

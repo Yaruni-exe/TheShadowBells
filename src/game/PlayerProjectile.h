@@ -17,10 +17,10 @@ namespace game {
     public:
         Vector2 position;
         Vector2 velocity;
-        bool is_active;
         int damage;
         Texture2D sprite;
-        Rectangle hitbox;
+        //Rectangle hitbox; ///Mit dieser Hitbox geht die Collision nicht
+        float total_Distance_Traveled;
 
         /**
          * @brief Konstruktor für ein neues Spieler-Projektil.

@@ -29,7 +29,7 @@ Level1_Spawner::~Level1_Spawner()
     }
 }
 
-// **DIESE FUNKTION FEHLTE VERMUTLICH IN IHRER DATEI**
+
 void Level1_Spawner::Update_And_Count_Spawned_Enemies(std::map<enemy::EnemyType, int>& counts)
 {
     counts.clear();
@@ -145,14 +145,11 @@ void Level1_Spawner::Draw()
 
 void Level1_Spawner::On_Collision(std::shared_ptr<Collidable> other)
 {
-    if (other->Get_Collision_Type() == Collision_Type::PLAYER_PROJECTILE)
+   /* if (other->Get_Collision_Type() == Collision_Type::PLAYER_PROJECTILE)
     {
-        this->health_--;
-        if (health_ <= 0)
-        {
-            this->Mark_For_Destruction();
-        }
+        return;
     }
+    */
 }
 
 enemy::Enemy_Base_Class* Level1_Spawner::createEnemy(Vector2 position)

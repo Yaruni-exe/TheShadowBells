@@ -4,7 +4,6 @@
 
 #include <iostream>
 #include "PlayerBaseClass.h"
-
 #include "CollisionResponse.h"
 #include "Store.h"
 
@@ -25,42 +24,22 @@ Player_Base_Class::~Player_Base_Class()
 
 }
 
-// Phase 1 :: Player input Prüfung
-void Player_Base_Class::Player_Input()
-{
-    if (IsKeyPressed(game::Config::key_Melee_Attack) && melee_Cooldown <= 0)
-    {
-        Melee_Attack();
-    }
-
-    if (IsKeyPressed(game::Config::key_Ranged_Attack) && ranged_Cooldown <= 0)
-    {
-        Ranged_Attack();
-    }
-
-    /*if (IsKeyPressed(game::Config::key_Use_Item) && inventory_Is_Full)
-    {
-        Use_Item();
-    }*/
-}
-
 // Phase 2 :: Verwaltung für alles was das Objekt über eine gewisse Zeit machen soll
 void Player_Base_Class::Tick(float delta_time)
 {
-
     if (game::Config::enable_Health_Drain)
     {
         player_Health -= game::Config::player_Health_Drain_Rate * delta_time;
     }
     Update_Previous_Position();
 
-	Vector2 move_Direction = {0.0f, 0.0f};
+    Vector2 move_Direction = {0.0f, 0.0f};
     if (IsKeyDown(game::Config::key_Up))    move_Direction.y -= 1.0f;
     if (IsKeyDown(game::Config::key_Down))  move_Direction.y += 1.0f;
     if (IsKeyDown(game::Config::key_Left))  move_Direction.x -= 1.0f;
     if (IsKeyDown(game::Config::key_Right)) move_Direction.x += 1.0f;
 
- 	is_Moving = (move_Direction.x != 0.0f || move_Direction.y != 0.0f);
+    is_Moving = (move_Direction.x != 0.0f || move_Direction.y != 0.0f);
     if (is_Moving)
     {
         move_Direction = Vector2Normalize(move_Direction);
@@ -74,39 +53,23 @@ void Player_Base_Class::Tick(float delta_time)
 
     Update_Facing_Direction();
 
-    if (ranged_Cooldown<=0&& IsKeyDown(game::Config::key_Ranged_Attack)){
+    // Überprüfung für den Fernkampf-Angriff
+    if (IsMouseButtonDown(game::Config::key_Ranged_Attack) && ranged_Cooldown <= 0) {
         Ranged_Attack();
     }
+
+    // Überprüfung für den Nahkampf-Angriff
+    if (IsKeyPressed(game::Config::key_Melee_Attack) && melee_Cooldown <= 0)
+    {
+        Melee_Attack();
+    }
+
+    // Cooldowns aktualisieren
     if (melee_Cooldown > 0) melee_Cooldown -= delta_time;
     if (ranged_Cooldown > 0) ranged_Cooldown -= delta_time;
 }
 
 // Phase 3 :: Kollisionsreaktion falls der Collisionmanager eine Kollision mit einem anderen Objekt feststellt
-/*
-void Player_Base_Class::On_Collision(std::shared_ptr<Collidable> other)
-{
-	Collision_Type otherType = other->Get_Collision_Type();
-
-    if (otherType == Collision_Type::WALL ||
-        otherType == Collision_Type::ENEMY_SPAWNER ||
-        otherType == Collision_Type::ENEMY)
-    {
-		Rectangle wall_Hitbox = other->Get_Hitbox();
-
-        if (CheckCollisionRecs({hitbox.x, previous_Position.y, hitbox.width, hitbox.height}, wall_Hitbox))
-        {
-            hitbox.y = previous_Position.y;
-        }
-        if (CheckCollisionRecs({previous_Position.x, hitbox.y, hitbox.width, hitbox.height}, wall_Hitbox))
-        {
-            hitbox.x = previous_Position.x;
-		}
-
-	}
-}
-*/
-
-//Neue Collision
 void Player_Base_Class::On_Collision(std::shared_ptr<Collidable> other)
 {
     // Für ALLE soliden Objekte (Wände, Gegner, Spawner)
@@ -114,13 +77,11 @@ void Player_Base_Class::On_Collision(std::shared_ptr<Collidable> other)
     Collision_Type otherType = other->Get_Collision_Type();
 
     if (otherType == Collision_Type::WALL ||
-        //otherType == Collision_Type::ENEMY_SPAWNER ||
         otherType == Collision_Type::ENEMY)
     {
         CollisionResponse::Resolve_Overlap(shared_from_this(), other);
     }
 }
-
 
 // Draw Methode ist noch nicht klar, wie das mit der Visualisierung laufen wird
 void Player_Base_Class::Draw()
@@ -131,8 +92,9 @@ void Player_Base_Class::Draw()
 // Um die beiden Attack Methoden weiter auszuarbeiten, braucht es die passenden Klassen
 void Player_Base_Class::Melee_Attack()
 {
-	melee_Cooldown = 0.0f;
+    melee_Cooldown = 0.0f;
 }
+
 void Player_Base_Class::Ranged_Attack()
 {
     // Hole die Mausposition aus dem globalen Store
@@ -147,9 +109,9 @@ void Player_Base_Class::Ranged_Attack()
     if (distance_to_target > 0) {
         // Normalisiere den Vektor, um nur die Richtung zu erhalten
         Vector2 fire_direction = {
-                delta_vector_x / distance_to_target,
-                delta_vector_y / distance_to_target
-        };
+            delta_vector_x / distance_to_target,
+            delta_vector_y / distance_to_target
+    };
 
         // Erstelle ein neues Projektil und füge es dem Vektor hinzu
         std::shared_ptr<game::Player_Projectile> sp_temp_projectile(new game::Player_Projectile(
@@ -158,12 +120,10 @@ void Player_Base_Class::Ranged_Attack()
                 this->player_Damage,
                 game::Config::player_Projectile_Sprite_Path));
         om.AddObject(sp_temp_projectile);
-        sp_projectiles.push_back(sp_temp_projectile);
-
 
 
         // Setze den Cooldown zurück
-        ranged_Cooldown = 0.5f; //PLACEHOLDER ZAHL - darf man ändern.
+        ranged_Cooldown = 2.0f;
     }
 }
 
@@ -196,8 +156,6 @@ void Player_Base_Class::Update_Facing_Direction()
 }
 
 // Getter für Player Hittbox und Collision Type
-
-
 Collision_Type Player_Base_Class::Get_Collision_Type() const
 {
     return Collision_Type::PLAYER;
@@ -206,10 +164,12 @@ Collision_Type Player_Base_Class::Get_Collision_Type() const
 Vector2 Player_Base_Class::Get_Player_Pos() {
     return this->player_Pos;
 }
+
 void Player_Base_Class::Take_Damage(int damage_amount)
 {
     player_Health -= damage_amount;
 }
+
 Vector2 Player_Base_Class::Get_Player_Center() {
     return Vector2{player_Pos.x+hitbox.width/2,player_Pos.y+hitbox.height/2};
 }

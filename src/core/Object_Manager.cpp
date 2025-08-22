@@ -37,11 +37,8 @@ void Object_Manager::Cleanup_Objects()
     auto new_end = std::remove_if(managed_objects.begin(), managed_objects.end(),
                                   [](std::shared_ptr<Collidable> obj)
                                   {
-                                      if (obj->Is_Marked_For_Destruction())
-                                      {
-                                          return true;
-                                      }
-                                      return false;
+                                      return (obj == nullptr || obj->Is_Marked_For_Destruction());
                                   });
     managed_objects.erase(new_end, managed_objects.end());
 }
+

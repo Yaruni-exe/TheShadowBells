@@ -42,7 +42,7 @@ namespace game {
         inline static constexpr const bool kAudio = true;
 
         // Player Settings
-        inline static constexpr bool enable_Health_Drain = true; // HP-Drain durch Zeit an/aus
+        inline static constexpr bool enable_Health_Drain = false; // HP-Drain durch Zeit an/aus
         inline static constexpr float player_Health_Drain_Rate = 1.0f; // HP-Verlust pro Sekunde
         inline static constexpr int Player_Hitbox_Width = 18; // Player Hitbox
         inline static constexpr int Player_Hitbox_Height = 30; // Player Hitbox
@@ -53,7 +53,8 @@ namespace game {
         inline static constexpr float player_Class_One_Movement_Speed = 20.0f;
         inline static constexpr int player_Class_One_Damage = 12;
         inline static constexpr float player_Class_One_Projectile_Speed = 300.0f;
-        inline static constexpr const char* player_Projectile_Sprite_Path = "assets/graphics/ball.png"; //PLACEHOLDER Pfad für Player-Projectile
+        inline static constexpr const char* player_Projectile_Sprite_Path = "assets/graphics/Characters/Gunslinger/bullet.png"; //PLACEHOLDER Pfad für Player-Projectile
+        inline static constexpr float player_Projectile_Max_Range = 500.0f;
 
         // Enemy_Class_One
         inline static constexpr int enemy_Class_1_Health = 50;
@@ -72,7 +73,7 @@ namespace game {
         inline static constexpr const int key_Right = KEY_D;
 
         inline static constexpr const int key_Melee_Attack = KEY_J;
-        inline static constexpr const int key_Ranged_Attack = KEY_K;
+        inline static constexpr const int key_Ranged_Attack = MOUSE_LEFT_BUTTON;
         inline static constexpr const int key_Use_Item = KEY_L;
 
         //Cam stuffd

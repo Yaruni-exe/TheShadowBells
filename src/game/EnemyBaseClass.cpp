@@ -7,6 +7,7 @@
 #include "CollisionManager.h"
 #include "CollisionResponse.h"
 #include "PlayerBaseClass.h"
+#include "PlayerProjectile.h"
 
 namespace enemy
 {
@@ -24,9 +25,16 @@ Enemy_Base_Class::~Enemy_Base_Class()
     UnloadTexture(sprite);
 }
 
-void Enemy_Base_Class::Take_Damage(int damage_amount)
+    void Enemy_Base_Class::Take_Damage(int damage_amount)
 {
-    enemy_Health -= damage_amount;
+    this->enemy_Health -= damage_amount;
+
+    // Prüft, ob der Gegner gestorben ist
+    if (this->enemy_Health <= 0)
+    {
+        // Markiert das Objekt zur Zerstörung
+        this->Mark_For_Destruction();
+    }
 }
 
 void Enemy_Base_Class::Pathfinding(float target_Position_X, float target_Position_Y, float delta_Time)
@@ -70,14 +78,29 @@ void Enemy_Base_Class::Tick(float delta_time)
     }
     // Wenn der Pathfinding die Position veränder dann this->is_Moving = true;
 }
-void Enemy_Base_Class::On_Collision(std::shared_ptr<Collidable> other)
+    void Enemy_Base_Class::On_Collision(std::shared_ptr<Collidable> other)
 {
     Collision_Type other_Type = other->Get_Collision_Type();
 
     switch(other_Type)
     {
         case Collision_Type::WALL:
+        {
+            if (this->is_Moving)
+            {
+                CollisionResponse::Resolve_Overlap(shared_from_this(), other);
+            }
+            break;
+        }
+
         case Collision_Type::ENEMY_SPAWNER:
+        {
+            // Ein Spawner sollte keine Kollisionen mit Feinden auslösen, die sie selbst zum Löschen markieren.
+            // Die einfachste Lösung ist, hier nichts zu tun, da der Spawner sich selbst verwaltet.
+            // Wenn der Spawner verschwinden soll, muss die Logik dafür im Spawner selbst liegen.
+            break;
+        }
+
         case Collision_Type::PLAYER:
         {
             if (this->is_Moving)
@@ -85,50 +108,33 @@ void Enemy_Base_Class::On_Collision(std::shared_ptr<Collidable> other)
                 CollisionResponse::Resolve_Overlap(shared_from_this(), other);
             }
 
-            if (other_Type == Collision_Type::PLAYER)
+            if (attack_Cooldown_Timer <= 0)
             {
-                // 2. Prüfen, ob der Angriff bereit ist.
-                if (attack_Cooldown_Timer <= 0)
+                if (auto player = std::dynamic_pointer_cast<Player_Base_Class>(other))
                 {
-                    if (auto player = std::dynamic_pointer_cast<Player_Base_Class>(other))
-                    {
-                        // 3. Schaden austeilen und Cooldown zurücksetzen.
-                        player->Take_Damage(this->enemy_Damage);
-                        this->attack_Cooldown_Timer = this->attack_Cooldown_Duration;
-                    }
+                    player->Take_Damage(this->enemy_Damage);
+                    this->attack_Cooldown_Timer = this->attack_Cooldown_Duration;
                 }
             }
             break;
         }
+
         case Collision_Type::PLAYER_PROJECTILE:
         {
-            /*if(auto* projectile = dynamic_cast<Player_Projectile*>(other))
+            // Füge dem Gegner Schaden zu
+            if(auto projectile = std::dynamic_pointer_cast<game::Player_Projectile>(other))
             {
-                this->Take_Damage(projectile->Get_Damage());
+                this->Take_Damage(projectile->damage);
+
+                // Markiere das Projektil für die Zerstörung
+                projectile->Mark_For_Destruction();
             }
-            CollisionResponse::Mark_For_Destruction(other);*/
             break;
         }
 
         case Collision_Type::CONSUMABLE:
         {
-            /* // Wir brauchen eine Basis-Klasse "Consumable", von der alle Items erben.
-            if(auto* item = dynamic_cast<Consumables*>(other)) // Annahme: Es gibt eine Klasse Consumable
-            {
-                if(item->Is_Inventory_Item()) // Methode in Consumable, die den bool zurückgibt
-                {
-                    // Logik, um das Item dem Inventar hinzuzufügen
-                    // inventory.Add(item);
-                }
-                else
-                {
-                    // Item wird sofort verwendet (z.B. Heilung)
-                    item->Apply_Effect(this); // Jedes Item weiß selbst, was es tut
-                }
-
-                // In jedem Fall wird das Item aus der Welt entfernt
-                CollisionResponse::Mark_For_Destruction(other);
-            } */
+            // Ihre geplante Logik
             break;
         }
 
@@ -136,6 +142,7 @@ void Enemy_Base_Class::On_Collision(std::shared_ptr<Collidable> other)
             break;
     }
 }
+
 void Enemy_Base_Class::Draw()
 {
 
