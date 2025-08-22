@@ -70,10 +70,12 @@ void game::scenes::GameScene::Update()
     Vector2 screenMousePos = GetMousePosition();
     Vector2 worldMousePos = GetScreenToWorld2D(screenMousePos, cam->cam);
 
+    // Rufe die Tick-Methode des Spielers nur EINMAL auf.
+    sp_mp->Tick(dtm.Get_Dt(), worldMousePos);
+
+    // Rufe die Tick-Methode für alle ANDEREN Objekte auf.
     for (int i = 0; i < objectManager.managed_objects.size(); ++i) {
-        if (objectManager.managed_objects[i].get() == sp_mp.get()) {
-            sp_mp->Tick(dtm.Get_Dt(), worldMousePos);
-        } else {
+        if (objectManager.managed_objects[i].get() != sp_mp.get()) {
             objectManager.managed_objects[i]->Tick(dtm.Get_Dt());
         }
     }

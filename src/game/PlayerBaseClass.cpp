@@ -54,9 +54,7 @@ void Player_Base_Class::Tick(float delta_time)
     Update_Facing_Direction();
 
     // Überprüfung für den Fernkampf-Angriff
-    if (IsMouseButtonDown(game::Config::key_Ranged_Attack) && ranged_Cooldown <= 0) {
-        Ranged_Attack();
-    }
+
 
     // Überprüfung für den Nahkampf-Angriff
     if (IsKeyPressed(game::Config::key_Melee_Attack) && melee_Cooldown <= 0)
@@ -64,9 +62,6 @@ void Player_Base_Class::Tick(float delta_time)
         Melee_Attack();
     }
 
-    // Cooldowns aktualisieren
-    if (melee_Cooldown > 0) melee_Cooldown -= delta_time;
-    if (ranged_Cooldown > 0) ranged_Cooldown -= delta_time;
 }
 
 // Phase 3 :: Kollisionsreaktion falls der Collisionmanager eine Kollision mit einem anderen Objekt feststellt

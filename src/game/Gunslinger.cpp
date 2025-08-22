@@ -44,6 +44,7 @@ Gunslinger::Gunslinger(Vector2 start_Position, Object_Manager& om)
     : Player_Base_Class(game::Config::player_Class_One_Max_Health, game::Config::player_Class_One_Movement_Speed,
         game::Config::player_Class_One_Damage, start_Position, om)
 {
+    this->ranged_Cooldown_Timer = 0.0f;
     for (int i = 0; i < 8; ++i) {
         idle_animations.emplace_back(size, idle_paths[i].c_str(), 7, 7);
         run_animations.emplace_back(size, run_paths[i].c_str(), 7, 7);
@@ -57,8 +58,11 @@ void Gunslinger::Tick(float delta_time, Vector2 worldMousePos) {
     Player_Base_Class::Tick(delta_time);
 
     mouseLook.Update(this->player_Pos, worldMousePos);
-
     mouse_World_Position = worldMousePos;
+
+    if (this->ranged_Cooldown_Timer > 0.0f) {
+        this->ranged_Cooldown_Timer -= delta_time;
+    }
 
     if (currentState == PlayerState::ATTACK) {
         attackFrameCounter++;
@@ -66,19 +70,17 @@ void Gunslinger::Tick(float delta_time, Vector2 worldMousePos) {
             currentState = PlayerState::IDLE;
             attackFrameCounter = 0;
         }
-        return;
-    }
-
-    bool is_attacking = IsMouseButtonPressed(MOUSE_LEFT_BUTTON);
-
-    if (is_attacking) {
-        currentState = PlayerState::ATTACK;
-        attack_animations[mouseLook.GetDirectionIndex()].First_Frame();
-        attackFrameCounter = 0;
-    } else if (is_Moving) {
-        currentState = PlayerState::RUN;
     } else {
-        currentState = PlayerState::IDLE;
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && this->ranged_Cooldown_Timer <= 0.0f) {
+            this->Ranged_Attack();
+            currentState = PlayerState::ATTACK;
+            attack_animations[mouseLook.GetDirectionIndex()].First_Frame();
+            attackFrameCounter = 0;
+        } else if (is_Moving) {
+            currentState = PlayerState::RUN;
+        } else {
+            currentState = PlayerState::IDLE;
+        }
     }
 }
 
@@ -120,8 +122,6 @@ void Gunslinger::Ranged_Attack() {
                 this->player_Damage,
                 game::Config::player_Projectile_Sprite_Path));
         om.AddObject(sp_temp_projectile);
-        ranged_Cooldown = 0.5f;
+        this->ranged_Cooldown_Timer = 0.5f;
     }
 }
-
-// Die Methode Clean_Up_Projectiles() wurde komplett entfernt.

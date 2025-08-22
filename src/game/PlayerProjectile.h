@@ -1,6 +1,4 @@
-//
-// Created by Manza on 7/4/2025.
-//
+
 
 #pragma once
 #include "raylib.h"

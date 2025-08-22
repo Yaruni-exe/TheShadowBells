@@ -5,7 +5,6 @@
 namespace game {
     Player_Projectile::Player_Projectile(Vector2 start_position, Vector2 direction, int damage, const char* sprite_path)
             : position(start_position),
-              // is_active(true), <-- ENTFERNEN SIE DIESE ZEILE
               damage(damage),
               total_Distance_Traveled(0.0f) {
         this->velocity.x = direction.x * game::Config::player_Class_One_Projectile_Speed;
@@ -21,7 +20,8 @@ namespace game {
     }
 
     void Player_Projectile::Tick(float delta_time) {
-        if (Is_Marked_For_Destruction()) return; // <-- NEU: Überprüft die Markierung der Basisklasse
+        // Stoppe, wenn das Objekt zur Zerstörung markiert ist
+        if (Is_Marked_For_Destruction()) return;
 
         position.x += velocity.x * delta_time;
         position.y += velocity.y * delta_time;
@@ -32,7 +32,7 @@ namespace game {
         total_Distance_Traveled += distance_this_frame;
 
         if (total_Distance_Traveled >= game::Config::player_Projectile_Max_Range) {
-            Mark_For_Destruction(); // <-- NEU: Ruft die Methode der Basisklasse auf
+            Mark_For_Destruction();
         }
     }
 
@@ -46,13 +46,17 @@ namespace game {
     }
 
     void Player_Projectile::On_Collision(std::shared_ptr<Collidable> other) {
+        // Wenn das Projektil bereits zur Zerstörung markiert ist, tue nichts mehr.
+        if (Is_Marked_For_Destruction()) return;
+
         if (other->Get_Collision_Type() == Collision_Type::ENEMY) {
-            // Safely cast the 'other' object to an Enemy_Base_Class
+            // Direktes Casting, da 'other' ein gültiger shared_ptr ist.
             std::shared_ptr<enemy::Enemy_Base_Class> enemy_ptr = std::dynamic_pointer_cast<enemy::Enemy_Base_Class>(other);
             if (enemy_ptr) {
                 enemy_ptr->Take_Damage(this->damage);
             }
-            Mark_For_Destruction(); // Destroy the projectile after it hits.
+            // Zerstöre das Projektil sofort, damit es keinen weiteren Schaden verursacht.
+            Mark_For_Destruction();
         } else if (other->Get_Collision_Type() == Collision_Type::WALL) {
             Mark_For_Destruction();
         }
