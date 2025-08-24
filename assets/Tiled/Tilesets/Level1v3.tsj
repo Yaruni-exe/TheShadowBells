@@ -1,0 +1,14 @@
+{ "columns":16,
+ "image":"Sophia\/TilemapLevel1.png",
+ "imageheight":320,
+ "imagewidth":520,
+ "margin":0,
+ "name":"Level1v3",
+ "spacing":0,
+ "tilecount":160,
+ "tiledversion":"1.11.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "type":"tileset",
+ "version":"1.10"
+}
