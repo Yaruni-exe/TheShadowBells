@@ -50,10 +50,17 @@ namespace enemy
     void EnemyExtendedBaseClass::On_Collision(std::shared_ptr<Collidable> other)
     {
         Collision_Type other_Type = other->Get_Collision_Type();
+
+        // Verhindere Kollision mit sich selbst
+        if (other.get() == this) {
+            return;
+        }
+
         switch (other_Type)
         {
             case Collision_Type::WALL:
             case Collision_Type::PLAYER:
+            case Collision_Type::ENEMY: // <-- NEUE ZEILE HINZUGEFÜGT
             {
                 if (this->is_Moving)
                 {
@@ -76,6 +83,11 @@ namespace enemy
             case Collision_Type::PLAYER_PROJECTILE:
             {
                 // Die Logik für Projektile wird hier behandelt
+                if (auto projectile = std::dynamic_pointer_cast<game::Player_Projectile>(other))
+                {
+                    this->Take_Damage(projectile->damage);
+                    projectile->Mark_For_Destruction();
+                }
                 break;
             }
             case Collision_Type::ENEMY_SPAWNER:
