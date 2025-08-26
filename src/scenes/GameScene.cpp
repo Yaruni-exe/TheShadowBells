@@ -15,6 +15,9 @@
 #include "../game/PlayerClassOne.h"
 #include "../core/CollisionManager.h"
 
+// NEUE EINBINDUNG: Notwendig für den Zugriff auf die KI-Logik der Gegner
+#include "../game/EnemyExtendedBaseClass.h"
+
 using namespace std::string_literals;
 
 game::scenes::GameScene::GameScene()
@@ -75,8 +78,19 @@ void game::scenes::GameScene::Update()
 
     // Rufe die Tick-Methode für alle ANDEREN Objekte auf.
     for (int i = 0; i < objectManager.managed_objects.size(); ++i) {
-        if (objectManager.managed_objects[i].get() != sp_mp.get()) {
-            objectManager.managed_objects[i]->Tick(dtm.Get_Dt());
+        auto& current_obj = objectManager.managed_objects[i];
+
+
+        // Prüfe, ob das Objekt ein Gegner ist und führe dessen KI-Logik aus.
+        if (current_obj->Get_Collision_Type() == Collision_Type::ENEMY) {
+            if (auto enemy = std::dynamic_pointer_cast<enemy::EnemyExtendedBaseClass>(current_obj)) {
+                enemy->Update_AI(dtm.Get_Dt(), sp_mp->Get_Position());
+            }
+        }
+        // --- ENDE NEUE LOGIK ---
+
+        if (current_obj.get() != sp_mp.get()) {
+            current_obj->Tick(dtm.Get_Dt());
         }
     }
 
@@ -96,7 +110,7 @@ void game::scenes::GameScene::Draw()
     for (int i = 0; i < objectManager.managed_objects.size(); ++i) {
         objectManager.managed_objects[i]->Draw();
     }
-  ///Hitbox anzeigen////
+    ///Hitbox anzeigen////
     for (const auto& p_object : objectManager.managed_objects)
     {
         if (p_object != nullptr)
@@ -104,6 +118,6 @@ void game::scenes::GameScene::Draw()
             DrawRectangleLinesEx(p_object->Get_Hitbox(), 2.0f, RED);
         }
     }
-////////////////
+    ////////////////
     screen.Draw_Level(this->cam, true);
 }

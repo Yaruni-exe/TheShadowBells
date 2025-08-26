@@ -26,27 +26,31 @@ namespace enemy
 
         if (distance_To_Target > attack_Range)
         {
+            // *** GEÄNDERT: Zustand auf CHASING setzen, wenn der Gegner verfolgt. ***
+            current_state = EnemyState::CHASING;
             is_Moving = true;
             float normalized_Direction_X = delta_Vector_X / distance_To_Target;
             float normalized_Direction_Y = delta_Vector_Y / distance_To_Target;
-            float current_Movement_Speed = this->enemy_Movement_Speed;
-            float movement_Step_Size = current_Movement_Speed * delta_Time;
+            float current_Movement_Speed = this->enemy_Movement_Speed * delta_Time;
 
-            this->hitbox.x += normalized_Direction_X * movement_Step_Size;
-            this->hitbox.y += normalized_Direction_Y * movement_Step_Size;
+            this->hitbox.x += normalized_Direction_X * current_Movement_Speed;
+            this->hitbox.y += normalized_Direction_Y * current_Movement_Speed;
+
+            this->is_Moving = true;
         }
         else
         {
+            // *** GEÄNDERT: Zustand auf IDLE setzen, wenn der Gegner in Angriffsreichweite ist. ***
+            current_state = EnemyState::IDLE;
             is_Moving = false;
         }
     }
 
-    // Die On_Collision-Methode aus der neuen Version
+    // Die On_Collision-Methode, die die Logik zur Kollisionsbehandlung erweitert
     void EnemyExtendedBaseClass::On_Collision(std::shared_ptr<Collidable> other)
     {
         Collision_Type other_Type = other->Get_Collision_Type();
-
-        switch(other_Type)
+        switch (other_Type)
         {
             case Collision_Type::WALL:
             case Collision_Type::PLAYER:

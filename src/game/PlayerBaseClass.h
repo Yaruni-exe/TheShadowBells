@@ -54,6 +54,8 @@ public:
 	void On_Collision(std::shared_ptr<Collidable> other) override;
 	virtual void Draw() override;
 
+	Vector2 Get_Position() const { return player_Pos; }
+
 	void Update_Previous_Position();
 	void Update_Facing_Direction();
 

@@ -1,5 +1,6 @@
 #include "StandardVampire.h"
 #include "../../config_enemys.h.in"
+#include <iostream>
 
 namespace enemy
 {
@@ -23,38 +24,47 @@ namespace enemy
     }
 
     void StandardVampire::Update_AI(float delta_time, Vector2 player_position)
-{
-    // Rufe zuerst die Basis-Tick-Funktion auf (z.B. für Cooldowns)
-    EnemyExtendedBaseClass::Tick(delta_time);
-
-    // --- ZUSTANDS-LOGIK ---
-
-    // Wenn eine Angriffsanimation läuft, zähle den Timer herunter.
-    if (attack_animation_timer > 0.0f) {
-        attack_animation_timer -= delta_time;
-    }
-
-    // BEWEGUNG: Führe die Pathfinding-Logik nur aus, wenn gerade KEINE Angriffsanimation läuft.
-    if (attack_animation_timer <= 0.0f) {
-        Pathfinding(player_position.x, player_position.y, delta_time);
-    }
-
-    // --- ANGRIFFS-LOGIK ---
-    float distance_to_player = Vector2Distance({this->hitbox.x, this->hitbox.y}, player_position);
-
-    // Wenn der Spieler in Reichweite ist UND der Cooldown bereit ist UND keine Animation läuft...
-    if (distance_to_player <= game::EnemyConfig::kStandardVampireAttackRange && this->attack_Cooldown_Timer <= 0.0f && attack_animation_timer <= 0.0f)
     {
-        // ... dann starte die Angriffs-Animation.
-        attack_animation_timer = 0.8f; // Setze die Dauer der Animation. Anpassen!
+        // Rufe zuerst die Basis-Tick-Funktion auf (z.B. für Cooldowns)
+        EnemyExtendedBaseClass::Tick(delta_time);
 
-        // Führe den eigentlichen Angriff aus.
-        this->Melee_Attack();
+        // --- ZUSTANDS-LOGIK UND TIMER ---
+        if (attack_animation_timer > 0.0f) {
+            attack_animation_timer -= delta_time;
+            // Zustand auf ATTACKING setzen und Bewegung stoppen, solange die Animation läuft.
+            current_state = EnemyState::ATTACKING;
+            this->is_Moving = false;
+        } else {
+            // Zustand zurücksetzen, wenn die Animation beendet ist.
+            current_state = EnemyState::IDLE;
+        }
+
+        // --- ANGRIFFS-LOGIK ---
+        float distance_to_player = Vector2Distance({this->hitbox.x, this->hitbox.y}, player_position);
+
+        // Wenn der Spieler in Reichweite ist UND der Cooldown bereit ist UND keine Animation läuft...
+        if (distance_to_player <= game::EnemyConfig::kStandardVampireAttackRange && this->attack_Cooldown_Timer <= 0.0f && attack_animation_timer <= 0.0f)
+        {
+            // ... dann starte die Angriffs-Animation.
+            attack_animation_timer = 0.8f; // Setze die Dauer der Animation.
+
+            // Führe den eigentlichen Angriff aus.
+            this->Melee_Attack();
+        }
+
+        // --- BEWEGUNGS-LOGIK / PATHFINDING ---
+        // Rufe Pathfinding nur auf, wenn der Gegner sich bewegen soll.
+        if (current_state != EnemyState::ATTACKING && current_state != EnemyState::DYING)
+        {
+            // Ruft die überschriebene Pathfinding-Methode auf
+            this->Pathfinding(player_position.x, player_position.y, delta_time);
+        }
     }
-}
 
     void StandardVampire::Tick(float delta_time)
     {
+        // Diese Methode wird in der GameScene aufgerufen.
+        // Die Logik für den Vampir ist nun komplett in Update_AI.
     }
 
     // Implementierung der Angriffsfunktionen
@@ -71,15 +81,12 @@ namespace enemy
 
     void StandardVampire::Range_Attack()
     {
+        // Leere Implementierung für den Vampir, da er nur Nahkampfangriffe hat.
     }
 
+    // *** FEHLENDE IMPLEMENTIERUNG HINZUGEFÜGT ***
     void StandardVampire::Draw()
     {
-        // TO-DO: Hier wird später die Animations-Logik basierend
-        // auf dem Gegner-Zustand (Idle, Flying, Attacking, Dying) stehen.
-        if (sprite.id > 0)
-        {
-            DrawTextureV(this->sprite, {this->hitbox.x, this->hitbox.y}, WHITE);
-        }
+        EnemyExtendedBaseClass::Draw();
     }
 }

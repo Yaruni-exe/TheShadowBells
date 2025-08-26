@@ -96,7 +96,7 @@ void Enemy_Base_Class::Tick(float delta_time)
         case Collision_Type::ENEMY_SPAWNER:
         {
             // Ein Spawner sollte keine Kollisionen mit Feinden auslösen, die sie selbst zum Löschen markieren.
-            // Die einfachste Lösung ist, hier nichts zu tun, da der Spawner sich selbst verwaltet.
+            // der Spawner verwaltet sich selbst .
             // Wenn der Spawner verschwinden soll, muss die Logik dafür im Spawner selbst liegen.
             break;
         }

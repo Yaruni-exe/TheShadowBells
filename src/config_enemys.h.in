@@ -32,13 +32,13 @@ namespace game {
         // I. STANDARD VAMPIRE (Der Standardgegner)
         // ====================================================================================
         inline static constexpr int kStandardVampireHealth = 100;
-        inline static constexpr float kStandardVampireMovementSpeed = 50.0f;
+        inline static constexpr float kStandardVampireMovementSpeed = 5.0f;
         inline static constexpr int kStandardVampireDamage = 10;
         inline static constexpr int kStandardVampireValue = 50;
         inline static constexpr int kStandardVampireHitboxWidth = 32;
         inline static constexpr int kStandardVampireHitboxHeight = 32;
         inline static constexpr float kStandardVampireAttackCooldown = 1.0f;
         inline static constexpr float kStandardVampireAttackRange = 40.0f;
-        inline static constexpr const char* kStandardVampireSpritePath = "assets/vampire.png";
+        inline static constexpr const char* kStandardVampireSpritePath = "assets/graphics/Characters/Gunslinger/Gunslinger_Idle_Animation_Front.png";
     };
 }
