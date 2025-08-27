@@ -63,8 +63,8 @@ namespace enemy
 
     void StandardVampire::Tick(float delta_time)
     {
-        // Diese Methode wird in der GameScene aufgerufen.
         // Die Logik für den Vampir ist nun komplett in Update_AI.
+        EnemyExtendedBaseClass::Tick(delta_time);
     }
 
     // Implementierung der Angriffsfunktionen
@@ -73,10 +73,7 @@ namespace enemy
         // Setzt den Cooldown in der Basisklasse zurück
         this->attack_Cooldown_Timer = this->attack_Cooldown_Duration;
 
-        // TO-DO: Zukünftige Logik
-        // 1. Setze Gegner-Zustand auf "ATTACKING"
-        // 2. Spiele Angriffsanimation ab
-        // 3. Erzeuge eine temporäre Hitbox für den Schaden
+
     }
 
     void StandardVampire::Range_Attack()

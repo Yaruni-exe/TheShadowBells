@@ -8,36 +8,36 @@
 #include <iostream>
 
 const std::string idle_paths[8] = {
-    "assets/graphics/Characters/Gunslinger/Idle/Gunslinger_Idle_Right.png",
-    "assets/graphics/Characters/Gunslinger/Idle/Gunslinger_Idle_UpRight.png",
-    "assets/graphics/Characters/Gunslinger/Idle/Gunslinger_Idle_Up.png",
-    "assets/graphics/Characters/Gunslinger/Idle/Gunslinger_Idle_UpLeft.png",
-    "assets/graphics/Characters/Gunslinger/Idle/Gunslinger_Idle_Left.png",
-    "assets/graphics/Characters/Gunslinger/Idle/Gunslinger_Idle_DownLeft.png",
-    "assets/graphics/Characters/Gunslinger/Idle/Gunslinger_Idle_Down.png",
-    "assets/graphics/Characters/Gunslinger/Idle/Gunslinger_Idle_DownRight.png"
+    "assets/graphics/Characters/Gunslinger/Gunslinger_Idle_Animation_Right.png",
+    "assets/graphics/Characters/Gunslinger/Gunslinger_Idle_Animation_Right.png",
+    "assets/graphics/Characters/Gunslinger/Gunslinger_Idle_Animation_Back.png",
+    "assets/graphics/Characters/Gunslinger/Gunslinger_Idle_Animation_Left.png",
+    "assets/graphics/Characters/Gunslinger/Gunslinger_Idle_Animation_Left.png",
+    "assets/graphics/Characters/Gunslinger/Gunslinger_Idle_Animation_Left.png",
+    "assets/graphics/Characters/Gunslinger/Gunslinger_Idle_Animation_Front.png",
+    "assets/graphics/Characters/Gunslinger/Gunslinger_Idle_Animation_Right.png",
 };
 
 const std::string run_paths[8] = {
-    "assets/graphics/Characters/Gunslinger/brightBlue.png",
-    "assets/graphics/Characters/Gunslinger/brown.png",
-    "assets/graphics/Characters/Gunslinger/darkBlue.png",
-    "assets/graphics/Characters/Gunslinger/green.png",
-    "assets/graphics/Characters/Gunslinger/grey.png",
-    "assets/graphics/Characters/Gunslinger/pink.png",
-    "assets/graphics/Characters/Gunslinger/red.png",
-    "assets/graphics/Characters/Gunslinger/yellow.png"
+    "assets/graphics/Characters/Gunslinger/Gunslinger_Run_Cycle_Right.png",
+    "assets/graphics/Characters/Gunslinger/Gunslinger_Run_Cycle_Right.png",
+    "assets/graphics/Characters/Gunslinger/Gunslinger_Run_Cycle_Back.png",
+    "assets/graphics/Characters/Gunslinger/Gunslinger_Run_Cycle_Left.png",
+    "assets/graphics/Characters/Gunslinger/Gunslinger_Run_Cycle_Left.png",
+    "assets/graphics/Characters/Gunslinger/Gunslinger_Run_Cycle_Left.png",
+    "assets/graphics/Characters/Gunslinger/Gunslinger_Run_Cycle_Front.png",
+    "assets/graphics/Characters/Gunslinger/Gunslinger_Run_Cycle_Right.png",
 };
 
 const std::string attack_paths[8] = {
-    "assets/graphics/Characters/Gunslinger/attack.png",
-    "assets/graphics/Characters/Gunslinger/attack.png",
-    "assets/graphics/Characters/Gunslinger/attack.png",
-    "assets/graphics/Characters/Gunslinger/attack.png",
-    "assets/graphics/Characters/Gunslinger/attack.png",
-    "assets/graphics/Characters/Gunslinger/attack.png",
-    "assets/graphics/Characters/Gunslinger/attack.png",
-    "assets/graphics/Characters/Gunslinger/attack.png",
+    "assets/graphics/Characters/Gunslinger/Gunslinger_Fight_Animation_Right.png",
+    "assets/graphics/Characters/Gunslinger/Gunslinger_Fight_Animation_Right.png",
+    "assets/graphics/Characters/Gunslinger/Gunslinger_Fight_Animation_Back.png",
+    "assets/graphics/Characters/Gunslinger/Gunslinger_Fight_Animation_Left.png",
+    "assets/graphics/Characters/Gunslinger/Gunslinger_Fight_Animation_Left.png",
+    "assets/graphics/Characters/Gunslinger/Gunslinger_Fight_Animation_Left.png",
+    "assets/graphics/Characters/Gunslinger/Gunslinger_Fight_Animation_Front.png",
+    "assets/graphics/Characters/Gunslinger/Gunslinger_Fight_Animation_Right.png",
 };
 
 Gunslinger::Gunslinger(Vector2 start_Position, Object_Manager& om)

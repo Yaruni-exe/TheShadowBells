@@ -45,5 +45,6 @@ namespace enemy
         void Pathfinding(float target_Position_X, float target_Position_Y, float delta_Time) override;
         void On_Collision(std::shared_ptr<Collidable> other) override;
         void Draw() override;
+        virtual void Tick(float delta_time);
     };
 }

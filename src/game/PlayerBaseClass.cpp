@@ -162,9 +162,19 @@ Vector2 Player_Base_Class::Get_Player_Pos() {
 
 void Player_Base_Class::Take_Damage(int damage_amount)
 {
-    player_Health -= damage_amount;
+    this->player_Health -= static_cast<float>(damage_amount);
+
+    // Stellt sicher, dass die Gesundheit nicht unter 0 fällt.
+    if (this->player_Health < 0)
+    {
+        this->player_Health = 0;
+    }
+
+    // Optional: Logausgabe für Debugging-Zwecke
+    std::cout << "Player took " << damage_amount << " damage. Current health: " << this->player_Health << std::endl;
 }
 
 Vector2 Player_Base_Class::Get_Player_Center() {
     return Vector2{player_Pos.x+hitbox.width/2,player_Pos.y+hitbox.height/2};
 }
+

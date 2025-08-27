@@ -1696,7 +1696,7 @@
         {
          "columns":16,
          "firstgid":1,
-         "image":"Sophia\/TilemapLevel1.png",
+         "image":"../Tileset-pngs/TilemapLevel1.png",
          "imageheight":320,
          "imagewidth":520,
          "margin":0,
@@ -1708,7 +1708,7 @@
         }, 
         {
          "firstgid":161,
-         "source":"Level1v3.tsj"
+         "source":"../Tilesets/Level1v3.tsj"
         }],
  "tilewidth":32,
  "type":"map",

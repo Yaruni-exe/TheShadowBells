@@ -11,7 +11,7 @@
 class Gunslinger : public Player_Base_Class
 {
 private:
-    Vector2 size{20, 32};
+    Vector2 size{64, 32};
     MouseLook mouseLook;
     Vector2 mouse_World_Position;
 

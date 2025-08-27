@@ -35,10 +35,10 @@ namespace game {
         inline static constexpr float kStandardVampireMovementSpeed = 5.0f;
         inline static constexpr int kStandardVampireDamage = 10;
         inline static constexpr int kStandardVampireValue = 50;
-        inline static constexpr int kStandardVampireHitboxWidth = 32;
-        inline static constexpr int kStandardVampireHitboxHeight = 32;
-        inline static constexpr float kStandardVampireAttackCooldown = 1.0f;
+        inline static constexpr int kStandardVampireHitboxWidth = 28;
+        inline static constexpr int kStandardVampireHitboxHeight = 30;
+        inline static constexpr float kStandardVampireAttackCooldown = 10.0f;
         inline static constexpr float kStandardVampireAttackRange = 40.0f;
-        inline static constexpr const char* kStandardVampireSpritePath = "assets/graphics/Characters/Gunslinger/Gunslinger_Idle_Animation_Front.png";
+        inline static constexpr const char* kStandardVampireSpritePath = "assets/graphics/Enemies/StandardVampire/StandardVampir_Run_Cycle_Down_Extra.png";
     };
 }

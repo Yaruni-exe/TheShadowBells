@@ -68,6 +68,7 @@ public:
     Vector2 Get_Player_Center();
 
     void Take_Damage(int damage);
+	float Get_Health() const { return player_Health; }
 
 };
 

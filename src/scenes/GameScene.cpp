@@ -87,7 +87,7 @@ void game::scenes::GameScene::Update()
                 enemy->Update_AI(dtm.Get_Dt(), sp_mp->Get_Position());
             }
         }
-        // --- ENDE NEUE LOGIK ---
+
 
         if (current_obj.get() != sp_mp.get()) {
             current_obj->Tick(dtm.Get_Dt());
@@ -120,4 +120,8 @@ void game::scenes::GameScene::Draw()
     }
     ////////////////
     screen.Draw_Level(this->cam, true);
+
+    // Zeigt die Lebenspunkte des Spielers oben links an
+    std::string health_text = "HP: " + std::to_string(static_cast<int>(sp_mp->Get_Health()));
+    DrawText(health_text.c_str(), 20, 20, 100, BLACK);
 }

@@ -59,23 +59,30 @@ namespace enemy
         switch (other_Type)
         {
             case Collision_Type::WALL:
-            case Collision_Type::PLAYER:
-            case Collision_Type::ENEMY: // <-- NEUE ZEILE HINZUGEFÜGT
+            case Collision_Type::ENEMY:
             {
+                // Führt die physische Reaktion für Kollisionen mit Wänden oder anderen Gegnern aus.
+                if (this->is_Moving)
+                {
+                    CollisionResponse::Resolve_Overlap(shared_from_this(), other);
+                }
+                break;
+            }
+            case Collision_Type::PLAYER:
+            {
+                // Führt die physische Reaktion für Kollisionen mit dem Spieler aus.
                 if (this->is_Moving)
                 {
                     CollisionResponse::Resolve_Overlap(shared_from_this(), other);
                 }
 
-                if (other_Type == Collision_Type::PLAYER)
+                // Überprüft den Cooldown, um Schaden zu verursachen.
+                if (this->attack_Cooldown_Timer <= 0)
                 {
-                    if (attack_Cooldown_Timer <= 0)
+                    if (auto player = std::dynamic_pointer_cast<Player_Base_Class>(other))
                     {
-                        if (auto player = std::dynamic_pointer_cast<Player_Base_Class>(other))
-                        {
-                            player->Take_Damage(this->enemy_Damage);
-                            this->attack_Cooldown_Timer = this->attack_Cooldown_Duration;
-                        }
+                        player->Take_Damage(this->enemy_Damage);
+                        this->attack_Cooldown_Timer = this->attack_Cooldown_Duration;
                     }
                 }
                 break;
@@ -109,4 +116,13 @@ namespace enemy
             DrawTextureV(this->sprite, {this->hitbox.x, this->hitbox.y}, WHITE);
         }
     }
+    void EnemyExtendedBaseClass::Tick(float delta_time)
+    {
+        // Zählt den Cooldown-Timer herunter, wenn er größer als 0 ist.
+        if (this->attack_Cooldown_Timer > 0.0f)
+        {
+            this->attack_Cooldown_Timer -= delta_time;
+        }
+    }
+
 }
