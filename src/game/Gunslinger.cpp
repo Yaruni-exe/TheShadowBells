@@ -84,7 +84,8 @@ void Gunslinger::Tick(float delta_time, Vector2 worldMousePos) {
     }
 }
 
-void Gunslinger::Draw() {
+void Gunslinger::Draw()
+{
     int current_direction_index = mouseLook.GetDirectionIndex();
     RepeatAnimation* current_animation = nullptr;
 
@@ -99,7 +100,10 @@ void Gunslinger::Draw() {
     }
 
     if (current_animation) {
-        current_animation->Draw_Current_Frame(this->player_Pos);
+        // HIER  Zahlen für  Offset.
+        Vector2 draw_position = {this->player_Pos.x - 16, this->player_Pos.y};
+
+        current_animation->Draw_Current_Frame(draw_position);
         current_animation->Next_Frame();
     }
 }

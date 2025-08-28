@@ -7,6 +7,7 @@
 #include "Cam.h"
 #include "../game/EnemyBaseSpawner.h"
 #include  "../game/Gunslinger.h"
+#include "../game/UI.h"
 
 namespace game::scenes
 {
@@ -21,6 +22,9 @@ namespace game::scenes
         std::vector<enemy::Enemy_Base_Class*> enemy_list;
         float windowWidth;
         float windowHeight;
+
+        std::shared_ptr<HUD> hud_ptr;
+
     public:
         GameScene();
 

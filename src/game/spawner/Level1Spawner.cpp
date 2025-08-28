@@ -9,12 +9,15 @@
 
 Level1_Spawner::Level1_Spawner(Rectangle spawner_Area,
                                Object_Manager& om,
-                               std::vector<enemy::Enemy_Base_Class*>& enemy_List,
-                               std::shared_ptr<Player_Base_Class> player_ptr)
-  : Enemy_Spawner(spawner_Area, om, enemy_List, game::EnemyConfig::kSpawner1_SpawnRate, game::EnemyConfig::kSpawner1_MaxEnemies),
+                               std::vector<enemy::Enemy_Base_Class*>& enemy_List, // Hinzufügen
+                               std::shared_ptr<Player_Base_Class> player_ptr,
+                               int max_enemies,
+                               float spawn_rate)
+// HIER: Korrigieren Sie die Initialisierungsliste
+  : Enemy_Spawner(spawner_Area, om, enemy_List, spawn_rate, max_enemies),
       player_ptr_(player_ptr),
-      spawn_timer(game::EnemyConfig::kSpawner1_SpawnRate),
-      max_enemies_per_instance_(game::EnemyConfig::kSpawner1_MaxEnemies),
+      spawn_timer(spawn_rate),
+      max_enemies_per_instance_(max_enemies),
       health_(1)
 {
     this->hitbox = spawner_Area;

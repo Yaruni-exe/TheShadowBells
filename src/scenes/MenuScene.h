@@ -15,5 +15,8 @@ namespace game::scenes
 
         void Draw() override;
 
+    private:
+        Texture2D background_texture;
     };
+
 }

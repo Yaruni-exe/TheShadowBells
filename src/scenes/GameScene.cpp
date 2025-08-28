@@ -27,6 +27,9 @@ game::scenes::GameScene::GameScene()
     this->sp_mp = std::make_shared<Gunslinger>(sp, objectManager);
     objectManager.AddObject(sp_mp);
 
+    // HUD erstellen und den Spielerpointer übergeben
+    this->hud_ptr = std::make_shared<HUD>(sp_mp);
+
     cam = std::make_shared<Cam>(sp_mp);
     screen.LoadGameObjects(objectManager);
 
@@ -36,19 +39,46 @@ game::scenes::GameScene::GameScene()
     cam->cam.offset.x = windowWidth / 2.0f;
     cam->cam.offset.y = windowHeight / 2.0f;
 
-    Rectangle spawner_area = { 200, 200, 300, 300 };
-
     std::vector<enemy::Enemy_Base_Class*> enemy_List;
 
-    auto spawner = std::make_shared<Level1_Spawner>(
-        spawner_area,
+    // Erster Spawner
+    Rectangle spawner_area_1 = { 780, 250, 60, 400 };
+    auto spawner_1 = std::make_shared<Level1_Spawner>(
+        spawner_area_1,
         objectManager,
         enemy_List,
-        sp_mp
+        sp_mp,
+        10,
+        20.0f
     );
+    objectManager.AddObject(spawner_1);
 
-    objectManager.AddObject(spawner);
+    // ZWEITER SPAWNER
+    Rectangle spawner_area_2 = { 970, 250, 60, 370 };
+    auto spawner_2 = std::make_shared<Level1_Spawner>(
+        spawner_area_2,
+        objectManager,
+        enemy_List,
+        sp_mp,
+        4,
+        20.0f
+    );
+    objectManager.AddObject(spawner_2);
+
+
+// Dritter SPAWNER
+    Rectangle spawner_area_3 = { 2580, 230, 70, 200 };
+    auto spawner_3 = std::make_shared<Level1_Spawner>(
+        spawner_area_3,
+        objectManager,
+           enemy_List,
+           sp_mp,
+           4,
+           12.0f
+       );
+    objectManager.AddObject(spawner_3);
 }
+
 
 game::scenes::GameScene::~GameScene()
 {
@@ -110,6 +140,9 @@ void game::scenes::GameScene::Draw()
     for (int i = 0; i < objectManager.managed_objects.size(); ++i) {
         objectManager.managed_objects[i]->Draw();
     }
+
+
+
     ///Hitbox anzeigen////
     for (const auto& p_object : objectManager.managed_objects)
     {
@@ -119,9 +152,13 @@ void game::scenes::GameScene::Draw()
         }
     }
     ////////////////
+
+
     screen.Draw_Level(this->cam, true);
 
     // Zeigt die Lebenspunkte des Spielers oben links an
     std::string health_text = "HP: " + std::to_string(static_cast<int>(sp_mp->Get_Health()));
-    DrawText(health_text.c_str(), 20, 20, 100, BLACK);
+    DrawText(health_text.c_str(), 100, 95, 50, BLACK);
+
+    this->hud_ptr->Draw();
 }

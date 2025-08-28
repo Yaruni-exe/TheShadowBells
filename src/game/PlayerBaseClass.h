@@ -43,6 +43,8 @@ protected:
 
     Object_Manager& om;
 
+	Vector2 sprite_offset;
+
 public:
 	// Konstruktor
 	Player_Base_Class(int max_Health, float movement_Speed, int damage, Vector2 start_Position, Object_Manager& om);
@@ -69,6 +71,7 @@ public:
 
     void Take_Damage(int damage);
 	float Get_Health() const { return player_Health; }
+	int Get_Max_Health() const { return player_Max_Health; }
 
 };
 

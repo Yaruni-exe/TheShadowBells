@@ -32,7 +32,7 @@ namespace game {
         // I. STANDARD VAMPIRE (Der Standardgegner)
         // ====================================================================================
         inline static constexpr int kStandardVampireHealth = 100;
-        inline static constexpr float kStandardVampireMovementSpeed = 5.0f;
+        inline static constexpr float kStandardVampireMovementSpeed = 4.0f;
         inline static constexpr int kStandardVampireDamage = 10;
         inline static constexpr int kStandardVampireValue = 50;
         inline static constexpr int kStandardVampireHitboxWidth = 28;

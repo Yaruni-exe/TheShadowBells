@@ -13,8 +13,10 @@ class Level1_Spawner : public Enemy_Spawner
 public:
     Level1_Spawner(Rectangle spawner_Area,
                    Object_Manager& om,
-                   std::vector<enemy::Enemy_Base_Class*>& enemy_List,
-                   std::shared_ptr<Player_Base_Class> player_ptr);
+                   std::vector<enemy::Enemy_Base_Class*>& enemy_List, // Hinzufügen
+                   std::shared_ptr<Player_Base_Class> player_ptr,
+                   int max_enemies,
+                   float spawn_rate);
 
     ~Level1_Spawner() override;
     void Tick(float delta_time) override;
@@ -27,7 +29,8 @@ private:
 
     std::weak_ptr<Player_Base_Class> player_ptr_;
     float spawn_timer;
-    int max_enemies_per_instance_;
+    int max_enemies_per_instance_; // This member is already here
+    float spawn_rate_; // This member should be added
     int health_;
     Texture2D spawner_sprite;
     std::vector<std::weak_ptr<enemy::Enemy_Base_Class>> spawned_enemies_;
