@@ -77,6 +77,18 @@ game::scenes::GameScene::GameScene()
            12.0f
        );
     objectManager.AddObject(spawner_3);
+
+    // Vierter SPAWNER
+    Rectangle spawner_area_4 = { 2980, 230, 90, 180 };
+    auto spawner_4 = std::make_shared<Level1_Spawner>(
+        spawner_area_4,
+        objectManager,
+           enemy_List,
+           sp_mp,
+           4,
+           12.0f
+       );
+    objectManager.AddObject(spawner_4);
 }
 
 
@@ -142,7 +154,7 @@ void game::scenes::GameScene::Draw()
     }
 
 
-
+/*
     ///Hitbox anzeigen////
     for (const auto& p_object : objectManager.managed_objects)
     {
@@ -152,7 +164,7 @@ void game::scenes::GameScene::Draw()
         }
     }
     ////////////////
-
+*/
 
     screen.Draw_Level(this->cam, true);
 
