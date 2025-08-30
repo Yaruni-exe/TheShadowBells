@@ -50,4 +50,7 @@ void HUD::Draw()
     }
 
     DrawTextureV(healthbar_textures[health_index], healthbar_pos, WHITE);
+
+    std::string scoreText = "Score: " + std::to_string(player_ptr->GetScore());
+    DrawText(scoreText.c_str(), GetScreenWidth() - 150, 20, 20, GOLD);
 }

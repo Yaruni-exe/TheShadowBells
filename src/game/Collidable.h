@@ -17,7 +17,9 @@ enum class Collision_Type
     ENEMY_PROJECTILE,
     CONSUMABLE,
     PLAYER_MELEE_HITBOX,
-    ENEMY_SPAWNER
+    ENEMY_SPAWNER,
+    GENERATOR,
+    DOOR
 };
 
 class Collidable : public std::enable_shared_from_this<Collidable>

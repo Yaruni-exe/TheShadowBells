@@ -25,7 +25,7 @@ protected:
 	int player_Max_Health;
 	float player_Movement_Speed;
 	int player_Damage;
-
+	int player_Score;
     Vector2 player_Pos;
 	Vector2 previous_Position;
 	Collision_Manager* manager_Ptr;
@@ -73,5 +73,9 @@ public:
 	float Get_Health() const { return player_Health; }
 	int Get_Max_Health() const { return player_Max_Health; }
 
+
+	void AddScore(int amount) { player_Score += amount; }
+
+	int GetScore() const { return player_Score; }
 };
 
