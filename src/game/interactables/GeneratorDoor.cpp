@@ -8,7 +8,7 @@ Texture2D GeneratorDoor::door_texture = {0};
 
 void GeneratorDoor::Load_Texture() {
     if (door_texture.id == 0) {
-        door_texture = LoadTexture("assets/graphics/Items/door.png");
+        door_texture = LoadTexture("assets/graphics/Items/BombWall/Wand-Sprengstoff_Industrie_Base_Sprite_Horizontal.png");
     }
 }
 
@@ -48,11 +48,13 @@ void GeneratorDoor::Tick(float delta_time) {
 }
 
 void GeneratorDoor::On_Collision(std::shared_ptr<Collidable> other) {
-    // Türen blockieren alles außer Projektilen
-    if (other->Get_Collision_Type() != Collision_Type::PLAYER_PROJECTILE &&
-        other->Get_Collision_Type() != Collision_Type::ENEMY_PROJECTILE) {
-        // Mache einfach nichts, die Tür agiert wie eine Wand
-        }
+    // Eine Tür blockiert alles außer Projektilen.
+    // Die tatsächliche Bewegung wird vom Spieler oder Gegner gesteuert, der kollidiert.
+    // Die Methode tut nichts, um Kollisionen zu verarbeiten, agiert aber als Kollisions-Anker.
+    if (other->Get_Collision_Type() == Collision_Type::PLAYER ||
+        other->Get_Collision_Type() == Collision_Type::ENEMY) {
+        // Die Kollision wurde erkannt. Die Tür kann als feste Wand behandelt werden.
+    }
 }
 
 void GeneratorDoor::Draw() {

@@ -1,6 +1,3 @@
-// Created by $Will on 11.06.2025.
-//
-
 #ifndef COLLIDABLE_H
 #define COLLIDABLE_H
 
@@ -19,7 +16,10 @@ enum class Collision_Type
     PLAYER_MELEE_HITBOX,
     ENEMY_SPAWNER,
     GENERATOR,
-    DOOR
+    DOOR,
+    BOMB_PICKUP,
+    BOMB_WALL,
+    EXPLOSION
 };
 
 class Collidable : public std::enable_shared_from_this<Collidable>

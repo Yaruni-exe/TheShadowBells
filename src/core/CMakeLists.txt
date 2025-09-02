@@ -49,7 +49,10 @@ add_library(core STATIC game.h game.cpp store.h ../scenes/Scene.h stage.h stage.
         ../game/UI.h
         ../game/interactables/Credits.cpp
         ../game/interactables/Generator.cpp
-        ../game/interactables/GeneratorDoor.cpp)
+        ../game/interactables/GeneratorDoor.cpp
+        ../game/interactables/BombPickup.cpp
+        ../game/interactables/BombWall.cpp
+        ../game/interactables/Explosion.cpp)
 
 target_include_directories(core PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
 

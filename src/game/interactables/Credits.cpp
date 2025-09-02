@@ -9,14 +9,14 @@ Texture2D Credit::credit_texture = {0};
 Credit::Credit(Vector2 position, int value)
     : value(value),
       // HIER WIRD DIE ANIMATION KORREKT INITIALISIERT!
-      animation(Vector2{32, 32}, "assets/graphics/coin_animation.png", 8, 4) {
+      animation(Vector2{28, 27}, "assets/graphics/Items/Credits/Credits_Shine_Animation.png", 9, 9) {
 
     // Die Textur wird nur geladen, wenn sie noch nicht existiert.
     if (credit_texture.id == 0) {
         credit_texture = LoadTexture("assets/graphics/coin_animation.png");
     }
 
-    this->hitbox = {position.x, position.y, 32, 32};
+    this->hitbox = {position.x, position.y, 27, 27};
 }
 
 Credit::~Credit() {

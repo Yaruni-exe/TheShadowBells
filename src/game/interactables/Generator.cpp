@@ -2,13 +2,14 @@
 #include "raylib.h"
 #include <iostream>
 #include "../PlayerProjectile.h"
+#include "../EnemyBaseClass.h"
 
 // Definition der statischen Texturvariable
 Texture2D Generator::generator_texture = {0};
 
 void Generator::Load_Texture() {
     if (generator_texture.id == 0) {
-        generator_texture = LoadTexture("assets/graphics/Items/Generator.png");
+        generator_texture = LoadTexture("assets/graphics/Items/Generator/Generator_Activate_Animation.png");
     }
 }
 
@@ -21,9 +22,9 @@ void Generator::Unload_Texture() {
 
 Generator::Generator(Vector2 position, const std::string& group_id, float health)
     : group_id(group_id), health(health), max_health(health),
-      animation(Vector2{32, 32}, generator_texture, 7, 7) {
+      animation(Vector2{32, 23}, generator_texture, 6, 600) {
 
-    this->hitbox = {position.x, position.y, 64, 64};
+    this->hitbox = {position.x, position.y, 32, 23};
     // Der Animation-Member wird jetzt oben in der Initialisierungsliste konstruiert.
     // Dieser Code ist daher nicht mehr notwendig:
     // this->animation = RepeatAnimation(Vector2{32, 32}, generator_texture, 7, 7);
@@ -46,6 +47,9 @@ void Generator::On_Collision(std::shared_ptr<Collidable> other) {
         if (this->health <= 0) {
             Mark_For_Destruction();
         }
+    } else if (other->Get_Collision_Type() == Collision_Type::PLAYER ||
+               other->Get_Collision_Type() == Collision_Type::ENEMY) {
+        // Die Kollision wurde erkannt. Der Generator kann als festes Hindernis behandelt werden.
     }
 }
 

@@ -72,7 +72,9 @@ void Player_Base_Class::On_Collision(std::shared_ptr<Collidable> other)
     Collision_Type otherType = other->Get_Collision_Type();
 
     if (otherType == Collision_Type::WALL ||
-        otherType == Collision_Type::ENEMY)
+        otherType == Collision_Type::ENEMY ||
+        otherType == Collision_Type::GENERATOR ||
+        otherType == Collision_Type::DOOR)
     {
         CollisionResponse::Resolve_Overlap(shared_from_this(), other);
     }
@@ -177,4 +179,3 @@ void Player_Base_Class::Take_Damage(int damage_amount)
 Vector2 Player_Base_Class::Get_Player_Center() {
     return Vector2{player_Pos.x+hitbox.width/2,player_Pos.y+hitbox.height/2};
 }
-

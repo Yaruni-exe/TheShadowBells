@@ -60,6 +60,8 @@ namespace enemy
         {
             case Collision_Type::WALL:
             case Collision_Type::ENEMY:
+            case Collision_Type::GENERATOR:
+            case Collision_Type::DOOR:
             {
                 // Führt die physische Reaktion für Kollisionen mit Wänden oder anderen Gegnern aus.
                 if (this->is_Moving)

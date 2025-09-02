@@ -13,10 +13,10 @@ private:
 public:
     // Der Konstruktor benötigt eine Referenz zum Spieler
     HUD(std::shared_ptr<Player_Base_Class> player);
-    
+
     // Die Draw-Methode zeichnet die Benutzeroberfläche
     void Draw();
-    
+
     // Destruktor, um Texturen zu entladen
     ~HUD();
 };
