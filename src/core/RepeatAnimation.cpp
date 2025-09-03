@@ -1,4 +1,5 @@
 #include "RepeatAnimation.h"
+#include "raylib.h"
 
 RepeatAnimation::RepeatAnimation(Vector2 sprite_size, const char* filename, int FC, int spl) {
     this->spritesheet = LoadTexture(filename);
@@ -8,7 +9,6 @@ RepeatAnimation::RepeatAnimation(Vector2 sprite_size, const char* filename, int 
     this->target = Rectangle{0, 0, this->size.x, this->size.y};
 }
 
-// NEU: Implementierung des neuen Konstruktors
 RepeatAnimation::RepeatAnimation(Vector2 sprite_size, Texture2D texture, int FC, int spl) {
     this->spritesheet = texture;
     this->size = sprite_size;
@@ -36,4 +36,11 @@ void RepeatAnimation::Next_Frame() {
 
 void RepeatAnimation::Draw_Current_Frame(Vector2 pos) {
     DrawTextureRec(spritesheet, target, pos, WHITE);
+}
+
+// New overloaded function
+void RepeatAnimation::Draw_Current_Frame(Vector2 pos, Vector2 draw_size) {
+    Rectangle dest = { pos.x, pos.y, draw_size.x, draw_size.y };
+    Vector2 origin = { 0, 0 };
+    DrawTexturePro(spritesheet, target, dest, origin, 0.0f, WHITE);
 }

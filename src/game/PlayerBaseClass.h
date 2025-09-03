@@ -53,7 +53,7 @@ public:
     ~Player_Base_Class() override;
     void Player_Input();
     void Tick(float delta_time) override;
-    void On_Collision(std::shared_ptr<Collidable> other) override;
+    void virtual On_Collision(std::shared_ptr<Collidable> other) override;
     virtual void Draw() override;
 
     Vector2 Get_Position() const { return player_Pos; }
@@ -64,6 +64,7 @@ public:
     void Melee_Attack();
     virtual void Ranged_Attack();
     void Use_Item();
+    void Heal(float amount);
 
     Collision_Type Get_Collision_Type() const override;
     Vector2 Get_Player_Pos();

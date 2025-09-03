@@ -3,13 +3,11 @@
 #include <iostream>
 #include "../Gunslinger.h"
 
-/*
-
 Texture2D Bomb_Pickup::bomb_texture = {0};
 
 void Bomb_Pickup::Load_Texture() {
     if (bomb_texture.id == 0) {
-        bomb_texture = LoadTexture("assets/graphics/Items/bomb_pickup.png");
+        bomb_texture = LoadTexture("assets/graphics/Items/Bomb/Sprengstoff_Shine_Animation.png");
     }
 }
 
@@ -21,8 +19,8 @@ void Bomb_Pickup::Unload_Texture() {
 }
 
 Bomb_Pickup::Bomb_Pickup(Vector2 position)
-    : animation(Vector2{32, 32}, bomb_texture, 7, 7) {
-    this->hitbox = {position.x, position.y, 64, 64};
+    : animation(Vector2{48, 48}, bomb_texture, 8, 8) {
+    this->hitbox = {position.x, position.y, 24, 24};
 }
 
 Bomb_Pickup::~Bomb_Pickup() {}
@@ -41,11 +39,12 @@ void Bomb_Pickup::On_Collision(std::shared_ptr<Collidable> other) {
 }
 
 void Bomb_Pickup::Draw() {
-    this->animation.Draw_Current_Frame({hitbox.x, hitbox.y});
+    // Definiere die neue, kleinere Größe für das Zeichnen
+    Vector2 new_size = {24, 24};
+    // Rufe die Draw-Methode auf und übergib Position und die neue Größe
+    this->animation.Draw_Current_Frame({hitbox.x, hitbox.y}, new_size);
 }
 
 Collision_Type Bomb_Pickup::Get_Collision_Type() const {
     return Collision_Type::BOMB_PICKUP;
 }
-
-*/

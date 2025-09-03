@@ -6,6 +6,8 @@
 #include "PlayerProjectile.h"
 #include <algorithm>
 #include <iostream>
+#include "interactables/Explosion.h"
+#include "interactables/BombWall.h"
 
 const std::string idle_paths[8] = {
     "assets/graphics/Characters/Gunslinger/Gunslinger_Idle_Animation_Right.png",
@@ -80,6 +82,40 @@ void Gunslinger::Tick(float delta_time, Vector2 worldMousePos) {
             currentState = PlayerState::RUN;
         } else {
             currentState = PlayerState::IDLE;
+        }
+    }
+}
+
+void Gunslinger::Add_Bomb() {
+    this->bombs++;
+    std::cout << "Bombe aufgesammelt! Aktuelle Bomben: " << this->bombs << std::endl;
+}
+
+int Gunslinger::Get_Bomb_Count() const {
+    return this->bombs;
+}
+
+void Gunslinger::Use_Bomb() {
+    if (this->bombs > 0) {
+        this->bombs--;
+        // Erstelle eine Explosion am Standort der Hitbox des Spielers
+        // Verwende Get_Player_Pos(), um die Position zu erhalten
+        om.AddObject(std::make_shared<Explosion>(this->Get_Player_Pos()));
+    }
+}
+
+void Gunslinger::On_Collision(std::shared_ptr<Collidable> other) {
+    Player_Base_Class::On_Collision(other);
+
+    Collision_Type otherType = other->Get_Collision_Type();
+
+    if (otherType == Collision_Type::BOMB_WALL) {
+        if (this->Get_Bomb_Count() > 0) {
+            this->Use_Bomb();
+            if (auto bombWall = std::dynamic_pointer_cast<Bomb_Wall>(other)) {
+                // Corrected line: Use the public getter method
+                other->On_Collision(std::make_shared<Explosion>(Vector2{bombWall->Get_Hitbox().x, bombWall->Get_Hitbox().y}));
+            }
         }
     }
 }

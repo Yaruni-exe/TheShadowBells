@@ -9,6 +9,9 @@
 #include "Renderer.h"
 #include "SpriteAnimated.h"
 #include "../game/interactables/Credits.h"
+#include "../game/interactables/BombWall.h"
+#include "../game/interactables/BombPickup.h"
+#include "../game/interactables/Medipack.h"
 
 #include "../game/spawner/Level1Spawner.h"
 #include "../config_enemys.h.in"
@@ -113,6 +116,20 @@ game::scenes::GameScene::GameScene()
     // One generator and one door linked by "generator_group_2"
     objectManager.AddObject(std::make_shared<Generator>(Vector2{1000, 600}, "generator_group_2", 150.0f));
     objectManager.AddObject(std::make_shared<GeneratorDoor>(Vector2{1050, 600}, "generator_group_2", objectManager));
+
+    // BOMBEN UND BOMBENWÄNDE ERSTELLEN
+    // Hinzufügen einer Bomb Wall
+    objectManager.AddObject(std::make_shared<Bomb_Wall>(Vector2{1200, 500}));
+
+    // Hinzufügen eines Bomben-Pickups in der Nähe der Wand
+    objectManager.AddObject(std::make_shared<Bomb_Pickup>(Vector2{1150, 500}));
+
+    // Sie können weitere Bombenwände und Pickups an anderen Positionen hinzufügen
+    objectManager.AddObject(std::make_shared<Bomb_Wall>(Vector2{2000, 800}));
+    objectManager.AddObject(std::make_shared<Bomb_Pickup>(Vector2{1950, 750}));
+
+    // Medipack erstellen
+    objectManager.AddObject(std::make_shared<Medipack>(Vector2{1500, 700}, 25.0f));
 
 }
 

@@ -23,9 +23,12 @@ public:
     void First_Frame();
     void Draw_Current_Frame(Vector2);
 
-    // Neuer Getter, um den aktuellen Frame zurückzugeben
+    // New: Overloaded method to draw at a specific size
+    void Draw_Current_Frame(Vector2 position, Vector2 draw_size);
+
+    // New getter to get the current frame
     int Get_Current_Frame() const { return current_Frame; }
 
-    // Neuer Getter für die Frame-Anzahl
+    // New getter for the frame count
     int Get_Frame_Count() const { return frame_Count; }
 };

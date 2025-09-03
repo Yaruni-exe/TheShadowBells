@@ -10,10 +10,12 @@
 
 class Gunslinger : public Player_Base_Class
 {
-private:
+
     Vector2 size{64, 31};
     MouseLook mouseLook;
     Vector2 mouse_World_Position;
+
+    void On_Collision(std::shared_ptr<Collidable> other) override;
 
     std::vector<RepeatAnimation> idle_animations;
     std::vector<RepeatAnimation> run_animations;
@@ -26,6 +28,7 @@ private:
     const int attackFrameCountTotal = 7;
 
     float ranged_Cooldown_Timer; // Für die Kontrolle der Feuerrate
+    int bombs = 0;
 
 public:
     // Konstruktor ist jetzt identisch zur Player_Class_One
@@ -36,6 +39,9 @@ public:
     // Die Tick-Methode muss die Mausposition in Weltkoordinaten erhalten
     void Tick(float delta_time, Vector2 worldMousePos);
     void Ranged_Attack() override;
+    void Add_Bomb();
+    int Get_Bomb_Count() const;
+    void Use_Bomb();
 private:
     void Clean_Up_Projectiles();
 };
