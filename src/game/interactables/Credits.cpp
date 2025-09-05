@@ -3,29 +3,27 @@
 #include <memory>
 #include <string>
 
-// Initialisierung der statischen Textur außerhalb der Klasse
-Texture2D Credit::credit_texture = {0};
+// Die statische Textur-Variable wurde in der .h-Datei entfernt,
+// daher brauchen wir sie hier auch nicht mehr.
 
 Credit::Credit(Vector2 position, int value)
     : value(value),
-      // HIER WIRD DIE ANIMATION KORREKT INITIALISIERT!
-      animation(Vector2{28, 27}, "assets/graphics/Items/Credits/Credits_Shine_Animation.png", 9, 9) {
-
-    // Die Textur wird nur geladen, wenn sie noch nicht existiert.
-    if (credit_texture.id == 0) {
-        credit_texture = LoadTexture("assets/graphics/coin_animation.png");
-    }
+      // HIER WIRD DIE ANIMATION JETZT KORREKT INITIALISIERT!
+      // Wir übergeben den FPS-Wert (10.0f) als letzten Parameter.
+      animation(Vector2{28, 27}, "assets/graphics/Items/Credits/Credits_Shine_Animation.png", 9, 9, 1.0f) {
 
     this->hitbox = {position.x, position.y, 27, 27};
+    // Die Logik zum Laden der Textur ist nun die Aufgabe von RepeatAnimation.
 }
 
 Credit::~Credit() {
-    // Da die Textur statisch ist, muss sie nur einmal entladen werden,
-    // am besten in der GameScene am Ende des Spiels.
+    // Da die Textur nicht mehr statisch ist, wird sie von RepeatAnimation
+    // automatisch entladen, wenn das Objekt zerstört wird.
 }
 
 void Credit::Tick(float delta_time) {
-    this->animation.Next_Frame();
+    // Hier übergeben wir delta_time, um die Animation voranzutreiben.
+    this->animation.Next_Frame(delta_time);
 }
 
 void Credit::On_Collision(std::shared_ptr<Collidable> other) {

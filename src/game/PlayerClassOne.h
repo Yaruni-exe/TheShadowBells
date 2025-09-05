@@ -1,4 +1,4 @@
-#ifndef PLAYERCLASSONE_H
+/*#ifndef PLAYERCLASSONE_H
 #define PLAYERCLASSONE_H
 
 
@@ -23,3 +23,5 @@ public:
 
 
 #endif //PLAYERCLASSONE_H
+
+*/

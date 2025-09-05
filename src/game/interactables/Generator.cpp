@@ -4,7 +4,6 @@
 #include "../PlayerProjectile.h"
 #include "../EnemyBaseClass.h"
 
-// Definition der statischen Texturvariable
 Texture2D Generator::generator_texture = {0};
 
 void Generator::Load_Texture() {
@@ -22,20 +21,19 @@ void Generator::Unload_Texture() {
 
 Generator::Generator(Vector2 position, const std::string& group_id, float health)
     : group_id(group_id), health(health), max_health(health),
-      animation(Vector2{32, 23}, generator_texture, 6, 600) {
+      // NEU: Animation mit FPS-Parameter initialisieren
+      animation(Vector2{32, 23}, generator_texture, 6, 6, 1.0f) {
 
     this->hitbox = {position.x, position.y, 32, 23};
-    // Der Animation-Member wird jetzt oben in der Initialisierungsliste konstruiert.
-    // Dieser Code ist daher nicht mehr notwendig:
-    // this->animation = RepeatAnimation(Vector2{32, 32}, generator_texture, 7, 7);
 }
 
 Generator::~Generator() {
-    // Statische Texturen werden in einer zentralen Stelle entladen (z.B. im Destruktor der GameScene)
+    // Statische Texturen werden an zentraler Stelle entladen
 }
 
 void Generator::Tick(float delta_time) {
-    this->animation.Next_Frame();
+    // NEU: delta_time an die Animationsmethode übergeben
+    this->animation.Next_Frame(delta_time);
 }
 
 void Generator::On_Collision(std::shared_ptr<Collidable> other) {
@@ -49,7 +47,7 @@ void Generator::On_Collision(std::shared_ptr<Collidable> other) {
         }
     } else if (other->Get_Collision_Type() == Collision_Type::PLAYER ||
                other->Get_Collision_Type() == Collision_Type::ENEMY) {
-        // Die Kollision wurde erkannt. Der Generator kann als festes Hindernis behandelt werden.
+        // ...
     }
 }
 

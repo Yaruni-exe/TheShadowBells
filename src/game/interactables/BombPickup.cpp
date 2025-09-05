@@ -19,14 +19,16 @@ void Bomb_Pickup::Unload_Texture() {
 }
 
 Bomb_Pickup::Bomb_Pickup(Vector2 position)
-    : animation(Vector2{48, 48}, bomb_texture, 8, 8) {
+    //  Animation mit FPS-Parameter initialisieren
+    : animation(Vector2{48, 48}, bomb_texture, 8, 8, 1.0f) {
     this->hitbox = {position.x, position.y, 24, 24};
 }
 
 Bomb_Pickup::~Bomb_Pickup() {}
 
 void Bomb_Pickup::Tick(float delta_time) {
-    this->animation.Next_Frame();
+    // NEU: delta_time an die Animationsmethode übergeben
+    this->animation.Next_Frame(delta_time);
 }
 
 void Bomb_Pickup::On_Collision(std::shared_ptr<Collidable> other) {
@@ -39,9 +41,7 @@ void Bomb_Pickup::On_Collision(std::shared_ptr<Collidable> other) {
 }
 
 void Bomb_Pickup::Draw() {
-    // Definiere die neue, kleinere Größe für das Zeichnen
     Vector2 new_size = {24, 24};
-    // Rufe die Draw-Methode auf und übergib Position und die neue Größe
     this->animation.Draw_Current_Frame({hitbox.x, hitbox.y}, new_size);
 }
 

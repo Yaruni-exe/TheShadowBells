@@ -7,8 +7,8 @@
 class Explosion : public Collidable {
 private:
     RepeatAnimation animation;
-    float lifespan; // Lebensdauer in Sekunden
-    Texture2D explosion_texture; // Mitglied, das die Textur speichert, um sie korrekt zu entladen
+    float lifespan;
+    Texture2D explosion_texture;
 
 public:
     Explosion(Vector2 start_position);

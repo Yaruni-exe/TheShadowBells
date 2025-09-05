@@ -5,30 +5,29 @@
 
 class RepeatAnimation {
 private:
-    int current_Frame=0;
+    int current_Frame = 0;
     int frame_Count;
     int sprites_per_line;
     Vector2 size;
     Rectangle target;
     Texture2D spritesheet;
 
+    float frame_Time;
+    float frame_Timer;
+
 public:
-    // Original-Konstruktor
-    RepeatAnimation(Vector2 sprite_size, const char* filename, int FC, int spl);
+    // Zwei verschiedene Konstruktoren, die den FPS-Parameter benötigen
+    RepeatAnimation(Vector2 sprite_size, const char* filename, int FC, int spl, float FPS);
+    RepeatAnimation(Vector2 sprite_size, Texture2D texture, int FC, int spl, float FPS);
 
-    // NEU: Konstruktor, der eine bereits geladene Textur akzeptiert
-    RepeatAnimation(Vector2 sprite_size, Texture2D texture, int FC, int spl);
+    // Die Next_Frame-Methode gibt nun einen bool zurück
+    bool Next_Frame(float delta_time);
 
-    void Next_Frame();
+    // Die Methoden, die der Linker als fehlend gemeldet hat
     void First_Frame();
     void Draw_Current_Frame(Vector2);
-
-    // New: Overloaded method to draw at a specific size
     void Draw_Current_Frame(Vector2 position, Vector2 draw_size);
 
-    // New getter to get the current frame
     int Get_Current_Frame() const { return current_Frame; }
-
-    // New getter for the frame count
     int Get_Frame_Count() const { return frame_Count; }
 };

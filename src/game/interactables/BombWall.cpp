@@ -18,7 +18,8 @@ void Bomb_Wall::Unload_Texture() {
 }
 
 Bomb_Wall::Bomb_Wall(Vector2 position)
-    : destroy_animation(Vector2{64, 64}, "assets/graphics/Items/BombWall/Wand-Sprengstoff_Industrie_Opening_Animation_horizontal.png", 10, 10),
+    // NEU: FPS-Parameter übergeben
+    : destroy_animation(Vector2{64, 64}, "assets/graphics/Items/BombWall/Wand-Sprengstoff_Industrie_Opening_Animation_horizontal.png", 10, 10, 10.0f),
       state(BombWallState::IDLE) {
     this->hitbox = {position.x, position.y, 64, 64};
 }
@@ -27,10 +28,8 @@ Bomb_Wall::~Bomb_Wall() {}
 
 void Bomb_Wall::Tick(float delta_time) {
     if (state == BombWallState::DESTROYING) {
-        destroy_animation.Next_Frame();
-        // Hier prüfen wir, ob die Animation am Ende ist.
-        // Wir verwenden die Get_Current_Frame und Get_Frame_Count Getter
-        if (destroy_animation.Get_Current_Frame() >= destroy_animation.Get_Frame_Count() - 1) {
+        // NEU: Prüfe, ob die Animation abgeschlossen ist, indem du den Rückgabewert prüfst.
+        if (destroy_animation.Next_Frame(delta_time)) {
             Mark_For_Destruction();
         }
     }

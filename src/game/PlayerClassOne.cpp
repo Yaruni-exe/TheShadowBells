@@ -1,4 +1,4 @@
-
+/*
 #include "PlayerClassOne.h"
 #include "../config.h.in"
 
@@ -15,3 +15,4 @@ void Player_Class_One::Draw() {
     test_animation.Next_Frame();
 
 }
+*/

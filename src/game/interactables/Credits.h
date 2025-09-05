@@ -8,9 +8,9 @@ class Credit : public Collidable {
 private:
     int value;
     RepeatAnimation animation;
-
-    // Statische Variable für die Textur, die von allen Münzen geteilt wird.
-    static Texture2D credit_texture;
+    // Die statische Textur ist nicht mehr notwendig, da die Animation sie selbst lädt.
+    // statische Variable für die Textur, die von allen Münzen geteilt wird.
+    // static Texture2D credit_texture;
 
 public:
     Credit(Vector2 position, int value);
