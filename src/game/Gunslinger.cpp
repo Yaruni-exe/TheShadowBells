@@ -8,6 +8,8 @@
 #include <iostream>
 #include "interactables/Explosion.h"
 #include "interactables/BombWall.h"
+#include "CollisionResponse.h"
+#include "interactables/BombPickup.h"
 
 const std::string idle_paths[8] = {
     "assets/graphics/Characters/Gunslinger/Gunslinger_Idle_Animation_Right.png",
@@ -105,18 +107,49 @@ void Gunslinger::Use_Bomb() {
 }
 
 void Gunslinger::On_Collision(std::shared_ptr<Collidable> other) {
-    Player_Base_Class::On_Collision(other);
-
     Collision_Type otherType = other->Get_Collision_Type();
 
-    if (otherType == Collision_Type::BOMB_WALL) {
-        if (this->Get_Bomb_Count() > 0) {
-            this->Use_Bomb();
-            if (auto bombWall = std::dynamic_pointer_cast<Bomb_Wall>(other)) {
-                // Corrected line: Use the public getter method
-                other->On_Collision(std::make_shared<Explosion>(Vector2{bombWall->Get_Hitbox().x, bombWall->Get_Hitbox().y}));
-            }
+    switch(otherType) {
+        case Collision_Type::ENEMY:
+        {
+            // Verhindere, dass der Spieler den Gegner durch Wände drückt.
+            CollisionResponse::Resolve_Overlap(shared_from_this(), other);
+            // Schaden wird vom Gegner aus verabreicht, nicht hier.
+            break;
         }
+        case Collision_Type::ENEMY_PROJECTILE:
+        {
+
+            break;
+        }
+        case Collision_Type::BOMB_WALL:
+        {
+            if (this->Get_Bomb_Count() > 0) {
+                this->Use_Bomb();
+                if (auto bombWall = std::dynamic_pointer_cast<Bomb_Wall>(other)) {
+                    other->On_Collision(std::make_shared<Explosion>(Vector2{bombWall->Get_Hitbox().x, bombWall->Get_Hitbox().y}));
+                }
+            }
+            break;
+        }
+        case Collision_Type::WALL:
+        case Collision_Type::DOOR:
+        case Collision_Type::GENERATOR:
+        {
+            // Füge die Kollisionsauflösung für alle statischen Hindernisse hinzu.
+            CollisionResponse::Resolve_Overlap(shared_from_this(), other);
+            break;
+        }
+        case Collision_Type::BOMB_PICKUP:
+        {
+            if (auto bombPickup = std::dynamic_pointer_cast<Bomb_Pickup>(other)) {
+                this->Add_Bomb();
+                bombPickup->Mark_For_Destruction();
+            }
+            break;
+        }
+        default:
+            break;
     }
 }
 

@@ -13,7 +13,7 @@ HUD::HUD(std::shared_ptr<Gunslinger> player)
     healthbar_textures[4] = LoadTexture("assets/graphics/UI/Sprite_Healthbar_0.png"); // 0%
 
     // Lade die Textur für die Bomben
-    bomb_icon_texture = LoadTexture("../../assets/graphics/Items/Bomb/Sprengstoff_Base_Sprite.png");
+    bomb_icon_texture = LoadTexture("assets/graphics/Items/Bomb/Sprengstoff_Base_Sprite.png");
 }
 
 HUD::~HUD()
@@ -35,7 +35,7 @@ void HUD::Draw()
     // Position für die Lebensanzeige (neben dem Portrait)
     Vector2 healthbar_pos = {portrait_pos.x + portrait_texture.width + 10, portrait_pos.y};
 
-    // Bestimmen Sie, welche Textur gezeichnet werden soll
+
     int health_index = 0;
     if (player_ptr) {
         float health_percentage = player_ptr->Get_Health() / static_cast<float>(player_ptr->Get_Max_Health());
@@ -67,7 +67,7 @@ void HUD::Draw()
         if (bomb_count > 0)
         {
             // Position für das Bomben-Symbol (unten links)
-            Vector2 bomb_icon_pos = {20, (float)GetScreenHeight() - 20 - bomb_icon_texture.height};
+            Vector2 bomb_icon_pos = {25, (float)GetScreenHeight() - 25 - bomb_icon_texture.height};
             DrawTextureV(bomb_icon_texture, bomb_icon_pos, WHITE);
 
             // Position für die Bombenanzahl (neben dem Symbol)

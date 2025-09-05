@@ -3,6 +3,11 @@
 #include <cmath>
 #include "CollisionResponse.h"
 #include "PlayerBaseClass.h"
+#include "PlayerProjectile.h"
+#include <string>
+#include <iostream>
+#include <memory>
+#include <algorithm>
 
 namespace enemy
 {
@@ -26,7 +31,6 @@ namespace enemy
 
         if (distance_To_Target > attack_Range)
         {
-            // *** GEÄNDERT: Zustand auf CHASING setzen, wenn der Gegner verfolgt. ***
             current_state = EnemyState::CHASING;
             is_Moving = true;
             float normalized_Direction_X = delta_Vector_X / distance_To_Target;
@@ -40,30 +44,25 @@ namespace enemy
         }
         else
         {
-            // *** GEÄNDERT: Zustand auf IDLE setzen, wenn der Gegner in Angriffsreichweite ist. ***
             current_state = EnemyState::IDLE;
             is_Moving = false;
         }
     }
 
     // Die On_Collision-Methode, die die Logik zur Kollisionsbehandlung erweitert
-    void EnemyExtendedBaseClass::On_Collision(std::shared_ptr<Collidable> other)
+     void EnemyExtendedBaseClass::On_Collision(std::shared_ptr<Collidable> other)
     {
         Collision_Type other_Type = other->Get_Collision_Type();
 
-        // Verhindere Kollision mit sich selbst
         if (other.get() == this) {
             return;
         }
 
         switch (other_Type)
         {
-            case Collision_Type::WALL:
             case Collision_Type::ENEMY:
-            case Collision_Type::GENERATOR:
-            case Collision_Type::DOOR:
             {
-                // Führt die physische Reaktion für Kollisionen mit Wänden oder anderen Gegnern aus.
+                // Verhindert, dass Gegner sich gegenseitig durch Wände schieben.
                 if (this->is_Moving)
                 {
                     CollisionResponse::Resolve_Overlap(shared_from_this(), other);
@@ -72,13 +71,13 @@ namespace enemy
             }
             case Collision_Type::PLAYER:
             {
-                // Führt die physische Reaktion für Kollisionen mit dem Spieler aus.
+                // Physikalische Kollision auflösen
                 if (this->is_Moving)
                 {
                     CollisionResponse::Resolve_Overlap(shared_from_this(), other);
                 }
 
-                // Überprüft den Cooldown, um Schaden zu verursachen.
+                // Schaden verursachen, wenn der Cooldown abgelaufen ist.
                 if (this->attack_Cooldown_Timer <= 0)
                 {
                     if (auto player = std::dynamic_pointer_cast<Player_Base_Class>(other))
@@ -89,9 +88,19 @@ namespace enemy
                 }
                 break;
             }
+            case Collision_Type::WALL:
+            case Collision_Type::GENERATOR:
+            case Collision_Type::DOOR:
+            {
+                // Verhindere, dass der Gegner durch statische Objekte läuft.
+                if (this->is_Moving)
+                {
+                    CollisionResponse::Resolve_Overlap(shared_from_this(), other);
+                }
+                break;
+            }
             case Collision_Type::PLAYER_PROJECTILE:
             {
-                // Die Logik für Projektile wird hier behandelt
                 if (auto projectile = std::dynamic_pointer_cast<game::Player_Projectile>(other))
                 {
                     this->Take_Damage(projectile->damage);
@@ -102,7 +111,6 @@ namespace enemy
             case Collision_Type::ENEMY_SPAWNER:
             case Collision_Type::CONSUMABLE:
             {
-                // Die Logik für Spawner und Consumables
                 break;
             }
             default:
@@ -110,7 +118,6 @@ namespace enemy
         }
     }
 
-    // Die Draw-Methode, die die Textur zeichnet
     void EnemyExtendedBaseClass::Draw()
     {
         if (sprite.id > 0)
