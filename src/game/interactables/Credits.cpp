@@ -8,8 +8,7 @@
 
 Credit::Credit(Vector2 position, int value)
     : value(value),
-      // HIER WIRD DIE ANIMATION JETZT KORREKT INITIALISIERT!
-      // Wir übergeben den FPS-Wert (10.0f) als letzten Parameter.
+
       animation(Vector2{28, 27}, "assets/graphics/Items/Credits/Credits_Shine_Animation.png", 9, 9, 1.0f) {
 
     this->hitbox = {position.x, position.y, 27, 27};

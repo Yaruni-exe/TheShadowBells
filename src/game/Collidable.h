@@ -19,7 +19,8 @@ enum class Collision_Type
     DOOR,
     BOMB_PICKUP,
     BOMB_WALL,
-    EXPLOSION
+    EXPLOSION,
+    LEVEL_EXIT
 };
 
 class Collidable : public std::enable_shared_from_this<Collidable>

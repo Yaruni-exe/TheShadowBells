@@ -8,9 +8,11 @@
 using namespace std::string_literals;
 
 namespace game::scenes {
-
     PauseScene::PauseScene()
     {
+        // Laden Sie das Hintergrundbild
+        background_texture = LoadTexture("assets/graphics/backgrounds/Pause_Screen.png");
+
         int button_width = 256;
         int button_height = 64;
         int x_pos = (GetScreenWidth() / 2) - (button_width / 2);
@@ -19,8 +21,8 @@ namespace game::scenes {
 
         continue_button = std::make_unique<MenuButton>(
             (Rectangle){(float)x_pos, (float)y_start, (float)button_width, (float)button_height},
-            "assets/graphics/button_continue_normal.png",
-            "assets/graphics/button_continue_hover.png",
+            "assets/graphics/backgrounds/Pause_Fortfahren_Button_White.png",
+            "assets/graphics/backgrounds/Pause_Fortfahren_Button_Yellow.png",
             []() {
                 game::core::Store::stage->ReplaceWithExistingScene("pause"s, "game"s);
             }
@@ -28,13 +30,17 @@ namespace game::scenes {
 
         menu_button = std::make_unique<MenuButton>(
             (Rectangle){(float)x_pos, (float)y_start + y_spacing, (float)button_width, (float)button_height},
-            "assets/graphics/button_menu_normal.png",
-            "assets/graphics/button_menu_hover.png",
+            "assets/graphics/backgrounds/Pause_Hauptmenue_Button_White.png",
+            "assets/graphics/backgrounds/Pause_Hauptmenue_Button_Yellow.png",
             []() { game::core::Store::stage->ReplaceWithNewScene("pause"s, "menu"s, std::make_shared<MenuScene>()); }
         );
     }
 
-    PauseScene::~PauseScene() {}
+    PauseScene::~PauseScene()
+    {
+        // Entladen Sie die Hintergrundtextur
+        UnloadTexture(background_texture);
+    }
 
     void PauseScene::Update()
     {
@@ -48,13 +54,26 @@ namespace game::scenes {
         }
     }
 
-    void PauseScene::Draw()
-    {
-        // Zeichnet nur die Buttons, die über dem Spiel liegen.
-        Vector2 mouse_pos = GetMousePosition();
-        continue_button->Draw(mouse_pos);
-        menu_button->Draw(mouse_pos);
-        DrawRectangleLinesEx(continue_button->rect, 2.0f, RED);
-        DrawRectangleLinesEx(menu_button->rect, 2.0f, RED);
+
+        // Zeichnen Sie zuerst das Hintergrundbild, damit die Buttons darüber liegen
+        void PauseScene::Draw()
+        {
+            // Definiert den Bereich der Textur, der gezeichnet werden soll (die gesamte Textur)
+            Rectangle source = { 0.0f, 0.0f, (float)background_texture.width, (float)background_texture.height };
+
+            // Definiert den Zielbereich auf dem Bildschirm (die volle Größe des Bildschirms)
+            Rectangle dest = { 0.0f, 0.0f, (float)GetScreenWidth(), (float)GetScreenHeight() };
+
+            // Zeichnet die Textur, skaliert auf die Größe des Bildschirms
+            DrawTexturePro(background_texture, source, dest, Vector2{ 0.0f, 0.0f }, 0.0f, WHITE);
+
+            // Zeichnet die Buttons über dem Hintergrund
+            Vector2 mouse_pos = GetMousePosition();
+            continue_button->Draw(mouse_pos);
+            menu_button->Draw(mouse_pos);
+
+            // Debugging-Hitboxen
+            DrawRectangleLinesEx(continue_button->rect, 2.0f, RED);
+            DrawRectangleLinesEx(menu_button->rect, 2.0f, RED);
+        }
     }
-}

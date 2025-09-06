@@ -1,4 +1,4 @@
-#include "Level1Scene.h"
+#include "Level2Scene.h"
 #include <memory>
 #include <string>
 #include <raylib-cpp.hpp>
@@ -12,7 +12,7 @@
 #include "../game/interactables/BombWall.h"
 #include "../game/interactables/BombPickup.h"
 #include "../game/interactables/Medipack.h"
-#include "../game/spawner/Level1Spawner.h"
+#include "../game/spawner/Level1Spawner.h" // Wiederverwendeter Spawner
 #include "../config_enemys.h.in"
 #include "../game/interactables/Generator.h"
 #include "../game/interactables/GeneratorDoor.h"
@@ -20,13 +20,13 @@
 #include "../core/CollisionManager.h"
 #include "../game/EnemyExtendedBaseClass.h"
 #include "LevelTransition.h"
-#include "Cutscene.h"
-#include "Level2Scene.h"
+#include "MenuScene.h"
+
 
 
 using namespace std::string_literals;
 
-game::scenes::Level1Scene::Level1Scene()
+game::scenes::Level2Scene::Level2Scene()
 : p_cm(wb, objectManager.managed_objects)
 {
     dtm.Start();
@@ -49,26 +49,26 @@ game::scenes::Level1Scene::Level1Scene()
     std::vector<enemy::Enemy_Base_Class*> enemy_List;
 
     // Erster Spawner
-    Rectangle spawner_area_1 = { 780, 250, 60, 400 };
+    Rectangle spawner_area_1 = { 1000, 1000, 100, 500 };
     auto spawner_1 = std::make_shared<Level1_Spawner>(
         spawner_area_1,
         objectManager,
         enemy_List,
         sp_mp,
-        6,
-        20.0f
+        10,
+        10.0f
     );
     objectManager.AddObject(spawner_1);
 
     // ZWEITER SPAWNER
-    Rectangle spawner_area_2 = { 970, 250, 60, 370 };
+    Rectangle spawner_area_2 = { 1800, 1800, 150, 400 };
     auto spawner_2 = std::make_shared<Level1_Spawner>(
         spawner_area_2,
         objectManager,
         enemy_List,
         sp_mp,
-        4,
-        20.0f
+        8,
+        10.0f
     );
     objectManager.AddObject(spawner_2);
 
@@ -80,8 +80,8 @@ game::scenes::Level1Scene::Level1Scene()
         objectManager,
            enemy_List,
            sp_mp,
-           4,
-           12.0f
+           6,
+           10.0f
        );
     objectManager.AddObject(spawner_3);
 
@@ -92,15 +92,15 @@ game::scenes::Level1Scene::Level1Scene()
         objectManager,
            enemy_List,
            sp_mp,
-           4,
-           12.0f
+           6,
+           10.0f
        );
     objectManager.AddObject(spawner_4);
 
     //  MÜNZEN ERSTELLT
-    objectManager.AddObject(std::make_shared<Credit>(Vector2{600, 600}, 100));
-    objectManager.AddObject(std::make_shared<Credit>(Vector2{800, 800}, 50));
-    objectManager.AddObject(std::make_shared<Credit>(Vector2{1000, 1000}, 200));
+    objectManager.AddObject(std::make_shared<Credit>(Vector2{1200, 1200}, 100));
+    objectManager.AddObject(std::make_shared<Credit>(Vector2{1400, 1400}, 50));
+    objectManager.AddObject(std::make_shared<Credit>(Vector2{1600, 1600}, 200));
 
     // GENERATOR UND TÜR GRUPPE 1
     // Load the generator texture once for all generators
@@ -110,14 +110,14 @@ game::scenes::Level1Scene::Level1Scene()
     GeneratorDoor::Load_Texture();
 
     // Two generators and one door linked by "generator_group_1"
-    objectManager.AddObject(std::make_shared<Generator>(Vector2{800, 400}, "generator_group_1", 150.0f));
-    objectManager.AddObject(std::make_shared<Generator>(Vector2{850, 450}, "generator_group_1", 150.0f));
-    objectManager.AddObject(std::make_shared<GeneratorDoor>(Vector2{900, 400}, "generator_group_1", objectManager));
+    objectManager.AddObject(std::make_shared<Generator>(Vector2{1800, 1000}, "generator_group_1", 150.0f));
+    objectManager.AddObject(std::make_shared<Generator>(Vector2{1850, 1050}, "generator_group_1", 150.0f));
+    objectManager.AddObject(std::make_shared<GeneratorDoor>(Vector2{1900, 1100}, "generator_group_1", objectManager));
 
     // GENERATOR UND TÜR GRUPPE 2
     // One generator and one door linked by "generator_group_2"
-    objectManager.AddObject(std::make_shared<Generator>(Vector2{1000, 600}, "generator_group_2", 150.0f));
-    objectManager.AddObject(std::make_shared<GeneratorDoor>(Vector2{1050, 600}, "generator_group_2", objectManager));
+    objectManager.AddObject(std::make_shared<Generator>(Vector2{2000, 1600}, "generator_group_2", 150.0f));
+    objectManager.AddObject(std::make_shared<GeneratorDoor>(Vector2{2050, 1600}, "generator_group_2", objectManager));
 
 
 
@@ -126,38 +126,38 @@ game::scenes::Level1Scene::Level1Scene()
     Bomb_Pickup::Load_Texture();
     Bomb_Wall::Load_Texture();
     // Hinzufügen einer Bomb Wall
-    objectManager.AddObject(std::make_shared<Bomb_Wall>(Vector2{1200, 500}));
+    objectManager.AddObject(std::make_shared<Bomb_Wall>(Vector2{2200, 2500}));
 
     // Hinzufügen eines Bomben-Pickups in der Nähe der Wand
-    objectManager.AddObject(std::make_shared<Bomb_Pickup>(Vector2{1150, 500}));
+    objectManager.AddObject(std::make_shared<Bomb_Pickup>(Vector2{2150, 2450}));
 
     // Sie können weitere Bombenwände und Pickups an anderen Positionen hinzufügen
-    objectManager.AddObject(std::make_shared<Bomb_Wall>(Vector2{2000, 800}));
-    objectManager.AddObject(std::make_shared<Bomb_Pickup>(Vector2{1950, 750}));
+    objectManager.AddObject(std::make_shared<Bomb_Wall>(Vector2{2600, 2800}));
+    objectManager.AddObject(std::make_shared<Bomb_Pickup>(Vector2{2550, 2750}));
 
     // Medipack erstellen
-    objectManager.AddObject(std::make_shared<Medipack>(Vector2{1500, 700}, 25.0f));
+    objectManager.AddObject(std::make_shared<Medipack>(Vector2{2500, 2700}, 25.0f));
 
     // Hinzufügen der Level-Übergangs-Hitbox
-    Rectangle level_transition_hitbox = { 450.0f, 500.0f, 100.0f, 200.0f };
+    Rectangle level_transition_hitbox = { 3500.0f, 3500.0f, 100.0f, 200.0f };
     objectManager.AddObject(std::make_shared<LevelTransition>(
         level_transition_hitbox,
         // Diese Lambda-Funktion ruft einfach die VideoScene auf, ohne den Pfad zu kennen.
         []() {
             game::core::Store::stage->SwitchToNewScene(
-                "level2"s,
-                std::make_unique<game::scenes::Level2Scene>()
+                "menu"s,
+                std::make_unique<game::scenes::MenuScene>()
             );
         }
     ));
 }
 
 
-game::scenes::Level1Scene::~Level1Scene()
+game::scenes::Level2Scene::~Level2Scene()
 {
 }
 
-void game::scenes::Level1Scene::Update()
+void game::scenes::Level2Scene::Update()
 {
     // Korrigierte Pause-Logik: Verwende SwitchToNewScene mit std::make_shared
     if (IsKeyPressed(KEY_ESCAPE))
@@ -209,7 +209,7 @@ void game::scenes::Level1Scene::Update()
     dtm.Update();
 }
 
-void game::scenes::Level1Scene::Draw()
+void game::scenes::Level2Scene::Draw()
 {
     ClearBackground(WHITE);
     screen.Draw_Level(this->cam, false);
@@ -219,14 +219,6 @@ void game::scenes::Level1Scene::Draw()
     // Objekte zeichnen
     for (int i = 0; i < objectManager.managed_objects.size(); ++i) {
         objectManager.managed_objects[i]->Draw();
-    }
-
-
-    // Hitboxen anzeigen
-    for (const auto& p_object : objectManager.managed_objects) {
-        if (p_object != nullptr) {
-            DrawRectangleLinesEx(p_object->Get_Hitbox(), 2.0f, RED);
-        }
     }
 
 
@@ -240,12 +232,11 @@ void game::scenes::Level1Scene::Draw()
     std::string health_text = "HP: " + std::to_string(static_cast<int>(sp_mp->Get_Health()));
     DrawText(health_text.c_str(), 100, 95, 50, BLACK);
 /*
-    // Minimap
+    // Debugging-Hitboxen
     for (const auto& p_object : objectManager.managed_objects) {
         if (p_object != nullptr) {
             DrawRectangleLinesEx(p_object->Get_Hitbox(), 2.0f, RED);
         }
     }
     */
-
 }

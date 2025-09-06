@@ -11,6 +11,7 @@
 #include "CollisionResponse.h"
 #include "interactables/BombPickup.h"
 #include "EnemyProjectile.h"
+#include "../scenes/LevelTransition.h"
 
 // Pfade zu den Texturen
 const std::string idle_paths[8] = {
@@ -169,6 +170,14 @@ void Gunslinger::On_Collision(std::shared_ptr<Collidable> other) {
             if (auto bombPickup = std::dynamic_pointer_cast<Bomb_Pickup>(other)) {
                 this->Add_Bomb();
                 bombPickup->Mark_For_Destruction();
+            }
+            break;
+        }
+        case Collision_Type::LEVEL_EXIT:
+        {
+            // Versuche, das kollidierende Objekt als LevelTransition zu behandeln.
+            if (auto level_transition = std::dynamic_pointer_cast<LevelTransition>(other)) {
+                level_transition->TriggerTransition();
             }
             break;
         }

@@ -25,7 +25,7 @@ protected:
     int player_Max_Health;
     float player_Movement_Speed;
     int player_Damage;
-    int player_Score;
+    int player_Score = 0;
     Vector2 player_Pos;
     Vector2 previous_Position;
     Collision_Manager* manager_Ptr;
