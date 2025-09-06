@@ -19,7 +19,6 @@ void Bomb_Pickup::Unload_Texture() {
 }
 
 Bomb_Pickup::Bomb_Pickup(Vector2 position)
-    //  Animation mit FPS-Parameter initialisieren
     : animation(Vector2{48, 48}, bomb_texture, 8, 8, 1.0f) {
     this->hitbox = {position.x, position.y, 24, 24};
 }
@@ -27,15 +26,18 @@ Bomb_Pickup::Bomb_Pickup(Vector2 position)
 Bomb_Pickup::~Bomb_Pickup() {}
 
 void Bomb_Pickup::Tick(float delta_time) {
-    // NEU: delta_time an die Animationsmethode übergeben
     this->animation.Next_Frame(delta_time);
 }
 
 void Bomb_Pickup::On_Collision(std::shared_ptr<Collidable> other) {
+    if (this->Is_Marked_For_Destruction()) {
+        return; // Verhindert eine doppelte Kollision, wenn das Objekt bereits markiert ist.
+    }
+
     if (other->Get_Collision_Type() == Collision_Type::PLAYER) {
         if (auto player = std::dynamic_pointer_cast<Gunslinger>(other)) {
             player->Add_Bomb();
-            Mark_For_Destruction();
+            this->Mark_For_Destruction();
         }
     }
 }

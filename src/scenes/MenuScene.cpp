@@ -1,76 +1,52 @@
 #include "MenuScene.h"
 #include <string>
-#include <raylib.h>
 #include <Store.h>
 #include "Level1Scene.h"
 #include <iostream>
+#include "MenuButton.h"
+#include "ControlsScene.h"
+#include "CreditsScene.h"
 
 using namespace std::string_literals;
 
 namespace game::scenes {
 
-    // Implementierung der MenuButton-Klasse
-    MenuButton::MenuButton(Rectangle r, const std::string& normal_path, const std::string& hover_path, std::function<void()> click_action)
-        : rect(r), on_click(click_action) {
-        normal_texture = LoadTexture(normal_path.c_str());
-        hover_texture = LoadTexture(hover_path.c_str());
-    }
-
-    MenuButton::~MenuButton() {
-        UnloadTexture(normal_texture);
-        UnloadTexture(hover_texture);
-    }
-
-    void MenuButton::Draw(Vector2 mouse_pos) {
-        Texture2D* current_texture;
-        if (CheckCollisionPointRec(mouse_pos, this->rect)) {
-            current_texture = &this->hover_texture;
-        } else {
-            current_texture = &this->normal_texture;
-        }
-        DrawTextureV(*current_texture, {this->rect.x, this->rect.y}, WHITE);
-    }
-
-    bool MenuButton::IsHovered(Vector2 mouse_pos) const {
-        return CheckCollisionPointRec(mouse_pos, this->rect);
-    }
-
-    // Implementierung der MenuScene-Klasse
     MenuScene::MenuScene()
     {
-        background_texture = LoadTexture("assets/graphics/backgrounds/Menu.png");
+        background_texture = LoadTexture("assets/graphics/backgrounds/Menu_Menu_Screen.png");
 
-        int button_width = 256;
-        int button_height = 64;
-        int x_pos = (GetScreenWidth() / 2) - (button_width / 2);
-        int y_start = (GetScreenHeight() / 2) - (button_height * 2);
+        int button_width = 350;
+        int button_height = 90;
+        int x_pos = 50;
+        int y_offset = 150;
+        int y_start = (GetScreenHeight() / 2) - (button_height * 2) + y_offset;
         int y_spacing = button_height + 20;
 
         start_button = std::make_unique<MenuButton>(
             (Rectangle){(float)x_pos, (float)y_start, (float)button_width, (float)button_height},
-            "assets/graphics/menu_button_start_normal.png",
-            "assets/graphics/menu_button_start_hover.png",
+            "assets/graphics/backgrounds/Menu_Neues_Spiel_Button_White.png",
+            "assets/graphics/backgrounds/Menu_Neues_Spiel_Button_Yellow.png",
             []() { game::core::Store::stage->SwitchToNewScene("game"s, std::make_unique<Level1Scene>()); }
         );
 
         controls_button = std::make_unique<MenuButton>(
             (Rectangle){(float)x_pos, (float)y_start + y_spacing, (float)button_width, (float)button_height},
-            "assets/graphics/menu_button_controls_normal.png",
-            "assets/graphics/menu_button_controls_hover.png",
-            []() { std::cout << "Steuerungs-Menü aufgerufen!" << std::endl; }
+            "assets/graphics/backgrounds/Menu_Steuerung_Button_White.png",
+            "assets/graphics/backgrounds/Menu_Steuerung_Button_Yellow.png",
+            []() { game::core::Store::stage->SwitchToNewScene("controls"s, std::make_unique<ControlsScene>()); } // Korrekter Aufruf
         );
 
         credits_button = std::make_unique<MenuButton>(
             (Rectangle){(float)x_pos, (float)y_start + 2 * y_spacing, (float)button_width, (float)button_height},
-            "assets/graphics/menu_button_credits_normal.png",
-            "assets/graphics/menu_button_credits_hover.png",
-            []() { std::cout << "Credits-Menü aufgerufen!" << std::endl; }
+            "assets/graphics/backgrounds/Menu_Credits_Button_White.png",
+            "assets/graphics/backgrounds/Menu_Credits_Button_Yellow.png",
+            []() { game::core::Store::stage->SwitchToNewScene("credits"s, std::make_unique<CreditsScene>()); } // Korrekter Aufruf
         );
 
         exit_button = std::make_unique<MenuButton>(
             (Rectangle){(float)x_pos, (float)y_start + 3 * y_spacing, (float)button_width, (float)button_height},
-            "assets/graphics/menu_button_exit_normal.png",
-            "assets/graphics/menu_button_exit_hover.png",
+            "assets/graphics/backgrounds/Menu_Spiel_Verlassen_Button_White.png",
+            "assets/graphics/backgrounds/Menu_Spiel_Verlassen_Button_Yellow.png",
             []() { CloseWindow(); }
         );
     }
@@ -109,7 +85,6 @@ namespace game::scenes {
         credits_button->Draw(mouse_pos);
         exit_button->Draw(mouse_pos);
 
-        // DEBUG: Hitboxen zur Positionsprüfung anzeigen
         DrawRectangleLinesEx(start_button->rect, 2.0f, RED);
         DrawRectangleLinesEx(controls_button->rect, 2.0f, RED);
         DrawRectangleLinesEx(credits_button->rect, 2.0f, RED);

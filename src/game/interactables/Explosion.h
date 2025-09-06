@@ -8,11 +8,15 @@ class Explosion : public Collidable {
 private:
     RepeatAnimation animation;
     float lifespan;
-    Texture2D explosion_texture;
+    static Texture2D explosion_texture;
 
 public:
     Explosion(Vector2 start_position);
     ~Explosion() override;
+
+    static void Load_Texture();
+    static void Unload_Texture();
+
     void Tick(float delta_time) override;
     void Draw() override;
     Collision_Type Get_Collision_Type() const override;

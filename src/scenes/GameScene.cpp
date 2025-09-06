@@ -1,3 +1,6 @@
+
+/*
+
 #include "GameScene.h"
 #include <memory>
 #include <string>
@@ -200,7 +203,7 @@ void game::scenes::GameScene::Draw()
     }
 
 
-/*
+
     ///Hitbox anzeigen////
     for (const auto& p_object : objectManager.managed_objects)
     {
@@ -210,7 +213,7 @@ void game::scenes::GameScene::Draw()
         }
     }s
     ////////////////
-*/
+
 
     screen.Draw_Level(this->cam, true);
 
@@ -220,3 +223,4 @@ void game::scenes::GameScene::Draw()
 
     this->hud_ptr->Draw();
 }
+*/

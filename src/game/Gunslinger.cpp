@@ -79,6 +79,14 @@ void Gunslinger::Tick(float delta_time, Vector2 worldMousePos) {
         this->ranged_Cooldown_Timer -= delta_time;
     }
 
+    // Überprüfen, ob der Spieler tot ist
+    if (this->player_Health <= 0) {
+        // Hier können wir ein Flag setzen oder eine globale Funktion aufrufen,
+        // um den Game-Over-Screen zu aktivieren.
+        // Zum Beispiel:
+        // game_manager.SetGameState(GameState::GAME_OVER);
+    }
+
     // Animationen aktualisieren
     frame_timer += delta_time;
     if (frame_timer >= animation_speed) {
@@ -220,8 +228,9 @@ void Gunslinger::Ranged_Attack() {
         this->ranged_Cooldown_Timer = 0.5f;
     }
 }
-
+/*
 void Gunslinger::Clean_Up_Projectiles() {
-    // Diese Methode scheint in der neuen Logik nicht mehr benötigt zu werden,
-    // da die Projektile jetzt durch den Object_Manager verwaltet werden.
+
+    // Projektile jetzt durch den Object_Manager verwaltet werden.
 }
+*/

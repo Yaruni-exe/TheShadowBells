@@ -1,7 +1,20 @@
 #include "Explosion.h"
 #include <iostream>
 
-Texture2D explosion_texture = LoadTexture("assets/graphics/interactables/Explosion.png");
+Texture2D Explosion::explosion_texture = {0};
+
+void Explosion::Load_Texture() {
+    if (explosion_texture.id == 0) {
+        explosion_texture = LoadTexture("assets/graphics/interactables/Explosion.png");
+    }
+}
+
+void Explosion::Unload_Texture() {
+    if (explosion_texture.id != 0) {
+        UnloadTexture(explosion_texture);
+        explosion_texture.id = 0;
+    }
+}
 
 Explosion::Explosion(Vector2 start_position)
     : Collidable(),
@@ -12,7 +25,7 @@ Explosion::Explosion(Vector2 start_position)
 }
 
 Explosion::~Explosion() {
-    UnloadTexture(explosion_texture);
+    // Die Textur wird nun statisch verwaltet, also nicht hier entladen
 }
 
 void Explosion::Tick(float delta_time) {
@@ -20,14 +33,12 @@ void Explosion::Tick(float delta_time) {
     if (lifespan <= 0.0f) {
         Mark_For_Destruction();
     }
-    // NEU: Animation in der Tick-Methode aktualisieren
     animation.Next_Frame(delta_time);
 }
 
 void Explosion::Draw() {
     Vector2 draw_position = {hitbox.x, hitbox.y};
     animation.Draw_Current_Frame(draw_position);
-    // ENTFERNT: Die Animation wird hier nicht mehr aktualisiert
 }
 
 Collision_Type Explosion::Get_Collision_Type() const {

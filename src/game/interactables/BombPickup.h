@@ -3,6 +3,7 @@
 #include "../Collidable.h"
 #include "../../core/RepeatAnimation.h"
 #include "raylib.h"
+#include <memory>
 
 class Bomb_Pickup : public Collidable {
 private:
