@@ -95,6 +95,7 @@ game::scenes::Level1Scene::Level1Scene()
            4,
            12.0f
        );
+
     objectManager.AddObject(spawner_4);
 
     //  MÜNZEN ERSTELLT
@@ -127,6 +128,7 @@ game::scenes::Level1Scene::Level1Scene()
     Bomb_Wall::Load_Texture();
     // Hinzufügen einer Bomb Wall
     objectManager.AddObject(std::make_shared<Bomb_Wall>(Vector2{1200, 500}));
+
 
     // Hinzufügen eines Bomben-Pickups in der Nähe der Wand
     objectManager.AddObject(std::make_shared<Bomb_Pickup>(Vector2{1150, 500}));
@@ -246,6 +248,6 @@ void game::scenes::Level1Scene::Draw()
             DrawRectangleLinesEx(p_object->Get_Hitbox(), 2.0f, RED);
         }
     }
-    */
+*/
 
 }
