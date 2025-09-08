@@ -1,0 +1,14 @@
+{ "columns":30,
+ "image":"..\/Tileset-pngs\/Level2.png",
+ "imageheight":640,
+ "imagewidth":960,
+ "margin":0,
+ "name":"Level2",
+ "spacing":0,
+ "tilecount":600,
+ "tiledversion":"1.11.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "type":"tileset",
+ "version":"1.10"
+}
