@@ -1,0 +1,14 @@
+{ "columns":30,
+ "image":"Level01_Background_Tiles_Props_Complete.png",
+ "imageheight":320,
+ "imagewidth":961,
+ "margin":0,
+ "name":"Level1Complete",
+ "spacing":0,
+ "tilecount":300,
+ "tiledversion":"1.11.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "type":"tileset",
+ "version":"1.10"
+}
