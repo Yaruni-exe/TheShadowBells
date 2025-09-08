@@ -17,7 +17,7 @@ Medipack::Medipack(Vector2 position, float heal_value)
 
     // Textur nur einmal laden
     if (!texture_loaded) {
-        texture = LoadTexture("assets/graphics/Items/Healthpacks/Health-Pack (Item).png");
+        texture = LoadTexture("assets/graphics/Items/Healthpacks/Health-Pack-Item.png");
         texture_loaded = true;
     }
 }
