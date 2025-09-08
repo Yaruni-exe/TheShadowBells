@@ -1,6 +1,3 @@
-// Created by $Will on 11.06.2025.
-//
-
 #ifndef COLLIDABLE_H
 #define COLLIDABLE_H
 
@@ -17,7 +14,13 @@ enum class Collision_Type
     ENEMY_PROJECTILE,
     CONSUMABLE,
     PLAYER_MELEE_HITBOX,
-    ENEMY_SPAWNER
+    ENEMY_SPAWNER,
+    GENERATOR,
+    DOOR,
+    BOMB_PICKUP,
+    BOMB_WALL,
+    EXPLOSION,
+    LEVEL_EXIT
 };
 
 class Collidable : public std::enable_shared_from_this<Collidable>
@@ -35,6 +38,8 @@ public:
     virtual void On_Collision(std::shared_ptr<Collidable> other) = 0;
     virtual void Set_Position(Vector2 position) { hitbox.x = position.x; hitbox.y = position.y; }
 
+    //  Virtuelle Methode zur Abfrage des statischen Status
+    virtual bool Is_Static() const { return false; }
 
     virtual void Mark_For_Destruction() { this->is_Marked_For_Destruction = true; }
     bool Is_Marked_For_Destruction() const { return this->is_Marked_For_Destruction; }

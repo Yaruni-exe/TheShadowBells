@@ -21,20 +21,20 @@ class Player_Base_Class : public Collidable
 {
 protected:
 
-	float player_Health;
-	int player_Max_Health;
-	float player_Movement_Speed;
-	int player_Damage;
-
+    float player_Health;
+    int player_Max_Health;
+    float player_Movement_Speed;
+    int player_Damage;
+    int player_Score = 0;
     Vector2 player_Pos;
-	Vector2 previous_Position;
-	Collision_Manager* manager_Ptr;
+    Vector2 previous_Position;
+    Collision_Manager* manager_Ptr;
 
-	float melee_Cooldown;
-	float ranged_Cooldown;
-	bool inventory_Is_Full;
-	Facing_Direction facing_Direction;
-	bool is_Moving;
+    float melee_Cooldown;
+    float ranged_Cooldown;
+    bool inventory_Is_Full;
+    Facing_Direction facing_Direction;
+    bool is_Moving;
 
 
     Texture2D maintex= LoadTexture("assets/graphics/ball.png");
@@ -43,35 +43,39 @@ protected:
 
     Object_Manager& om;
 
-	Vector2 sprite_offset;
+    Vector2 sprite_offset;
 
 public:
-	// Konstruktor
-	Player_Base_Class(int max_Health, float movement_Speed, int damage, Vector2 start_Position, Object_Manager& om);
+    // Konstruktor
+    Player_Base_Class(int max_Health, float movement_Speed, int damage, Vector2 start_Position, Object_Manager& om);
 
-	// Destruktor
-	~Player_Base_Class() override;
-	void Player_Input();
-	void Tick(float delta_time) override;
-	void On_Collision(std::shared_ptr<Collidable> other) override;
-	virtual void Draw() override;
+    // Destruktor
+    ~Player_Base_Class() override;
+    void Player_Input();
+    void Tick(float delta_time) override;
+    void virtual On_Collision(std::shared_ptr<Collidable> other) override;
+    virtual void Draw() override;
 
-	Vector2 Get_Position() const { return player_Pos; }
+    Vector2 Get_Position() const { return player_Pos; }
 
-	void Update_Previous_Position();
-	void Update_Facing_Direction();
+    void Update_Previous_Position();
+    void Update_Facing_Direction();
 
-	void Melee_Attack();
-	virtual void Ranged_Attack();
-	void Use_Item();
+    void Melee_Attack();
+    virtual void Ranged_Attack();
+    void Use_Item();
+    void Heal(float amount);
 
     Collision_Type Get_Collision_Type() const override;
     Vector2 Get_Player_Pos();
     Vector2 Get_Player_Center();
 
-    void Take_Damage(int damage);
-	float Get_Health() const { return player_Health; }
-	int Get_Max_Health() const { return player_Max_Health; }
+    virtual void Take_Damage(int damage);
+    float Get_Health() const { return player_Health; }
+    int Get_Max_Health() const { return player_Max_Health; }
 
+
+    void AddScore(int amount) { player_Score += amount; }
+
+    int GetScore() const { return player_Score; }
 };
-

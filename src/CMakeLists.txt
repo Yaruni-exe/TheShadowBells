@@ -31,7 +31,7 @@ add_executable(${PROJECT_NAME} main.cpp
 configure_file(config.h.in config.h)
 
 target_include_directories(${PROJECT_NAME} PUBLIC
-"${PROJECT_BINARY_DIR}"
+        "${PROJECT_BINARY_DIR}"
 )
 
 # Link to libraries

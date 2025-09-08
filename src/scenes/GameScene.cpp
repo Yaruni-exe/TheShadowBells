@@ -1,3 +1,6 @@
+
+/*
+
 #include "GameScene.h"
 #include <memory>
 #include <string>
@@ -8,14 +11,19 @@
 #include "PauseScene.h"
 #include "Renderer.h"
 #include "SpriteAnimated.h"
+#include "../game/interactables/Credits.h"
+#include "../game/interactables/BombWall.h"
+#include "../game/interactables/BombPickup.h"
+#include "../game/interactables/Medipack.h"
 
 #include "../game/spawner/Level1Spawner.h"
 #include "../config_enemys.h.in"
+#include "../game/interactables/Generator.h"
+#include "../game/interactables/GeneratorDoor.h"
 
 #include "../game/PlayerClassOne.h"
 #include "../core/CollisionManager.h"
 
-// NEUE EINBINDUNG: Notwendig für den Zugriff auf die KI-Logik der Gegner
 #include "../game/EnemyExtendedBaseClass.h"
 
 using namespace std::string_literals;
@@ -48,7 +56,7 @@ game::scenes::GameScene::GameScene()
         objectManager,
         enemy_List,
         sp_mp,
-        10,
+        6,
         20.0f
     );
     objectManager.AddObject(spawner_1);
@@ -89,6 +97,43 @@ game::scenes::GameScene::GameScene()
            12.0f
        );
     objectManager.AddObject(spawner_4);
+
+    //  MÜNZEN ERSTELLT
+    objectManager.AddObject(std::make_shared<Credit>(Vector2{600, 600}, 100));
+    objectManager.AddObject(std::make_shared<Credit>(Vector2{800, 800}, 50));
+    objectManager.AddObject(std::make_shared<Credit>(Vector2{1000, 1000}, 200));
+
+    // GENERATOR UND TÜR GRUPPE 1
+    // Load the generator texture once for all generators
+    Generator::Load_Texture();
+
+    // Load the door texture
+    GeneratorDoor::Load_Texture();
+
+    // Two generators and one door linked by "generator_group_1"
+    objectManager.AddObject(std::make_shared<Generator>(Vector2{800, 400}, "generator_group_1", 150.0f));
+    objectManager.AddObject(std::make_shared<Generator>(Vector2{850, 450}, "generator_group_1", 150.0f));
+    objectManager.AddObject(std::make_shared<GeneratorDoor>(Vector2{900, 400}, "generator_group_1", objectManager));
+
+    // GENERATOR UND TÜR GRUPPE 2
+    // One generator and one door linked by "generator_group_2"
+    objectManager.AddObject(std::make_shared<Generator>(Vector2{1000, 600}, "generator_group_2", 150.0f));
+    objectManager.AddObject(std::make_shared<GeneratorDoor>(Vector2{1050, 600}, "generator_group_2", objectManager));
+
+    // BOMBEN UND BOMBENWÄNDE ERSTELLEN
+    // Hinzufügen einer Bomb Wall
+    objectManager.AddObject(std::make_shared<Bomb_Wall>(Vector2{1200, 500}));
+
+    // Hinzufügen eines Bomben-Pickups in der Nähe der Wand
+    objectManager.AddObject(std::make_shared<Bomb_Pickup>(Vector2{1150, 500}));
+
+    // Sie können weitere Bombenwände und Pickups an anderen Positionen hinzufügen
+    objectManager.AddObject(std::make_shared<Bomb_Wall>(Vector2{2000, 800}));
+    objectManager.AddObject(std::make_shared<Bomb_Pickup>(Vector2{1950, 750}));
+
+    // Medipack erstellen
+    objectManager.AddObject(std::make_shared<Medipack>(Vector2{1500, 700}, 25.0f));
+
 }
 
 
@@ -136,6 +181,10 @@ void game::scenes::GameScene::Update()
         }
     }
 
+    // DIESE ZEIEL WURDE ENTFERNT
+   // objectManager.AddObject(std::make_shared<Credit>(Vector2{600, 600}, 100));
+
+
     this->cam->Cam_Movement(dtm.Get_Dt());
     this->p_cm->Check_Collisions();
     objectManager.Cleanup_Objects();
@@ -154,7 +203,7 @@ void game::scenes::GameScene::Draw()
     }
 
 
-/*
+
     ///Hitbox anzeigen////
     for (const auto& p_object : objectManager.managed_objects)
     {
@@ -162,9 +211,9 @@ void game::scenes::GameScene::Draw()
         {
             DrawRectangleLinesEx(p_object->Get_Hitbox(), 2.0f, RED);
         }
-    }
+    }s
     ////////////////
-*/
+
 
     screen.Draw_Level(this->cam, true);
 
@@ -174,3 +223,4 @@ void game::scenes::GameScene::Draw()
 
     this->hud_ptr->Draw();
 }
+*/

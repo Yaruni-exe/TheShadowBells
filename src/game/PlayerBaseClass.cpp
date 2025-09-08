@@ -1,11 +1,13 @@
 //
 // Created by Kruse on 23/05/2025.
 //
-
 #include <iostream>
 #include "PlayerBaseClass.h"
 #include "CollisionResponse.h"
 #include "Store.h"
+#include "Gunslinger.h" // Add this include
+#include "interactables/Explosion.h"
+
 
 // Konstruktor
 Player_Base_Class::Player_Base_Class(int max_Health, float movement_Speed, int damage, Vector2 start_Position, Object_Manager& om)
@@ -67,12 +69,13 @@ void Player_Base_Class::Tick(float delta_time)
 // Phase 3 :: Kollisionsreaktion falls der Collisionmanager eine Kollision mit einem anderen Objekt feststellt
 void Player_Base_Class::On_Collision(std::shared_ptr<Collidable> other)
 {
-    // Für ALLE soliden Objekte (Wände, Gegner, Spawner)
-    // benutze die "Gleiten"-Logik mit Resolve_Overlap
     Collision_Type otherType = other->Get_Collision_Type();
 
     if (otherType == Collision_Type::WALL ||
-        otherType == Collision_Type::ENEMY)
+        otherType == Collision_Type::ENEMY ||
+        otherType == Collision_Type::GENERATOR ||
+        otherType == Collision_Type::DOOR ||
+        otherType == Collision_Type::BOMB_WALL)
     {
         CollisionResponse::Resolve_Overlap(shared_from_this(), other);
     }
@@ -178,3 +181,7 @@ Vector2 Player_Base_Class::Get_Player_Center() {
     return Vector2{player_Pos.x+hitbox.width/2,player_Pos.y+hitbox.height/2};
 }
 
+void Player_Base_Class::Heal(float amount)
+{
+    this->player_Health = std::min(this->player_Health + amount, static_cast<float>(this->player_Max_Health));
+}

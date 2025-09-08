@@ -1,4 +1,4 @@
-#pragma once
+/*#pragma once
 #include <Scene.h>
 #include "Screen.h"
 #include "CollisionManager.h"
@@ -46,3 +46,4 @@ namespace game::scenes
         // Add private members here...
     };
 }
+*/
