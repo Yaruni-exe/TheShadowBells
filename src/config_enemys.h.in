@@ -25,20 +25,38 @@ namespace game {
         inline static const std::vector<SpawnableEnemy> kSpawner1_EnemyPool = {
             { enemy::EnemyType::STANDARD_VAMPIRE, 100, 5 } // Passen Sie den Gegnertyp hier an.
         };
+        inline static const std::vector<SpawnableEnemy> kSpawner2_EnemyPool = {
+             { enemy::EnemyType::SPECIAL_VAMPIRE, 100, 5 }
+        };
 
         // ... der Rest Ihrer Konfigurationen (z.B. für den Standardvampir) ...
 
         // ====================================================================================
-        // I. STANDARD VAMPIRE (Der Standardgegner)
+        // I. STANDARD VAMPIRE
         // ====================================================================================
         inline static constexpr int kStandardVampireHealth = 100;
         inline static constexpr float kStandardVampireMovementSpeed = 4.0f;
         inline static constexpr int kStandardVampireDamage = 10;
         inline static constexpr int kStandardVampireValue = 50;
-        inline static constexpr int kStandardVampireHitboxWidth = 28;
-        inline static constexpr int kStandardVampireHitboxHeight = 30;
+        inline static constexpr int kStandardVampireHitboxWidth = 23;
+        inline static constexpr int kStandardVampireHitboxHeight = 28;
         inline static constexpr float kStandardVampireAttackCooldown = 10.0f;
         inline static constexpr float kStandardVampireAttackRange = 40.0f;
         inline static constexpr const char* kStandardVampireSpritePath = "assets/graphics/Enemies/StandardVampire/StandardVampir_Run_Cycle_Down_Extra.png";
+
+          // ====================================================================================
+          // II. SPECIAL VAMPIRE
+          // ====================================================================================
+          inline static constexpr int kSpecialVampireHealth = 200;
+          inline static constexpr float kSpecialVampireMovementSpeed = 4.0f;
+          inline static constexpr int kSpecialVampireDamage = 30;
+          inline static constexpr int kSpecialVampireValue = 50;
+          inline static constexpr int kSpecialVampireHitboxWidth = 23;
+          inline static constexpr int kSpecialVampireHitboxHeight = 28;
+          inline static constexpr float kSpecialVampireAttackCooldown = 10.0f;
+          inline static constexpr float kSpecialVampireAttackRange = 40.0f;
+          inline static constexpr const char* kSpecialVampireSpritePath = "assets/graphics/Enemies/StandardVampire/StandardVampir_Run_Cycle_Down_Extra.png";
+
     };
-}
+
+        };

@@ -1,4 +1,4 @@
-#include "StandardVampire.h"
+#include "SpecialVampire.h"
 #include "../../config_enemys.h.in"
 #include <iostream>
 #include <string>
@@ -9,37 +9,37 @@
 namespace enemy
 {
     // Deklaration und Initialisierung der statischen Member
-    std::vector<Texture2D> StandardVampire::run_textures;
-    int StandardVampire::frames_per_direction[4];
-    float StandardVampire::frame_widths[4];
-    bool StandardVampire::textures_loaded = false;
+    std::vector<Texture2D> SpecialVampire::run_textures;
+    int SpecialVampire::frames_per_direction[4];
+    float SpecialVampire::frame_widths[4];
+    bool SpecialVampire::textures_loaded = false;
 
     // Texture paths for all directions
     const std::string run_paths[4] = {
-        "assets/graphics/Enemies/StandardVampire/StandardVampir_Run_Cycle_Down.png",
-        "assets/graphics/Enemies/StandardVampire/StandardVampir_Run_Cycle_Up.png",
-        "assets/graphics/Enemies/StandardVampire/StandardVampir_Run_Cycle_Left.png",
-        "assets/graphics/Enemies/StandardVampire/StandardVampir_Run_Cycle_Right.png",
+        "assets/graphics/Enemies/SpecialVampire/Enemy_02_Run_Cycle_front.png",
+        "assets/graphics/Enemies/SpecialVampire/Enemy_02_Run_Cycle_back.png",
+        "assets/graphics/Enemies/SpecialVampire/Enemy_02_Run_Cycle_left.png",
+        "assets/graphics/Enemies/SpecialVampire/Enemy_02_Run_Cycle_right.png",
     };
 
-    StandardVampire::StandardVampire(Vector2 start_position)
+    SpecialVampire::SpecialVampire(Vector2 start_position)
         : EnemyExtendedBaseClass(
-            "Standard Vampire",
-            game::EnemyConfig::kStandardVampireHealth,
-            game::EnemyConfig::kStandardVampireMovementSpeed,
-            game::EnemyConfig::kStandardVampireDamage,
-            game::EnemyConfig::kStandardVampireValue,
-            game::EnemyConfig::kStandardVampireSpritePath,
+            "SpecialnVampire",
+            game::EnemyConfig::kSpecialVampireHealth,
+            game::EnemyConfig::kSpecialVampireMovementSpeed,
+            game::EnemyConfig::kSpecialVampireDamage,
+            game::EnemyConfig::kSpecialVampireValue,
+            game::EnemyConfig::kSpecialVampireSpritePath,
             nullptr,
             start_position,
-            game::EnemyConfig::kStandardVampireHitboxWidth,
-            game::EnemyConfig::kStandardVampireHitboxHeight,
-            game::EnemyConfig::kStandardVampireAttackCooldown
+            game::EnemyConfig::kSpecialVampireHitboxWidth,
+            game::EnemyConfig::kSpecialVampireHitboxHeight,
+            game::EnemyConfig::kSpecialVampireAttackCooldown
           ),
           current_direction_index(0),
           animation_timer(0.0f),
           current_frame(0),
-          frames_per_second(1.0f)
+          frames_per_second(10.0f) // Die Animationsgeschwindigkeit kann hier angepasst werden.
     {
         // Lade Texturen und konfiguriere nur einmal
         if (!textures_loaded) {
@@ -48,27 +48,27 @@ namespace enemy
             }
 
             // Setze die spezifischen Werte basierend auf den Assets
-            frames_per_direction[0] = 4;
-            frame_widths[0] = 256.0f / 4.0f; // Front (Run Cycle Down)
+            frames_per_direction[0] = 8;
+            frame_widths[0] = 344.0f / 8.0f; // Front (Run Cycle Down)
 
-            frames_per_direction[1] = 4;
-            frame_widths[1] = 256.0f / 4.0f; // Back (Run Cycle Up)
+            frames_per_direction[1] = 8;
+            frame_widths[1] = 344.0f / 8.0f; // Back (Run Cycle Up)
 
-            frames_per_direction[2] = 5;
-            frame_widths[2] = 320.0f / 5.0f; // Left (Run Cycle Left)
+            frames_per_direction[2] = 8;
+            frame_widths[2] = 344.0f / 8.0f; // Left (Run Cycle Left)
 
-            frames_per_direction[3] = 5;
-            frame_widths[3] = 320.0f / 5.0f; // Right (Run Cycle Right)
+            frames_per_direction[3] = 8;
+            frame_widths[3] = 344.0f / 8.0f; // Right (Run Cycle Right)
 
             textures_loaded = true;
         }
     }
 
-    StandardVampire::~StandardVampire() {
+    SpecialVampire::~SpecialVampire() {
         // Die statischen Texturen werden am Ende des Programms automatisch freigegeben.
     }
 
-    void StandardVampire::Update_AI(float delta_time, Vector2 player_position)
+    void SpecialVampire::Update_AI(float delta_time, Vector2 player_position)
     {
         Vector2 old_position = { this->hitbox.x, this->hitbox.y };
         EnemyExtendedBaseClass::Tick(delta_time);
@@ -83,7 +83,7 @@ namespace enemy
 
         float distance_to_player = Vector2Distance({this->hitbox.x, this->hitbox.y}, player_position);
 
-        if (distance_to_player <= game::EnemyConfig::kStandardVampireAttackRange && this->attack_Cooldown_Timer <= 0.0f && attack_animation_timer <= 0.0f)
+        if (distance_to_player <= game::EnemyConfig::kSpecialVampireAttackRange && this->attack_Cooldown_Timer <= 0.0f && attack_animation_timer <= 0.0f)
         {
             attack_animation_timer = 0.8f;
             this->Melee_Attack();
@@ -117,7 +117,7 @@ namespace enemy
             if (animation_timer >= 1.0f / frames_per_second) {
                 animation_timer = 0.0f;
                 current_frame++;
-
+                
                 if (current_frame >= frames_per_direction[current_direction_index]) {
                     current_frame = 0;
                 }
@@ -127,27 +127,27 @@ namespace enemy
         }
     }
 
-    void StandardVampire::Tick(float delta_time)
+    void SpecialVampire::Tick(float delta_time)
     {
         EnemyExtendedBaseClass::Tick(delta_time);
     }
 
-    void StandardVampire::Melee_Attack()
+    void SpecialVampire::Melee_Attack()
     {
         this->attack_Cooldown_Timer = this->attack_Cooldown_Duration;
     }
 
-    void StandardVampire::Range_Attack()
+    void SpecialVampire::Range_Attack()
     {
-        // Leere Implementierung
+        // Leere Implementierung für den Vampir, da er nur Nahkampfangriffe hat.
     }
 
-    void StandardVampire::Draw()
+    void SpecialVampire::Draw()
     {
         if (run_textures.empty()) return;
-
+        
         Texture2D current_texture = run_textures[current_direction_index];
-
+        
         float frame_width = frame_widths[current_direction_index];
         float frame_height = (float)current_texture.height;
 
@@ -157,7 +157,7 @@ namespace enemy
             frame_width,
             frame_height
         };
-
+        
         // Zentriere den Sprite auf der Hitbox, indem wir den Mittelpunkt der Hitbox verwenden
         Vector2 draw_position = {
             hitbox.x + hitbox.width / 2.0f - frame_width / 2.0f,

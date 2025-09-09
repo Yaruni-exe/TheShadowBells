@@ -21,7 +21,7 @@ void Generator::Unload_Texture() {
 
 Generator::Generator(Vector2 position, const std::string& group_id, float health)
     : group_id(group_id), health(health), max_health(health),
-      // NEU: Animation mit FPS-Parameter initialisieren
+      //  Animation mit FPS-Parameter initialisieren
       animation(Vector2{32, 23}, generator_texture, 6, 6, 1.0f) {
 
     this->hitbox = {position.x, position.y, 32, 23};

@@ -11,7 +11,9 @@
 #include "CollisionResponse.h"
 #include "interactables/BombPickup.h"
 #include "EnemyProjectile.h"
+#include "Store.h"
 #include "../scenes/LevelTransition.h"
+#include "../scenes/GameOverScene.h"
 
 // Pfade zu den Texturen
 const std::string idle_paths[8] = {
@@ -82,10 +84,8 @@ void Gunslinger::Tick(float delta_time, Vector2 worldMousePos) {
 
     // Überprüfen, ob der Spieler tot ist
     if (this->player_Health <= 0) {
-        // Hier können wir ein Flag setzen oder eine globale Funktion aufrufen,
-        // um den Game-Over-Screen zu aktivieren.
-        // Zum Beispiel:
-        // game_manager.SetGameState(GameState::GAME_OVER);
+        game::core::Store::stage->SwitchToNewScene("game_over", std::make_unique<game::scenes::GameOverScene>(nullptr));
+        return; // Verlasse die Funktion, um keine weiteren Aktionen im selben Frame auszuführen.
     }
 
     // Animationen aktualisieren
@@ -141,20 +141,25 @@ void Gunslinger::On_Collision(std::shared_ptr<Collidable> other) {
         }
         case Collision_Type::ENEMY_PROJECTILE:
         {
-            // Typumwandlung und Handhabung des Schadens durch Projektile
             if (auto enemy_projectile = std::dynamic_pointer_cast<game::Enemy_Projectile>(other)) {
                 this->Take_Damage(enemy_projectile->damage);
                 enemy_projectile->Mark_For_Destruction();
             }
             break;
         }
+        // Logik für BOMB_WALL
         case Collision_Type::BOMB_WALL:
         {
             if (this->Get_Bomb_Count() > 0) {
+                // Benutze eine Bombe, wodurch die Explosion ausgelöst wird
                 this->Use_Bomb();
-                if (auto bombWall = std::dynamic_pointer_cast<Bomb_Wall>(other)) {
-                    other->On_Collision(std::make_shared<Explosion>(Vector2{bombWall->Get_Hitbox().x, bombWall->Get_Hitbox().y}));
-                }
+
+                // Markiere die BombWall direkt zur Zerstörung
+                other->Mark_For_Destruction();
+
+            } else {
+                // Keine Bomben, also blockiere die Bewegung
+                CollisionResponse::Resolve_Overlap(shared_from_this(), other);
             }
             break;
         }
@@ -175,7 +180,6 @@ void Gunslinger::On_Collision(std::shared_ptr<Collidable> other) {
         }
         case Collision_Type::LEVEL_EXIT:
         {
-            // Versuche, das kollidierende Objekt als LevelTransition zu behandeln.
             if (auto level_transition = std::dynamic_pointer_cast<LevelTransition>(other)) {
                 level_transition->TriggerTransition();
             }

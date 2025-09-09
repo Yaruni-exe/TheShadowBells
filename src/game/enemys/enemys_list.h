@@ -4,12 +4,11 @@
 namespace enemy {
     enum class EnemyType {
         STANDARD_VAMPIRE,
+        SPECIAL_VAMPIRE,
         // ... hier weitere Typen hinzufügen
     };
 }
 
 // Diese Datei dient als Sammelstelle für alle Gegner-Header.
 #include "StandardVampire.h"
-
-
-// #include "NeuerGegner.h" // Hier kommen zukünftige Gegner hin
+#include "SpecialVampire.h"

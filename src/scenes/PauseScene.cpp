@@ -29,10 +29,15 @@ namespace game::scenes {
         );
 
         menu_button = std::make_unique<MenuButton>(
-            (Rectangle){(float)x_pos, (float)y_start + y_spacing, (float)button_width, (float)button_height},
-            "assets/graphics/backgrounds/Pause_Hauptmenue_Button_White.png",
-            "assets/graphics/backgrounds/Pause_Hauptmenue_Button_Yellow.png",
-            []() { game::core::Store::stage->ReplaceWithNewScene("pause"s, "menu"s, std::make_shared<MenuScene>()); }
+              (Rectangle){(float)x_pos, (float)y_start + y_spacing, (float)button_width, (float)button_height},
+              "assets/graphics/backgrounds/Pause_Hauptmenue_Button_White.png",
+              "assets/graphics/backgrounds/Pause_Hauptmenue_Button_Yellow.png",
+              []() {
+                  // CRUCIAL CHANGE: Remove BOTH the pause and game scenes before creating the new menu scene.
+                  // This guarantees a clean slate.
+                  game::core::Store::stage->ClearAllScenes();
+                  game::core::Store::stage->SwitchToNewScene("menu"s, std::make_shared<MenuScene>());
+              }
         );
     }
 

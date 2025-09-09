@@ -5,7 +5,7 @@ HUD::HUD(std::shared_ptr<Gunslinger> player)
     : player_ptr(player)
 {
     // Lade die 5 Texturen für die Lebensanzeige
-    portrait_texture = LoadTexture("assets/graphics/UI/Placeholder_Charakterprotrat_UI.png");
+    portrait_texture = LoadTexture("assets/graphics/UI/Gunslinger_Charakterprotrait_UI.png");
     healthbar_textures[0] = LoadTexture("assets/graphics/UI/Sprite_Healthbar_full_4.png"); // 100%
     healthbar_textures[1] = LoadTexture("assets/graphics/UI/Sprite_Healthbar_3.png"); // 75%
     healthbar_textures[2] = LoadTexture("assets/graphics/UI/Sprite_Healthbar_2.png"); // 50%
@@ -57,7 +57,10 @@ void HUD::Draw()
     DrawTextureV(healthbar_textures[health_index], healthbar_pos, WHITE);
 
     std::string scoreText = "Score: " + std::to_string(player_ptr->GetScore());
-    DrawText(scoreText.c_str(), GetScreenWidth() - 150, 20, 20, GOLD);
+    DrawText(scoreText.c_str(), GetScreenWidth() - 210, 20, 40, BLACK);
+
+    std::string health_text = "HP: " + std::to_string(static_cast<int>(player_ptr->Get_Health()));
+    DrawText(health_text.c_str(), 180, 95, 50, BLACK);
 
 
     // Bomben-UI

@@ -1,14 +1,19 @@
+#ifndef SPECIALVAMPIRE_H
+#define SPECIALVAMPIRE_H
+
 #pragma once
 
-#include "raylib.h"
+#include "../EnemyExtendedBaseClass.h"
+#include "raymath.h"
 #include <string>
 #include <vector>
 #include <memory>
-#include "../EnemyExtendedBaseClass.h"
+#include "../config_enemys.h.in"
 
 namespace enemy
 {
-    class StandardVampire : public EnemyExtendedBaseClass
+
+    class SpecialVampire : public EnemyExtendedBaseClass
     {
     private:
         // Statische Texturen, die von allen Vampir-Instanzen geteilt werden
@@ -24,15 +29,23 @@ namespace enemy
         float frames_per_second;
 
     public:
-        StandardVampire(Vector2 start_position);
-        ~StandardVampire() override;
 
-        void Update_AI(float delta_time, Vector2 player_position) override;
-        void Tick(float delta_time) override;
+        SpecialVampire(Vector2 start_position);
+        ~SpecialVampire() override;
 
+        // Implementierung der Angriffsfunktionen
         void Melee_Attack() override;
         void Range_Attack() override;
+
+
+        void Update_AI(float delta_time, Vector2 player_position) override;
+
+
+        void Tick(float delta_time) override;
+
 
         void Draw() override;
     };
 }
+
+#endif //SPECIALVAMPIRE_H

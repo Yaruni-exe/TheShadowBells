@@ -25,6 +25,8 @@ add_executable(${PROJECT_NAME} main.cpp
         game/enemys/StandardVampire.cpp
         game/EnemyExtendedBaseClass.cpp
         game/PlayerBaseClass.cpp
+        game/spawner/Level2Spawner.cpp
+        game/enemys/SpecialVampire.cpp
 )
 
 # Add config.h.in file
@@ -35,7 +37,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 )
 
 # Link to libraries
-target_link_libraries(${PROJECT_NAME} core scenes nlohmann_json::nlohmann_json)
+target_link_libraries(${PROJECT_NAME} scenes core scenes nlohmann_json::nlohmann_json)
 
 # Copy assets to assets path
 add_custom_target(copy_assets
