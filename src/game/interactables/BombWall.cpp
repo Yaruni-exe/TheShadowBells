@@ -8,7 +8,7 @@ std::shared_ptr<game::core::Texture2D> Bomb_Wall::destroy_texture_ptr = nullptr;
 
 void Bomb_Wall::Load_Texture() {
     if (wall_texture.id == 0) {
-        wall_texture = LoadTexture("assets/graphics/Items/BombWall/Wand-Sprengstoff_Wald_Base_Sprite_horizontal.png");
+        wall_texture = LoadTexture("assets/graphics/Items/BombWall/Wand_Sprengstoff_Wald_Sprite_Horizontal_One.png");
     }
     // Lade die Animationstextur mit dem korrekten Konstruktor
     if (!destroy_texture_ptr) {
@@ -29,7 +29,7 @@ Bomb_Wall::Bomb_Wall(Vector2 position)
     // Verwende den Konstruktor mit den Positionsargumenten
     : destroy_animation(destroy_texture_ptr, 64, 64, 1, 10, 10, static_cast<int>(position.x), static_cast<int>(position.y)),
       state(BombWallState::IDLE) {
-    this->hitbox = {position.x, position.y, 64, 64};
+    this->hitbox = {position.x, position.y, 32, 64};
 }
 
 Bomb_Wall::~Bomb_Wall() {}
@@ -51,7 +51,7 @@ void Bomb_Wall::On_Collision(std::shared_ptr<Collidable> other) {
 
 void Bomb_Wall::Draw() {
     if (state == BombWallState::IDLE) {
-        DrawTexture(wall_texture, hitbox.x, hitbox.y, WHITE);
+        DrawTexture(wall_texture, hitbox.x, hitbox.y + 20, WHITE);
     } else {
         // Da die Klasse 'draw' nicht besitzt, wird das Zeichnen extern gehandhabt.
         // Sie müssen ein separates Renderer-Objekt verwenden. Dies ist ein Platzhalter.

@@ -42,6 +42,8 @@ namespace game::core
 
         virtual ~Stage() = default;
 
+        void ClearAllScenes();
+
         /**
          * @return Returns a reference to currently active scene.
          */
@@ -102,5 +104,9 @@ namespace game::core
 
         /// This maps stores all referenced scenes. They can be addressed by their names.
         std::map<std::string, std::shared_ptr<game::core::Scene>> scenes_;
+
+        std::string next_scene_name_ = "";
+        std::string old_scene_to_replace_ = "";
+        std::string old_scene_to_erase_ = "";
     };
 }
