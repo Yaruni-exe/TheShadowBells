@@ -4,11 +4,9 @@ add_library(scenes STATIC MenuScene.h MenuScene.cpp GameScene.h GameScene.cpp Pa
         screen.cpp
         screen.h
         Level1Scene.cpp
-
         CreditsScene.cpp
-        MenuScene.cpp
+
         MenuButton.cpp
-        PauseScene.cpp
         GameOverScene.cpp
         ControlsScene.cpp
         Level2Scene.cpp

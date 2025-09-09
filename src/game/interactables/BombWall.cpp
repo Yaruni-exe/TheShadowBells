@@ -8,7 +8,7 @@ std::shared_ptr<game::core::Texture2D> Bomb_Wall::destroy_texture_ptr = nullptr;
 
 void Bomb_Wall::Load_Texture() {
     if (wall_texture.id == 0) {
-        wall_texture = LoadTexture("assets/graphics/Items/BombWall/Wand-Sprengstoff_Industrie_Base_Sprite_Horizontal.png");
+        wall_texture = LoadTexture("assets/graphics/Items/BombWall/Wand-Sprengstoff_Wald_Base_Sprite_horizontal.png");
     }
     // Lade die Animationstextur mit dem korrekten Konstruktor
     if (!destroy_texture_ptr) {

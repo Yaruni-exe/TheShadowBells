@@ -229,8 +229,6 @@ void game::scenes::Level2Scene::Draw()
     // HUD zeichnen
     this->hud_ptr->Draw();
 
-    std::string health_text = "HP: " + std::to_string(static_cast<int>(sp_mp->Get_Health()));
-    DrawText(health_text.c_str(), 100, 95, 50, BLACK);
 /*
     // Debugging-Hitboxen
     for (const auto& p_object : objectManager.managed_objects) {

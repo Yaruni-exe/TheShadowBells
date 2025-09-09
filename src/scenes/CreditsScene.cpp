@@ -8,7 +8,7 @@ using namespace std::string_literals;
 
 namespace game::scenes {
     CreditsScene::CreditsScene() {
-        background_texture = LoadTexture("assets/graphics/backgrounds/Credits_Screen.png");
+        background_texture = LoadTexture("assets/graphics/backgrounds/Creditmenu_screen.png");
 
         int button_width = 256;
         int button_height = 64;

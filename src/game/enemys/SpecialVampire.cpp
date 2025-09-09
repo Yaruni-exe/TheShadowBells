@@ -1,29 +1,32 @@
-#include "StandardVampire.h"
+//
+// Created by Teilnehmer on 08.09.2025.
+//
+#include "SpecialVampire.h"
 #include "../../config_enemys.h.in"
 #include <iostream>
 
 namespace enemy
 {
-    StandardVampire::StandardVampire(Vector2 start_position)
+    SpecialVampire::SpecialVampire(Vector2 start_position)
         : EnemyExtendedBaseClass(
-            "Standard Vampire",
-            game::EnemyConfig::kStandardVampireHealth,
-            game::EnemyConfig::kStandardVampireMovementSpeed,
-            game::EnemyConfig::kStandardVampireDamage,
-            game::EnemyConfig::kStandardVampireValue,
-            game::EnemyConfig::kStandardVampireSpritePath,
+            "SpecialnVampire",
+            game::EnemyConfig::kSpecialVampireHealth,
+            game::EnemyConfig::kSpecialVampireMovementSpeed,
+            game::EnemyConfig::kSpecialVampireDamage,
+            game::EnemyConfig::kSpecialVampireValue,
+            game::EnemyConfig::kSpecialVampireSpritePath,
             nullptr,
             start_position,
-            game::EnemyConfig::kStandardVampireHitboxWidth,
-            game::EnemyConfig::kStandardVampireHitboxHeight,
-            game::EnemyConfig::kStandardVampireAttackCooldown
+            game::EnemyConfig::kSpecialVampireHitboxWidth,
+            game::EnemyConfig::kSpecialVampireHitboxHeight,
+            game::EnemyConfig::kSpecialVampireAttackCooldown
           )
     {
         // Der Animations-Timer wird bereits in der ExtendedBaseClass initialisiert.
         // Hier sind keine weiteren Initialisierungen nötig, aber möglich.
     }
 
-    void StandardVampire::Update_AI(float delta_time, Vector2 player_position)
+    void SpecialVampire::Update_AI(float delta_time, Vector2 player_position)
     {
         // Rufe zuerst die Basis-Tick-Funktion auf (z.B. für Cooldowns)
         EnemyExtendedBaseClass::Tick(delta_time);
@@ -43,7 +46,7 @@ namespace enemy
         float distance_to_player = Vector2Distance({this->hitbox.x, this->hitbox.y}, player_position);
 
         // Wenn der Spieler in Reichweite ist UND der Cooldown bereit ist UND keine Animation läuft...
-        if (distance_to_player <= game::EnemyConfig::kStandardVampireAttackRange && this->attack_Cooldown_Timer <= 0.0f && attack_animation_timer <= 0.0f)
+        if (distance_to_player <= game::EnemyConfig::kSpecialVampireAttackRange && this->attack_Cooldown_Timer <= 0.0f && attack_animation_timer <= 0.0f)
         {
             // ... dann starte die Angriffs-Animation.
             attack_animation_timer = 0.8f; // Setze die Dauer der Animation.
@@ -61,14 +64,14 @@ namespace enemy
         }
     }
 
-    void StandardVampire::Tick(float delta_time)
+    void SpecialVampire::Tick(float delta_time)
     {
         // Die Logik für den Vampir ist nun komplett in Update_AI.
         EnemyExtendedBaseClass::Tick(delta_time);
     }
 
     // Implementierung der Angriffsfunktionen
-    void StandardVampire::Melee_Attack()
+    void SpecialVampire::Melee_Attack()
     {
         // Setzt den Cooldown in der Basisklasse zurück
         this->attack_Cooldown_Timer = this->attack_Cooldown_Duration;
@@ -76,13 +79,13 @@ namespace enemy
 
     }
 
-    void StandardVampire::Range_Attack()
+    void SpecialVampire::Range_Attack()
     {
         // Leere Implementierung für den Vampir, da er nur Nahkampfangriffe hat.
     }
 
 
-    void StandardVampire::Draw()
+    void SpecialVampire::Draw()
     {
         EnemyExtendedBaseClass::Draw();
     }
