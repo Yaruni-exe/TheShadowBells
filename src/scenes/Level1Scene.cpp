@@ -13,6 +13,7 @@
 #include "../game/interactables/BombPickup.h"
 #include "../game/interactables/Medipack.h"
 #include "../game/spawner/Level1Spawner.h"
+#include "../game/spawner/Level2Spawner.h"
 #include "../config_enemys.h.in"
 #include "../game/interactables/Generator.h"
 #include "../game/interactables/GeneratorDoor.h"
@@ -49,7 +50,7 @@ game::scenes::Level1Scene::Level1Scene()
 
     // Erster Spawner
     Rectangle spawner_area_1 = { 936, 200, 48, 48 };
-    auto spawner_1 = std::make_shared<Level1_Spawner>(
+    auto spawner_1 = std::make_shared<Level2_Spawner>(
         spawner_area_1,
         objectManager,
         enemy_List,

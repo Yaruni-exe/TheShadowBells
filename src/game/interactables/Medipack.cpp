@@ -4,42 +4,32 @@
 #include "Medipack.h"
 #include "../../game/PlayerBaseClass.h"
 
-// Definition der statischen Variable
-bool Medipack::texture_loaded = false;
-
 Medipack::Medipack(Vector2 position, float heal_value)
-    : healing_amount(heal_value)
+    : healing_amount(heal_value),
+      // Initialisieren der Animation. Passen Sie die Werte an Ihr Sprite-Sheet an.
+      // Annahme: 32x32px pro Frame, 4 Frames, 4 Spalten
+      animation(Vector2{32, 32}, "assets/graphics/Items/Healthpacks/Health_Pack_Animation.png", 11, 11, 1.0f)
 {
-    hitbox.x = position.x;
-    hitbox.y = position.y;
-    hitbox.width = 32; // Beispielgröße
-    hitbox.height = 32; // Beispielgröße
-
-    // Textur nur einmal laden
-    if (!texture_loaded) {
-        texture = LoadTexture("assets/graphics/Items/Healthpacks/Health-Pack-Item.png");
-        texture_loaded = true;
-    }
+    this->hitbox = {position.x, position.y, 24, 24};
 }
 
-Medipack::~Medipack()
+void Medipack::Tick(float delta_time)
 {
-    if (texture_loaded) {
-        UnloadTexture(texture);
-        texture_loaded = false;
-    }
+    // Die Animation vorantreiben
+    this->animation.Next_Frame(delta_time);
 }
 
 void Medipack::On_Collision(std::shared_ptr<Collidable> other)
 {
-    // Wir casten das andere Objekt zu Player_Base_Class, da nur Spieler mit Medipacks interagieren können
     if (auto player = std::dynamic_pointer_cast<Player_Base_Class>(other)) {
         player->Heal(this->healing_amount);
-        this->Mark_For_Destruction(); // Medipack soll nach Gebrauch verschwinden
+        this->Mark_For_Destruction();
     }
 }
 
 void Medipack::Draw()
 {
-    DrawTextureV(texture, {hitbox.x, hitbox.y}, WHITE);
+    Vector2 new_size = {24, 24};
+    // Den aktuellen Animations-Frame zeichnen
+    this->animation.Draw_Current_Frame({hitbox.x, hitbox.y}, new_size);
 }

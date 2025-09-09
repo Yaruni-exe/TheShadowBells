@@ -25,6 +25,8 @@ add_executable(${PROJECT_NAME} main.cpp
         game/enemys/StandardVampire.cpp
         game/EnemyExtendedBaseClass.cpp
         game/PlayerBaseClass.cpp
+        game/spawner/Level2Spawner.cpp
+        game/enemys/SpecialVampire.cpp
 )
 
 # Add config.h.in file

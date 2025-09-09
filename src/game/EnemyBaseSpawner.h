@@ -1,7 +1,7 @@
 //
 // Created by Kruse on 14/07/2025.
 //
-
+/*
 //////Goblin Spawner Header//////
 #ifndef GOBLINSPAWNER_H
 #define GOBLINSPAWNER_H
@@ -11,7 +11,7 @@
 #include "Collidable.h"
 
 // Spawner für Goblins
-/*lass EnemyBaseSpawner : public Enemy_Spawner {
+lass EnemyBaseSpawner : public Enemy_Spawner {
 public:
     EnemyBaseSpawner(Rectangle spawner_Area,
                   const std::vector<Rectangle>& obstacle_List,
@@ -28,9 +28,10 @@ protected:
      void Draw()override;
 
 };
-*/
+
 
 
 
 
 #endif
+*/

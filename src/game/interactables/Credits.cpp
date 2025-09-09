@@ -11,7 +11,7 @@ Credit::Credit(Vector2 position, int value)
 
       animation(Vector2{28, 27}, "assets/graphics/Items/Credits/Credits_Shine_Animation.png", 9, 9, 1.0f) {
 
-    this->hitbox = {position.x, position.y, 27, 27};
+    this->hitbox = {position.x, position.y, 24, 24};
     // Die Logik zum Laden der Textur ist nun die Aufgabe von RepeatAnimation.
 }
 
@@ -35,7 +35,8 @@ void Credit::On_Collision(std::shared_ptr<Collidable> other) {
 }
 
 void Credit::Draw() {
-    this->animation.Draw_Current_Frame({hitbox.x, hitbox.y});
+    Vector2 new_size = {24, 24};
+    this->animation.Draw_Current_Frame({hitbox.x, hitbox.y},new_size);
 }
 
 int Credit::GetValue() const {

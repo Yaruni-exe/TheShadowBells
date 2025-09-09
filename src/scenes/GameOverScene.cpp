@@ -7,7 +7,7 @@ using namespace std::string_literals;
 
 namespace game::scenes {
     GameOverScene::GameOverScene(std::shared_ptr<game::core::Game> game) : game_(game) {
-        background_texture = LoadTexture("assets/graphics/backgrounds/");
+        background_texture = LoadTexture("assets/graphics/backgrounds/Gameover_background.png");
 
         return_button_texture_normal = LoadTexture("assets/graphics/backgrounds/Pause_Hauptmenue_Button_White.png");
         return_button_texture_hover = LoadTexture("assets/graphics/backgrounds/Pause_Hauptmenue_Button_Yellow.png");
@@ -15,7 +15,7 @@ namespace game::scenes {
         int button_width = 256;
         int button_height = 64;
         int x_pos = (GetScreenWidth() / 2) - (button_width / 2);
-        int y_pos = (GetScreenHeight() / 2) + 50;
+        int y_pos = (GetScreenHeight() / 2) + 140;
 
         return_button_rect = (Rectangle){(float)x_pos, (float)y_pos, (float)button_width, (float)button_height};
     }
