@@ -1,0 +1,14 @@
+{ "columns":47,
+ "image":"..\/Tileset-pngs\/Level2fertig.png",
+ "imageheight":845,
+ "imagewidth":1504,
+ "margin":0,
+ "name":"Level2fertig",
+ "spacing":0,
+ "tilecount":1222,
+ "tiledversion":"1.11.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "type":"tileset",
+ "version":"1.10"
+}
