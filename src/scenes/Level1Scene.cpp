@@ -196,25 +196,92 @@ game::scenes::Level1Scene::Level1Scene()
     // BOMBEN UND BOMBENWÄNDE ERSTELLEN
 
     Bomb_Pickup::Load_Texture();
-    Bomb_Wall::Load_Texture();
+    Bomb_Wall::Load_Destroy_Texture();   // nur noch die Zerstörungs-Animation statisch
+
     // Hinzufügen einer Bomb Wall
-    objectManager.AddObject(std::make_shared<Bomb_Wall>(Vector2{1136, 200}));
+    objectManager.AddObject(std::make_shared<Bomb_Wall>(
+        Vector2{1128, 240},                    // Position
+        Vector2{32, 64},                       // Hitbox
+        "assets/graphics/Items/BombWall/Wand_Sprengstoff_Wald_Sprite_Horizontal_One.png",
+        Vector2{0, 20}                         // Offset
+    ));
 
 
     // Hinzufügen eines Bomben-Pickups in der Nähe der Wand
     objectManager.AddObject(std::make_shared<Bomb_Pickup>(Vector2{672, 448}));
 
-    // Sie können weitere Bombenwände und Pickups an anderen Positionen hinzufügen
-    objectManager.AddObject(std::make_shared<Bomb_Wall>(Vector2{960, 320}));
-    objectManager.AddObject(std::make_shared<Bomb_Wall>(Vector2{960, 576}));
-    objectManager.AddObject(std::make_shared<Bomb_Wall>(Vector2{1136, 392}));
-    objectManager.AddObject(std::make_shared<Bomb_Wall>(Vector2{1136, 584}));
-    objectManager.AddObject(std::make_shared<Bomb_Wall>(Vector2{2416, 208}));
-    objectManager.AddObject(std::make_shared<Bomb_Wall>(Vector2{2496, 512}));
-    objectManager.AddObject(std::make_shared<Bomb_Wall>(Vector2{2720, 512}));
-    objectManager.AddObject(std::make_shared<Bomb_Wall>(Vector2{2752, 288}));
-    objectManager.AddObject(std::make_shared<Bomb_Wall>(Vector2{2784, 416}));
-    objectManager.AddObject(std::make_shared<Bomb_Wall>(Vector2{2912, 512}));
+
+    objectManager.AddObject(std::make_shared<Bomb_Wall>(
+    Vector2{992, 296},
+    Vector2{32, 64},
+    "assets/graphics/Items/BombWall/Wand_Sprengstoff_Wald_Sprite_Horizontal_One.png",
+    Vector2{0, 20}
+));
+
+objectManager.AddObject(std::make_shared<Bomb_Wall>(
+    Vector2{992, 568},
+    Vector2{32, 64},
+    "assets/graphics/Items/BombWall/Wand_Sprengstoff_Wald_Sprite_Horizontal_One.png",
+    Vector2{0, 20}
+));
+
+objectManager.AddObject(std::make_shared<Bomb_Wall>(
+    Vector2{1128, 432},
+    Vector2{32, 64},
+    "assets/graphics/Items/BombWall/Wand_Sprengstoff_Wald_Sprite_Horizontal_One.png",
+    Vector2{0, 20}
+));
+
+objectManager.AddObject(std::make_shared<Bomb_Wall>(
+    Vector2{1128, 624},
+    Vector2{32, 64},
+    "assets/graphics/Items/BombWall/Wand_Sprengstoff_Wald_Sprite_Horizontal_One.png",
+    Vector2{0, 20}
+));
+
+objectManager.AddObject(std::make_shared<Bomb_Wall>(
+    Vector2{2400, 240},
+    Vector2{32, 64},
+    "assets/graphics/Items/BombWall/Wand_Sprengstoff_Industrie_Sprite.png",
+    Vector2{0, 20}
+));
+
+objectManager.AddObject(std::make_shared<Bomb_Wall>(
+    Vector2{2496, 480},
+    Vector2{32, 64},
+    "assets/graphics/Items/BombWall/Wand_Sprengstoff_Industrie_Sprite.png",
+    Vector2{0, 20}
+));
+
+objectManager.AddObject(std::make_shared<Bomb_Wall>(
+    Vector2{2720, 480},
+    Vector2{32, 64},
+    "assets/graphics/Items/BombWall/Wand_Sprengstoff_Industrie_Sprite.png",
+    Vector2{0, 20}
+));
+
+objectManager.AddObject(std::make_shared<Bomb_Wall>(
+    Vector2{2736, 318},
+    Vector2{32, 64},
+    "assets/graphics/Items/BombWall/Wand_Sprengstoff_Industrie_Sprite.png",
+    Vector2{0, 20}
+));
+
+objectManager.AddObject(std::make_shared<Bomb_Wall>(
+    Vector2{2784, 392},
+    Vector2{32, 64},
+    "assets/graphics/Items/BombWall/Wand_Sprengstoff_Industrie_Sprite.png",
+    Vector2{0, 20}
+));
+
+objectManager.AddObject(std::make_shared<Bomb_Wall>(
+    Vector2{2928, 480},
+    Vector2{32, 64},
+    "assets/graphics/Items/BombWall/Wand_Sprengstoff_Industrie_Sprite.png",
+    Vector2{0, 20}
+));
+
+
     objectManager.AddObject(std::make_shared<Bomb_Pickup>(Vector2{576, 220}));
     objectManager.AddObject(std::make_shared<Bomb_Pickup>(Vector2{576, 656}));
     objectManager.AddObject(std::make_shared<Bomb_Pickup>(Vector2{968, 448}));

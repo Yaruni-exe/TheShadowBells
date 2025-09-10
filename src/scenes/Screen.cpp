@@ -42,7 +42,7 @@ void Screen::Load_Levelmap() {
             image_Path_Raw = image_Path_Raw.substr(3);
         }
 
-        std::string image_Path = "../../assets/Tiled/" + image_Path_Raw;
+        std::string image_Path = "assets/Tiled/" + image_Path_Raw;
         tileatlas_Texture = LoadTexture(image_Path.c_str());
 
         if (tileatlas_Texture.id == 0) {

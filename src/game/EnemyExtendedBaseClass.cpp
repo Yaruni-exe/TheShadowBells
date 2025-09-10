@@ -89,6 +89,7 @@ namespace enemy
                 break;
             }
             case Collision_Type::WALL:
+                case Collision_Type::BOMB_WALL:
             case Collision_Type::GENERATOR:
             case Collision_Type::DOOR:
             {

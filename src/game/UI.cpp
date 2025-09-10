@@ -57,7 +57,7 @@ void HUD::Draw()
     DrawTextureV(healthbar_textures[health_index], healthbar_pos, WHITE);
 
     std::string scoreText = "Score: " + std::to_string(player_ptr->GetScore());
-    DrawText(scoreText.c_str(), GetScreenWidth() - 210, 20, 40, BLACK);
+    DrawText(scoreText.c_str(), GetScreenWidth() - 230, 20, 40, BLACK);
 
     std::string health_text = "HP: " + std::to_string(static_cast<int>(player_ptr->Get_Health()));
     DrawText(health_text.c_str(), 180, 95, 50, BLACK);

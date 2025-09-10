@@ -17,6 +17,10 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 add_subdirectory(core)
 add_subdirectory(scenes)
 
+if(MINGW)
+    set(CMAKE_EXE_LINKER_FLAGS "-static")
+endif()
+
 add_executable(${PROJECT_NAME} main.cpp
         Vectors.h
         game/PlayerBaseClass.cpp
@@ -55,3 +59,5 @@ endif ()
 # call e.g. cpack -G ZIP -C Debug to create a binary distribution
 install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION "${PROJECT_NAME}_Bundle")
 install(DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/assets" DESTINATION "${PROJECT_NAME}_Bundle")
+
+file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/../assets" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
