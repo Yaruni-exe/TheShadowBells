@@ -5,7 +5,7 @@
 namespace game {
     class Config final {
     public:
-        inline static constexpr const char* kProjectName = "@PROJECT_NAME@";
+        inline static constexpr const char* kProjectName = "OperationNighthoud";
         inline static constexpr const char* kProjectVersion = "@PROJECT_VERSION@";
         inline static constexpr const char* kProjectVersionMajor = "@PROJECT_VERSION_MAJOR@";
         inline static constexpr const char* kProjectVersionMinor = "@PROJECT_VERSION_MINOR@";

@@ -39,7 +39,7 @@ namespace enemy
           current_direction_index(0),
           animation_timer(0.0f),
           current_frame(0),
-          frames_per_second(10.0f) // Die Animationsgeschwindigkeit kann hier angepasst werden.
+          frames_per_second(4.0f) // Die Animationsgeschwindigkeit kann hier angepasst werden.
     {
         // Lade Texturen und konfiguriere nur einmal
         if (!textures_loaded) {

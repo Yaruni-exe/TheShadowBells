@@ -198,23 +198,22 @@ game::scenes::Level1Scene::Level1Scene()
     Bomb_Pickup::Load_Texture();
     Bomb_Wall::Load_Texture();
     // Hinzufügen einer Bomb Wall
-    objectManager.AddObject(std::make_shared<Bomb_Wall>(Vector2{1136, 200}));
+    objectManager.AddObject(std::make_shared<Bomb_Wall>(Vector2{1128, 240}));
 
 
     // Hinzufügen eines Bomben-Pickups in der Nähe der Wand
     objectManager.AddObject(std::make_shared<Bomb_Pickup>(Vector2{672, 448}));
 
-    // Sie können weitere Bombenwände und Pickups an anderen Positionen hinzufügen
-    objectManager.AddObject(std::make_shared<Bomb_Wall>(Vector2{960, 320}));
-    objectManager.AddObject(std::make_shared<Bomb_Wall>(Vector2{960, 576}));
-    objectManager.AddObject(std::make_shared<Bomb_Wall>(Vector2{1136, 392}));
-    objectManager.AddObject(std::make_shared<Bomb_Wall>(Vector2{1136, 584}));
-    objectManager.AddObject(std::make_shared<Bomb_Wall>(Vector2{2416, 208}));
-    objectManager.AddObject(std::make_shared<Bomb_Wall>(Vector2{2496, 512}));
-    objectManager.AddObject(std::make_shared<Bomb_Wall>(Vector2{2720, 512}));
-    objectManager.AddObject(std::make_shared<Bomb_Wall>(Vector2{2752, 288}));
-    objectManager.AddObject(std::make_shared<Bomb_Wall>(Vector2{2784, 416}));
-    objectManager.AddObject(std::make_shared<Bomb_Wall>(Vector2{2912, 512}));
+    objectManager.AddObject(std::make_shared<Bomb_Wall>(Vector2{992, 296}));
+    objectManager.AddObject(std::make_shared<Bomb_Wall>(Vector2{992, 568}));
+    objectManager.AddObject(std::make_shared<Bomb_Wall>(Vector2{1128, 432}));
+    objectManager.AddObject(std::make_shared<Bomb_Wall>(Vector2{1128, 624}));
+    objectManager.AddObject(std::make_shared<Bomb_Wall>(Vector2{2400, 240}));
+    objectManager.AddObject(std::make_shared<Bomb_Wall>(Vector2{2496, 480}));
+    objectManager.AddObject(std::make_shared<Bomb_Wall>(Vector2{2720, 480}));
+    objectManager.AddObject(std::make_shared<Bomb_Wall>(Vector2{2736, 318}));
+    objectManager.AddObject(std::make_shared<Bomb_Wall>(Vector2{2784, 392}));
+    objectManager.AddObject(std::make_shared<Bomb_Wall>(Vector2{2928, 480}));
     objectManager.AddObject(std::make_shared<Bomb_Pickup>(Vector2{576, 220}));
     objectManager.AddObject(std::make_shared<Bomb_Pickup>(Vector2{576, 656}));
     objectManager.AddObject(std::make_shared<Bomb_Pickup>(Vector2{968, 448}));
