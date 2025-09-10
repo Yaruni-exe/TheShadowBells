@@ -2,6 +2,7 @@
 
 #include "raylib.h"
 #include <memory>
+#include <string>
 #include "../Collidable.h"
 #include "../../core/SpriteAnimated.h"
 #include "../../core/Texture2d.h"
@@ -17,11 +18,19 @@ class Bomb_Wall : public Collidable
 private:
     game::core::SpriteAnimated destroy_animation;
     BombWallState state;
-    static Texture2D wall_texture;
-    static std::shared_ptr<game::core::Texture2D> destroy_texture_ptr;
+
+    Texture2D sprite_texture;   // individuelle Sprite-Textur pro Instanz
+    Vector2 sprite_offset;      // individueller Offset fürs Zeichnen
+
+    static std::shared_ptr<game::core::Texture2D> destroy_texture_ptr; // geteilte Zerstörungs-Textur
 
 public:
-    Bomb_Wall(Vector2 position);
+    // Neuer Konstruktor mit allen Parametern
+    Bomb_Wall(Vector2 position,
+              Vector2 hitbox_size,
+              const std::string& sprite_path,
+              Vector2 sprite_offset = {0,0});
+
     ~Bomb_Wall() override;
 
     void Tick(float delta_time) override;
@@ -31,6 +40,7 @@ public:
 
     BombWallState Get_State() const { return this->state; }
 
-    static void Load_Texture();
-    static void Unload_Texture();
+    // Lade/Entlade die Zerstörungs-Animation (geteilt von allen BombWalls)
+    static void Load_Destroy_Texture();
+    static void Unload_Destroy_Texture();
 };
