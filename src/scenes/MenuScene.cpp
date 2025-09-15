@@ -84,10 +84,11 @@ namespace game::scenes {
         controls_button->Draw(mouse_pos);
         credits_button->Draw(mouse_pos);
         exit_button->Draw(mouse_pos);
-
+/*
         DrawRectangleLinesEx(start_button->rect, 2.0f, RED);
         DrawRectangleLinesEx(controls_button->rect, 2.0f, RED);
         DrawRectangleLinesEx(credits_button->rect, 2.0f, RED);
         DrawRectangleLinesEx(exit_button->rect, 2.0f, RED);
+        */
     }
 }

@@ -19,7 +19,7 @@ void LevelTransition::Tick(float delta_time) {
 
 // Zeichnet die Hitbox für Debugging-Zwecke.
 void LevelTransition::Draw() {
-    DrawRectangleRec(hitbox, GREEN);
+   // DrawRectangleRec(hitbox, GREEN);
 }
 
 // Die eigentliche Logik wird nicht hier, sondern im Gunslinger ausgeführt.

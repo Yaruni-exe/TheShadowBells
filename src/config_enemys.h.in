@@ -40,7 +40,7 @@ namespace game {
         inline static constexpr int kStandardVampireValue = 50;
         inline static constexpr int kStandardVampireHitboxWidth = 23;
         inline static constexpr int kStandardVampireHitboxHeight = 28;
-        inline static constexpr float kStandardVampireAttackCooldown = 10.0f;
+        inline static constexpr float kStandardVampireAttackCooldown = 7.0f;
         inline static constexpr float kStandardVampireAttackRange = 40.0f;
         inline static constexpr const char* kStandardVampireSpritePath = "assets/graphics/Enemies/StandardVampire/StandardVampir_Run_Cycle_Down_Extra.png";
 

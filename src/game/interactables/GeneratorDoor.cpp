@@ -8,7 +8,7 @@ Texture2D GeneratorDoor::door_texture = {0};
 
 void GeneratorDoor::Load_Texture() {
     if (door_texture.id == 0) {
-        door_texture = LoadTexture("assets/graphics/Items/BombWall/Wand-Sprengstoff_Industrie_Base_Sprite_Horizontal.png");
+        door_texture = LoadTexture("assets/graphics/Items/Generator/Zauntor_Base_Sprite.png");
     }
 }
 
@@ -21,7 +21,7 @@ void GeneratorDoor::Unload_Texture() {
 
 GeneratorDoor::GeneratorDoor(Vector2 position, const std::string& group_id, Object_Manager& om)
     : group_id(group_id), objectManager(om) {
-    this->hitbox = {position.x, position.y, (float)door_texture.width, (float)door_texture.height};
+    this->hitbox = {position.x, position.y, 50, 90};
 }
 
 GeneratorDoor::~GeneratorDoor() {
@@ -58,7 +58,11 @@ void GeneratorDoor::On_Collision(std::shared_ptr<Collidable> other) {
 }
 
 void GeneratorDoor::Draw() {
-    DrawTexture(door_texture, hitbox.x, hitbox.y, WHITE);
+    // Position zum Zeichnen berechnen, um das Sprite zu zentrieren
+    float draw_x = hitbox.x + (hitbox.width - door_texture.width) / 2.0f;
+    float draw_y = hitbox.y + (hitbox.height - door_texture.height) / 2.0f;
+
+    DrawTexture(door_texture, draw_x, draw_y, WHITE);
 }
 
 Collision_Type GeneratorDoor::Get_Collision_Type() const {
