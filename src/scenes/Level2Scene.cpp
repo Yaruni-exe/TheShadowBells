@@ -203,28 +203,44 @@ game::scenes::Level2Scene::Level2Scene()
     objectManager.AddObject(std::make_shared<Credit>(Vector2{3616, 1376}, 100));
 
 
-
+    // Load the generator texture once for all generators
+     Generator::Load_Texture();
+    // Load the door texture
+    //GeneratorDoor::Load_Texture();
 
     // GENERATOR UND TÜR GRUPPE 1
-    // Load the generator texture once for all generators
-    Generator::Load_Texture();
-
-    // Load the door texture
-    GeneratorDoor::Load_Texture();
-
-    // Two generators and one door linked by "generator_group_1"
+    // Generatoren erstellen (unverändert)
     objectManager.AddObject(std::make_shared<Generator>(Vector2{3264, 1184}, "generator_group_1", 300.0f));
     objectManager.AddObject(std::make_shared<Generator>(Vector2{3926, 1184}, "generator_group_1", 300.0f));
-    objectManager.AddObject(std::make_shared<GeneratorDoor>(Vector2{3584, 1408}, "generator_group_1", objectManager));
+
+    // Tür individuell mit eigener Hitbox und Sprite
+    objectManager.AddObject(std::make_shared<GeneratorDoor>(
+        Vector2{3584, 1408},       // Position bleibt gleich
+        Vector2{64, 90},           // neue Hitbox
+        "generator_group_1",       // Gruppierung
+        objectManager,
+        "assets/graphics/Items/Generator/Zauntor_Base_Sprite.png" // optional individuelles Sprite
+    ));
 
     // GENERATOR UND TÜR GRUPPE 2
-    // One generator and one door linked by "generator_group_2"
     objectManager.AddObject(std::make_shared<Generator>(Vector2{992, 736}, "generator_group_2", 1.0f));
-    objectManager.AddObject(std::make_shared<GeneratorDoor>(Vector2{1216, 896}, "generator_group_2", objectManager));
+    objectManager.AddObject(std::make_shared<GeneratorDoor>(
+        Vector2{1216, 896},        // Position
+        Vector2{40, 100},           // eigene Hitbox
+        "generator_group_2",
+        objectManager,
+        "assets/graphics/Items/Generator/Zauntor_Base_Sprite.png"
+    ));
 
+    // GENERATOR UND TÜR GRUPPE 3
     objectManager.AddObject(std::make_shared<Generator>(Vector2{2208, 672}, "generator_group_3", 1.0f));
-    objectManager.AddObject(std::make_shared<GeneratorDoor>(Vector2{2304, 896}, "generator_group_3", objectManager));
-
+    objectManager.AddObject(std::make_shared<GeneratorDoor>(
+        Vector2{2304, 896},        // Position
+        Vector2{70, 85},           // eigene Hitbox
+        "generator_group_3",
+        objectManager,
+        "assets/graphics/Items/Generator/Zauntor_Base_Sprite.png"
+    ));
 
 
     // Medipack erstellen
@@ -312,14 +328,14 @@ void game::scenes::Level2Scene::Draw()
     for (int i = 0; i < objectManager.managed_objects.size(); ++i) {
         objectManager.managed_objects[i]->Draw();
     }
-/*'
+
     // Debugging-Hitboxen
     for (const auto& p_object : objectManager.managed_objects) {
         if (p_object != nullptr) {
             DrawRectangleLinesEx(p_object->Get_Hitbox(), 2.0f, RED);
         }
     }
-*/
+
     EndMode2D();
 
     screen.Draw_Level(this->cam, true);

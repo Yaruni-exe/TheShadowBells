@@ -299,7 +299,7 @@ objectManager.AddObject(std::make_shared<Bomb_Wall>(
     game::core::Store::stage->SwitchToNewScene(
         "level2"s,
         //std::make_unique<game::scenes::Level2Scene>()
-        std::make_unique<game::scenes::Level2Scene>()
+        std::make_unique<game::scenes::Cutscene>()
     );
 }
 ));
