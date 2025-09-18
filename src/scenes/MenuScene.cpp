@@ -4,6 +4,8 @@
 #include "Level1Scene.h"
 #include "Level2Scene.h"
 #include <iostream>
+#include <StoryScene.h>
+
 #include "MenuButton.h"
 #include "ControlsScene.h"
 #include "CreditsScene.h"
@@ -12,8 +14,7 @@ using namespace std::string_literals;
 
 namespace game::scenes {
 
-    MenuScene::MenuScene()
-    {
+    MenuScene::MenuScene() {
         background_texture = LoadTexture("assets/graphics/backgrounds/Menu_Menu_Screen.png");
 
         int button_width = 350;
@@ -27,8 +28,9 @@ namespace game::scenes {
             (Rectangle){(float)x_pos, (float)y_start, (float)button_width, (float)button_height},
             "assets/graphics/backgrounds/Menu_Neues_Spiel_Button_White.png",
             "assets/graphics/backgrounds/Menu_Neues_Spiel_Button_Yellow.png",
-            []() { game::core::Store::stage->ReplaceWithNewScene("menu"s, "game"s, std::make_unique<Level1Scene>()); }
-        );
+            []() { game::core::Store::stage->ReplaceWithNewScene("menu"s, "story"s, std::make_unique<StoryScene>()); }
+            );
+
 
         controls_button = std::make_unique<MenuButton>(
             (Rectangle){(float)x_pos, (float)y_start + y_spacing, (float)button_width, (float)button_height},

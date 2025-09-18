@@ -1,7 +1,7 @@
 //
 // Created by Manza on 6/22/2025.
 //
-
+/*
 #pragma once
 
 #include "EnemyBaseClass.h"
@@ -15,7 +15,7 @@ class Collision_Manager;
 namespace enemy {
     /**
      * @brief A ranged enemy whose attacks are locked to 8 directions.
-     */
+
     class Ranged_Enemy_8_Directional : public Enemy_Base_Class {
     private:
         float attack_range;
@@ -34,7 +34,7 @@ namespace enemy {
         /**
          * @brief Determines the discrete 8-way direction based on a normalized vector.
          * @return The corresponding Attack_Direction enum value.
-         */
+
         Attack_Direction Determine_Attack_Direction(float direction_x, float direction_y);
 
     public:
@@ -53,7 +53,7 @@ namespace enemy {
         * @param attack_range Maximum distance to attack.
         * @param attack_cooldown Minimum time between attacks.
         * @param projectile_speed The speed of fired projectiles.
-        */
+
         Ranged_Enemy_8_Directional(std::string name, int health, float movement_speed, int damage, int value,
                                    const char* enemy_sprite_path, const char* proj_sprite_path,
                                    Vector2 start_position, int width, int height,
@@ -63,12 +63,13 @@ namespace enemy {
 
         /**
          * @brief Updates the enemy and its projectiles.
-         */
+
         void Tick(float delta_time, float target_Position_X, float target_Position_Y);
 
         /**
          * @brief Draws the enemy and its projectiles.
-         */
+
         void Draw() const;
     };
 }
+*/

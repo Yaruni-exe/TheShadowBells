@@ -39,7 +39,6 @@ namespace game {
         DrawTextureV(sprite, position, WHITE);
     }
 
-    // Get_Hitbox: Gibt die Kollisionsbox zurück
 
 
     // Get_Collision_Type: Gibt den Typ zurück hier für Gegner

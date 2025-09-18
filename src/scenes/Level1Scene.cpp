@@ -1,6 +1,6 @@
 #include "Level1Scene.h"
 
-#include <CarScene.h>
+
 #include <EndScene.h>
 #include <memory>
 #include <string>
@@ -313,9 +313,9 @@ game::scenes::Level1Scene::~Level1Scene()
 
 void game::scenes::Level1Scene::Update()
 {
-    // Korrigierte Pause-Logik: Verwende SwitchToNewScene mit std::make_shared
-    if (IsKeyPressed(KEY_ESCAPE))
-        game::core::Store::stage->SwitchToNewScene("pause"s, std::make_shared<PauseScene>());
+
+        if (IsKeyPressed(KEY_ESCAPE))
+            game::core::Store::stage->SwitchToNewScene("pause"s, std::make_shared<PauseScene>("level1"s));
 
     // Die restliche Update-Logik deines Spiels, die nur ausgeführt wird,
     // wenn das Spiel aktiv (und nicht pausiert) ist

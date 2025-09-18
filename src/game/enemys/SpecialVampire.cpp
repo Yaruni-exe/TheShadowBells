@@ -24,7 +24,7 @@ namespace enemy
 
     SpecialVampire::SpecialVampire(Vector2 start_position)
         : EnemyExtendedBaseClass(
-            "SpecialnVampire",
+            "Special Vampire",
             game::EnemyConfig::kSpecialVampireHealth,
             game::EnemyConfig::kSpecialVampireMovementSpeed,
             game::EnemyConfig::kSpecialVampireDamage,
@@ -39,34 +39,34 @@ namespace enemy
           current_direction_index(0),
           animation_timer(0.0f),
           current_frame(0),
-          frames_per_second(4.0f) // Die Animationsgeschwindigkeit kann hier angepasst werden.
+          frames_per_second(4.0f) // Animationsgeschwindigkeit
     {
-        // Lade Texturen und konfiguriere nur einmal
         if (!textures_loaded) {
             for (int i = 0; i < 4; ++i) {
                 run_textures.push_back(LoadTexture(run_paths[i].c_str()));
             }
 
-            // Setze die spezifischen Werte basierend auf den Assets
             frames_per_direction[0] = 8;
-            frame_widths[0] = 344.0f / 8.0f; // Front (Run Cycle Down)
+            frame_widths[0] = 344.0f / 8.0f;
 
             frames_per_direction[1] = 8;
-            frame_widths[1] = 344.0f / 8.0f; // Back (Run Cycle Up)
+            frame_widths[1] = 344.0f / 8.0f;
 
             frames_per_direction[2] = 8;
-            frame_widths[2] = 344.0f / 8.0f; // Left (Run Cycle Left)
+            frame_widths[2] = 344.0f / 8.0f;
 
             frames_per_direction[3] = 8;
-            frame_widths[3] = 344.0f / 8.0f; // Right (Run Cycle Right)
+            frame_widths[3] = 344.0f / 8.0f;
 
             textures_loaded = true;
         }
+
+        // Hit-Feedback einstellen
+        hit_duration = 1.0f;
+        hit_color = {108, 76, 68, 255}; // #6c4c44
     }
 
-    SpecialVampire::~SpecialVampire() {
-        // Die statischen Texturen werden am Ende des Programms automatisch freigegeben.
-    }
+    SpecialVampire::~SpecialVampire() {}
 
     void SpecialVampire::Update_AI(float delta_time, Vector2 player_position)
     {
@@ -89,7 +89,7 @@ namespace enemy
             this->Melee_Attack();
         }
 
-        if (current_state != EnemyState::ATTACKING && current_state != EnemyState::DYING)
+        if (current_state != EnemyState::ATTACKING && current_state != EnemyState::DYING && hit_timer <= 0.0f)
         {
             this->Pathfinding(player_position.x, player_position.y, delta_time);
         }
@@ -97,27 +97,18 @@ namespace enemy
         Vector2 new_position = { this->hitbox.x, this->hitbox.y };
         Vector2 movement_vector = Vector2Subtract(new_position, old_position);
 
-        if (Vector2Length(movement_vector) > 0.0f) {
+        if (Vector2Length(movement_vector) > 0.0f && hit_timer <= 0.0f) {
             this->is_Moving = true;
             if (abs(movement_vector.x) > abs(movement_vector.y)) {
-                if (movement_vector.x > 0) {
-                    current_direction_index = 3; // Rechts
-                } else {
-                    current_direction_index = 2; // Links
-                }
+                current_direction_index = movement_vector.x > 0 ? 3 : 2;
             } else {
-                if (movement_vector.y > 0) {
-                    current_direction_index = 0; // Unten / Vorne
-                } else {
-                    current_direction_index = 1; // Oben / Hinten
-                }
+                current_direction_index = movement_vector.y > 0 ? 0 : 1;
             }
 
             animation_timer += delta_time;
             if (animation_timer >= 1.0f / frames_per_second) {
                 animation_timer = 0.0f;
                 current_frame++;
-                
                 if (current_frame >= frames_per_direction[current_direction_index]) {
                     current_frame = 0;
                 }
@@ -137,17 +128,14 @@ namespace enemy
         this->attack_Cooldown_Timer = this->attack_Cooldown_Duration;
     }
 
-    void SpecialVampire::Range_Attack()
-    {
-        // Leere Implementierung für den Vampir, da er nur Nahkampfangriffe hat.
-    }
+    void SpecialVampire::Range_Attack() {}
 
     void SpecialVampire::Draw()
     {
         if (run_textures.empty()) return;
-        
+
         Texture2D current_texture = run_textures[current_direction_index];
-        
+
         float frame_width = frame_widths[current_direction_index];
         float frame_height = (float)current_texture.height;
 
@@ -157,13 +145,14 @@ namespace enemy
             frame_width,
             frame_height
         };
-        
-        // Zentriere den Sprite auf der Hitbox, indem wir den Mittelpunkt der Hitbox verwenden
+
         Vector2 draw_position = {
             hitbox.x + hitbox.width / 2.0f - frame_width / 2.0f,
             hitbox.y + hitbox.height / 2.0f - frame_height / 2.0f
         };
 
-        DrawTextureRec(current_texture, source_rec, draw_position, WHITE);
+        Color draw_color = hit_timer > 0.0f ? hit_color : WHITE;
+
+        DrawTextureRec(current_texture, source_rec, draw_position, draw_color);
     }
 }

@@ -4,24 +4,45 @@
 #include "CollisionResponse.h"
 #include "PlayerBaseClass.h"
 #include "PlayerProjectile.h"
-#include <string>
-#include <iostream>
 #include <memory>
-#include <algorithm>
 
 namespace enemy
 {
-    // Die Take_Damage-Methode aus der neuen Version
     void EnemyExtendedBaseClass::Take_Damage(int damage_amount)
     {
         enemy_Health -= damage_amount;
-        if (this->enemy_Health <= 0)
-        {
+
+        if (enemy_Health > 0) {
+            hit_timer = hit_duration; // startet Hit-Feedback
+        } else {
             this->Mark_For_Destruction();
         }
     }
 
-    // Die Pathfinding-Methode aus der neuen Version
+    void EnemyExtendedBaseClass::Tick(float delta_time)
+    {
+        if (attack_Cooldown_Timer > 0)
+            attack_Cooldown_Timer -= delta_time;
+
+        if (hit_timer > 0.0f)
+            hit_timer -= delta_time;
+    }
+
+    void EnemyExtendedBaseClass::Draw()
+    {
+        if (sprite.id > 0)
+        {
+            Color draw_color = WHITE;
+
+            if (hit_timer > 0.0f)
+            {
+                draw_color = hit_color; // kurz die Hit-Farbe anzeigen
+            }
+
+            DrawTextureV(sprite, {hitbox.x, hitbox.y}, draw_color);
+        }
+    }
+
     void EnemyExtendedBaseClass::Pathfinding(float target_Position_X, float target_Position_Y, float delta_Time)
     {
         float delta_Vector_X = target_Position_X - this->hitbox.x;
@@ -49,90 +70,51 @@ namespace enemy
         }
     }
 
-    // Die On_Collision-Methode, die die Logik zur Kollisionsbehandlung erweitert
-     void EnemyExtendedBaseClass::On_Collision(std::shared_ptr<Collidable> other)
+    void EnemyExtendedBaseClass::On_Collision(std::shared_ptr<Collidable> other)
     {
         Collision_Type other_Type = other->Get_Collision_Type();
 
-        if (other.get() == this) {
-            return;
-        }
+        if (other.get() == this) return;
 
         switch (other_Type)
         {
             case Collision_Type::ENEMY:
-            {
-                // Verhindert, dass Gegner sich gegenseitig durch Wände schieben.
-                if (this->is_Moving)
-                {
+            case Collision_Type::WALL:
+            case Collision_Type::BOMB_WALL:
+            case Collision_Type::GENERATOR:
+            case Collision_Type::DOOR:
+                if (is_Moving)
                     CollisionResponse::Resolve_Overlap(shared_from_this(), other);
-                }
                 break;
-            }
-            case Collision_Type::PLAYER:
-            {
-                // Physikalische Kollision auflösen
-                if (this->is_Moving)
-                {
-                    CollisionResponse::Resolve_Overlap(shared_from_this(), other);
-                }
 
-                // Schaden verursachen, wenn der Cooldown abgelaufen ist.
-                if (this->attack_Cooldown_Timer <= 0)
+            case Collision_Type::PLAYER:
+                if (is_Moving)
+                    CollisionResponse::Resolve_Overlap(shared_from_this(), other);
+
+                if (attack_Cooldown_Timer <= 0)
                 {
                     if (auto player = std::dynamic_pointer_cast<Player_Base_Class>(other))
                     {
-                        player->Take_Damage(this->enemy_Damage);
-                        this->attack_Cooldown_Timer = this->attack_Cooldown_Duration;
+                        player->Take_Damage(enemy_Damage);
+                        attack_Cooldown_Timer = attack_Cooldown_Duration;
                     }
                 }
                 break;
-            }
-            case Collision_Type::WALL:
-                case Collision_Type::BOMB_WALL:
-            case Collision_Type::GENERATOR:
-            case Collision_Type::DOOR:
-            {
-                // Verhindere, dass der Gegner durch statische Objekte läuft.
-                if (this->is_Moving)
-                {
-                    CollisionResponse::Resolve_Overlap(shared_from_this(), other);
-                }
-                break;
-            }
+
             case Collision_Type::PLAYER_PROJECTILE:
-            {
                 if (auto projectile = std::dynamic_pointer_cast<game::Player_Projectile>(other))
                 {
-                    this->Take_Damage(projectile->damage);
+                    Take_Damage(projectile->damage);
                     projectile->Mark_For_Destruction();
                 }
                 break;
-            }
+
             case Collision_Type::ENEMY_SPAWNER:
             case Collision_Type::CONSUMABLE:
-            {
                 break;
-            }
+
             default:
                 break;
         }
     }
-
-    void EnemyExtendedBaseClass::Draw()
-    {
-        if (sprite.id > 0)
-        {
-            DrawTextureV(this->sprite, {this->hitbox.x, this->hitbox.y}, WHITE);
-        }
-    }
-    void EnemyExtendedBaseClass::Tick(float delta_time)
-    {
-        // Zählt den Cooldown-Timer herunter, wenn er größer als 0 ist.
-        if (this->attack_Cooldown_Timer > 0.0f)
-        {
-            this->attack_Cooldown_Timer -= delta_time;
-        }
-    }
-
 }

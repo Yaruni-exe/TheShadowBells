@@ -41,13 +41,12 @@ namespace enemy
           current_frame(0),
           frames_per_second(1.0f)
     {
-        // Lade Texturen und konfiguriere nur einmal
+        // Lade Texturen nur einmal
         if (!textures_loaded) {
             for (int i = 0; i < 4; ++i) {
                 run_textures.push_back(LoadTexture(run_paths[i].c_str()));
             }
 
-            // Setze die spezifischen Werte basierend auf den Assets
             frames_per_direction[0] = 4;
             frame_widths[0] = 256.0f / 4.0f; // Front (Run Cycle Down)
 
@@ -70,6 +69,12 @@ namespace enemy
 
     void StandardVampire::Update_AI(float delta_time, Vector2 player_position)
     {
+        // --- Hit-Feedback: Gegner bleibt kurz stehen ---
+        if (hit_timer > 0.0f) {
+            is_Moving = false;
+            return; // keine Bewegung oder Angriff während Hit
+        }
+
         Vector2 old_position = { this->hitbox.x, this->hitbox.y };
         EnemyExtendedBaseClass::Tick(delta_time);
 
@@ -158,12 +163,17 @@ namespace enemy
             frame_height
         };
 
-        // Zentriere den Sprite auf der Hitbox, indem wir den Mittelpunkt der Hitbox verwenden
         Vector2 draw_position = {
             hitbox.x + hitbox.width / 2.0f - frame_width / 2.0f,
             hitbox.y + hitbox.height / 2.0f - frame_height / 2.0f
         };
 
-        DrawTextureRec(current_texture, source_rec, draw_position, WHITE);
+        // --- Hit-Feedback Farbe anwenden ---
+        Color draw_color = WHITE;
+        if (hit_timer > 0.0f) {
+            draw_color = hit_color; // #6c4c44
+        }
+
+        DrawTextureRec(current_texture, source_rec, draw_position, draw_color);
     }
 }

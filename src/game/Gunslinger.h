@@ -31,7 +31,7 @@ class Gunslinger : public Player_Base_Class
     // Für die manuelle Animation
     int current_frame = 0;
     float frame_timer = 0.0f;
-    const float animation_speed = 0.30f;
+    const float animation_speed = 0.4f;
 
     float ranged_Cooldown_Timer; // Für die Kontrolle der Feuerrate
     int bombs = 0;

@@ -50,7 +50,7 @@ namespace game {
         // Player_Class_One
         inline static constexpr const char* player_Class_One_Sprite_Path = "assets/graphics/player/class1_sheet.png";
         inline static constexpr int player_Class_One_Max_Health = 120;
-        inline static constexpr float player_Class_One_Movement_Speed = 20.0f;
+        inline static constexpr float player_Class_One_Movement_Speed = 16.0f;
         inline static constexpr int player_Class_One_Damage = 50;
         inline static constexpr float player_Class_One_Projectile_Speed = 140.0f;
         inline static constexpr const char* player_Projectile_Sprite_Path = "assets/graphics/Characters/Gunslinger/bullet.png"; //PLACEHOLDER Pfad für Player-Projectile
@@ -87,7 +87,7 @@ namespace game {
                 inline static std::string GetLevelMapPath(int Lvl_Nbr) {
                     switch (Lvl_Nbr) {
                         case 1:
-                            return "assets/Tiled/Levelmaps/Level1.json";
+                            return "assets/Tiled/Levelmaps/Level1_old.json";
                         case 2:
                             return "assets/Tiled/Levelmaps/Level2.json";
                         case 3:

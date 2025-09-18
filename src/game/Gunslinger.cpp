@@ -241,9 +241,3 @@ void Gunslinger::Ranged_Attack() {
         this->ranged_Cooldown_Timer = 0.5f;
     }
 }
-/*
-void Gunslinger::Clean_Up_Projectiles() {
-
-    // Projektile jetzt durch den Object_Manager verwaltet werden.
-}
-*/

@@ -7,10 +7,7 @@
 #include "Collidable.h"
 
 namespace game {
-    /**
-     * @brief Stellt ein einzelnes Projektil dar, das von einem Gegner abgefeuert wird.
-     * Erbt von Collidable, um mit der Spielwelt (Wände, Spieler) interagieren zu können.
-     */
+
     class Enemy_Projectile : public Collidable {
     public:
         Vector2 position;
@@ -20,14 +17,7 @@ namespace game {
         Texture2D sprite;
         Rectangle hitbox;
 
-        /**
-         * @brief Konstruktor für ein neues Gegner-Projektil.
-         * @param start_position Die Startposition des Projektils.
-         * @param direction Der normalisierte Richtungsvektor.
-         * @param projectile_speed Die Geschwindigkeit des Projektils.
-         * @param damage Der Schaden, den das Projektil verursacht.
-         * @param sprite_path Der Pfad zur Sprite-Textur des Projektils.
-         */
+
         Enemy_Projectile(Vector2 start_position, Vector2 direction, float projectile_speed, int damage, const char* sprite_path);
         ~Enemy_Projectile();
 

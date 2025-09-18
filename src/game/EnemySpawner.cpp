@@ -11,7 +11,7 @@ Enemy_Spawner::Enemy_Spawner(Rectangle spawner_Area, Object_Manager& om,
 
 void Enemy_Spawner::Tick(float delta_Time)
 {
-    // Diese generische Tick-Methode wird von der abgeleiteten Klasse aufgerufen.
+    // Diese Tick-Methode wird von der abgeleiteten Klasse aufgerufen.
     time_Since_Last_Spawn_ += delta_Time;
 
     if (time_Since_Last_Spawn_ >= (1.0f / spawn_Rate_) &&

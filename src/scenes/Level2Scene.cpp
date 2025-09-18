@@ -173,7 +173,7 @@ game::scenes::Level2Scene::Level2Scene()
            enemy_List,
            sp_mp,
            4,
-           20.0f
+           30.0f
        );
     objectManager.AddObject(spawner_11);
 
@@ -184,7 +184,7 @@ game::scenes::Level2Scene::Level2Scene()
            enemy_List,
            sp_mp,
            4,
-           20.0f
+           35.0f
        );
     objectManager.AddObject(spawner_12);
 
@@ -269,8 +269,11 @@ game::scenes::Level2Scene::~Level2Scene()
 void game::scenes::Level2Scene::Update()
 {
     // Korrigierte Pause-Logik: Verwende SwitchToNewScene mit std::make_shared
-    if (IsKeyPressed(KEY_ESCAPE))
-        game::core::Store::stage->SwitchToNewScene("pause"s, std::make_shared<PauseScene>());
+   if (IsKeyPressed(KEY_ESCAPE))
+    game::core::Store::stage->SwitchToNewScene(
+        "pause"s,
+        std::make_shared<PauseScene>("level2"s) // Name der aktuellen Szene
+    );
 
     // Die restliche Update-Logik deines Spiels, die nur ausgeführt wird,
     // wenn das Spiel aktiv (und nicht pausiert) ist

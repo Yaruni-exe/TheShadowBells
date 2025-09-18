@@ -20,7 +20,7 @@
 * vorhanden ist (#ifndef), um Fehler zu vermeiden.
 *
 * BITTE DIESEN BLOCK NICHT ENTFERNEN!
-*/
+
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
@@ -113,3 +113,4 @@ namespace enemy {
         return Attack_Direction::NONE;
     }
 }
+*/

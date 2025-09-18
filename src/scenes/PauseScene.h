@@ -3,14 +3,15 @@
 #include <memory>
 #include <functional>
 #include <raylib.h>
-#include "MenuButton.h" // Stellt MenuButton bereit
+#include "MenuButton.h"
 
 namespace game::scenes
 {
     class PauseScene final : public game::core::Scene
     {
     public:
-        PauseScene();
+        // Neuer Konstruktor mit Übergabe des Szenen-Namens
+        PauseScene(const std::string& pausedSceneName); // Neuer Konstruktor
         ~PauseScene() override;
 
         void Update() override;
@@ -19,6 +20,8 @@ namespace game::scenes
     private:
         std::unique_ptr<MenuButton> continue_button;
         std::unique_ptr<MenuButton> menu_button;
-        Texture2D background_texture; // Hier wird die Textur für den Hintergrund gespeichert
+        Texture2D background_texture;
+
+        std::string paused_scene_name; // <-- neue Variable
     };
 }

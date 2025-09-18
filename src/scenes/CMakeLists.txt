@@ -10,8 +10,8 @@ add_library(scenes STATIC MenuScene.h MenuScene.cpp GameScene.h GameScene.cpp Pa
         ControlsScene.cpp
         Level2Scene.cpp
         EndScene.cpp
-        CarScene.cpp
         Cutscene.cpp
+        StoryScene.cpp
 )
 
 target_include_directories(scenes PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
