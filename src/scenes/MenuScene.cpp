@@ -27,22 +27,21 @@ namespace game::scenes {
             (Rectangle){(float)x_pos, (float)y_start, (float)button_width, (float)button_height},
             "assets/graphics/backgrounds/Menu_Neues_Spiel_Button_White.png",
             "assets/graphics/backgrounds/Menu_Neues_Spiel_Button_Yellow.png",
-            //[]() { game::core::Store::stage->ReplaceWithNewScene("menu"s, "game"s, std::make_unique<Level1Scene>()); }
-            []() { game::core::Store::stage->ReplaceWithNewScene("menu"s, "game"s, std::make_unique<Level2Scene>()); }
+            []() { game::core::Store::stage->ReplaceWithNewScene("menu"s, "game"s, std::make_unique<Level1Scene>()); }
         );
 
         controls_button = std::make_unique<MenuButton>(
             (Rectangle){(float)x_pos, (float)y_start + y_spacing, (float)button_width, (float)button_height},
             "assets/graphics/backgrounds/Menu_Steuerung_Button_White.png",
             "assets/graphics/backgrounds/Menu_Steuerung_Button_Yellow.png",
-            []() { game::core::Store::stage->SwitchToNewScene("controls"s, std::make_unique<ControlsScene>()); } // Korrekter Aufruf
+            []() { game::core::Store::stage->ReplaceWithNewScene("menu"s, "controls"s, std::make_unique<ControlsScene>()); }
         );
 
         credits_button = std::make_unique<MenuButton>(
             (Rectangle){(float)x_pos, (float)y_start + 2 * y_spacing, (float)button_width, (float)button_height},
             "assets/graphics/backgrounds/Menu_Credits_Button_White.png",
             "assets/graphics/backgrounds/Menu_Credits_Button_Yellow.png",
-            []() { game::core::Store::stage->SwitchToNewScene("credits"s, std::make_unique<CreditsScene>()); } // Korrekter Aufruf
+            []() { game::core::Store::stage->ReplaceWithNewScene("menu"s, "credits"s, std::make_unique<CreditsScene>()); }
         );
 
         exit_button = std::make_unique<MenuButton>(

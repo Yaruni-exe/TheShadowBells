@@ -9,12 +9,12 @@ namespace game::scenes {
 
     EndScene::EndScene()
         : animation(
-            {1929.0f, 1080.0f}, // Frame-Größe: 9648 / 5 = 1929 px pro Frame
-            "assets/graphics/backgrounds/Endscreen-Sheet.png",
-            5,           // Anzahl der Frames
-            5,           // Frames pro Reihe
-            6.0f         // FPS
-        )
+                {970.0f, 540.0f}, // Framegröße
+                "assets/graphics/backgrounds/Endscreen-Sheet.png",
+                9,           // Anzahl der Frames
+                9,           // Frames pro Reihe
+                6.0f         // FPS
+            )
     {
         int button_width  = 256;
         int button_height = 64;
@@ -57,7 +57,7 @@ namespace game::scenes {
     void EndScene::Draw()
     {
         // Frame-Größe manuell
-        Vector2 frame_size = {1929.0f, 1080.0f};
+        Vector2 frame_size = {970.0f, 540.0f};
 
         // Basis-Skalierung berechnen
         float scaleX = (float)GetScreenWidth() / frame_size.x;

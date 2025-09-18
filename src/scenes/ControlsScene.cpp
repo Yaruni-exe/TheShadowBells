@@ -8,7 +8,7 @@ using namespace std::string_literals;
 
 namespace game::scenes {
     ControlsScene::ControlsScene() {
-        background_texture = LoadTexture("assets/graphics/backgrounds/Control_Screen.png");
+        background_texture = LoadTexture("assets/graphics/backgrounds/Control_Screen_Neu.png");
         
         int button_width = 256;
         int button_height = 64;
@@ -19,7 +19,13 @@ namespace game::scenes {
             (Rectangle){(float)x_pos, (float)y_pos, (float)button_width, (float)button_height},
             "assets/graphics/backgrounds/Control_Button_Zurueck_White.png",
             "assets/graphics/backgrounds/Control_Button_Zurueck_Yellow.png",
-            []() { game::core::Store::stage->ReplaceWithExistingScene("controls"s, "menu"s); }
+            []() {
+            game::core::Store::stage->ReplaceWithNewScene(
+          "controls"s,
+          "menu"s,
+          std::make_unique<MenuScene>()
+      );
+  }
         );
     }
 

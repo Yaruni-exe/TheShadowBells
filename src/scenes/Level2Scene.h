@@ -21,7 +21,7 @@ namespace game::scenes
 {
     class Level2Scene final : public game::core::Scene
     {private:
-        Vector2 sp{1024,1056};
+        Vector2 sp{1030,1056};
         Rectangle wb{0,0,game::Config::kStageWidth*2,game::Config::kStageHeight*2};
         Collision_Manager p_cm;
         std::shared_ptr<Gunslinger> sp_mp;

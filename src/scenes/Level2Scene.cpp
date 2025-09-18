@@ -204,7 +204,7 @@ game::scenes::Level2Scene::Level2Scene()
 
 
     // Load the generator texture once for all generators
-     Generator::Load_Texture();
+    Generator::Load_Texture();
     // Load the door texture
     //GeneratorDoor::Load_Texture();
 
@@ -216,31 +216,32 @@ game::scenes::Level2Scene::Level2Scene()
     // Tür individuell mit eigener Hitbox und Sprite
     objectManager.AddObject(std::make_shared<GeneratorDoor>(
         Vector2{3584, 1408},       // Position bleibt gleich
-        Vector2{64, 90},           // neue Hitbox
+        Vector2{64, 32},           // neue Hitbox
         "generator_group_1",       // Gruppierung
         objectManager,
-        "assets/graphics/Items/Generator/Zauntor_Base_Sprite.png" // optional individuelles Sprite
+        "assets/graphics/Items/Generator/Zauntor_Horizontal.png" // optional individuelles Sprite
     ));
 
     // GENERATOR UND TÜR GRUPPE 2
     objectManager.AddObject(std::make_shared<Generator>(Vector2{992, 736}, "generator_group_2", 1.0f));
     objectManager.AddObject(std::make_shared<GeneratorDoor>(
         Vector2{1216, 896},        // Position
-        Vector2{40, 100},           // eigene Hitbox
+        Vector2{32, 96},           // eigene Hitbox
         "generator_group_2",
         objectManager,
-        "assets/graphics/Items/Generator/Zauntor_Base_Sprite.png"
+        "assets/graphics/Items/Generator/Zauntor_Vertikal.png"
     ));
 
     // GENERATOR UND TÜR GRUPPE 3
     objectManager.AddObject(std::make_shared<Generator>(Vector2{2208, 672}, "generator_group_3", 1.0f));
     objectManager.AddObject(std::make_shared<GeneratorDoor>(
         Vector2{2304, 896},        // Position
-        Vector2{70, 85},           // eigene Hitbox
+        Vector2{32, 96},           // eigene Hitbox
         "generator_group_3",
         objectManager,
-        "assets/graphics/Items/Generator/Zauntor_Base_Sprite.png"
+        "assets/graphics/Items/Generator/Zauntor_Vertikal.png"
     ));
+
 
 
     // Medipack erstellen
@@ -285,7 +286,7 @@ void game::scenes::Level2Scene::Update()
     // Spieler-Tick aufrufen
     sp_mp->Tick(dtm.Get_Dt(), worldMousePos);
 
-    // Wichtige Korrektur: Die KI der Gegner muss VOR ihrem Tick-Aufruf aktualisiert werden.
+
     for (int i = 0; i < objectManager.managed_objects.size(); ++i) {
         auto& current_obj = objectManager.managed_objects[i];
 
@@ -328,14 +329,14 @@ void game::scenes::Level2Scene::Draw()
     for (int i = 0; i < objectManager.managed_objects.size(); ++i) {
         objectManager.managed_objects[i]->Draw();
     }
-
+/*
     // Debugging-Hitboxen
     for (const auto& p_object : objectManager.managed_objects) {
         if (p_object != nullptr) {
             DrawRectangleLinesEx(p_object->Get_Hitbox(), 2.0f, RED);
         }
     }
-
+*/
     EndMode2D();
 
     screen.Draw_Level(this->cam, true);

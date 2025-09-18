@@ -7,7 +7,7 @@ using namespace std::string_literals;
 namespace game::scenes {
 
     Cutscene::Cutscene()
-        : frameWidth(426), frameHeight(240), totalFrames(51), fps(6.0f) // fps einstellbar
+        : frameWidth(213), frameHeight(120), totalFrames(51), fps(15.0f)  // fps einstellbar
     {
         // Spritesheet laden
         spritesheet = LoadTexture("assets/graphics/backgrounds/Leveltransition-Sheet.png");

@@ -19,7 +19,13 @@ namespace game::scenes {
             (Rectangle){(float)x_pos, (float)y_pos, (float)button_width, (float)button_height},
             "assets/graphics/backgrounds/Control_Button_Zurueck_White.png",
             "assets/graphics/backgrounds/Control_Button_Zurueck_Yellow.png",
-            []() { game::core::Store::stage->ReplaceWithExistingScene("credits"s, "menu"s); }
+            []() {
+       game::core::Store::stage->ReplaceWithNewScene(
+           "credits"s,
+           "menu"s,
+           std::make_unique<MenuScene>()
+       );
+   }
         );
     }
 
