@@ -12,6 +12,9 @@ namespace game::scenes {
         return_button_texture_normal = LoadTexture("assets/graphics/backgrounds/Pause_Hauptmenue_Button_White.png");
         return_button_texture_hover = LoadTexture("assets/graphics/backgrounds/Pause_Hauptmenue_Button_Yellow.png");
 
+
+        game_over_text = LoadTexture("assets/graphics/backgrounds/Gameover_text.png");
+
         int button_width = 256;
         int button_height = 64;
         int x_pos = (GetScreenWidth() / 2) - (button_width / 2);
@@ -25,6 +28,9 @@ namespace game::scenes {
         UnloadTexture(background_texture);
         UnloadTexture(return_button_texture_normal);
         UnloadTexture(return_button_texture_hover);
+
+        // Neues PNG freigeben
+        UnloadTexture(game_over_text);
     }
 
     void GameOverScene::Update()
@@ -32,8 +38,6 @@ namespace game::scenes {
         Vector2 mouse_pos = GetMousePosition();
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             if (CheckCollisionPointRec(mouse_pos, return_button_rect)) {
-                // Die MenuScene wird jetzt ohne Argumente erstellt,
-                // um den Fehler zu beheben.
                 game::core::Store::stage->SwitchToNewScene("menu"s, std::make_unique<MenuScene>());
             }
         }
@@ -46,9 +50,10 @@ namespace game::scenes {
         Vector2 origin = {0.0f, 0.0f};
         DrawTexturePro(background_texture, source_rec, dest_rec, origin, 0.0f, WHITE);
 
-        const char* game_over_text = "GAME OVER";
-        int text_width = MeasureText(game_over_text, 80);
-        DrawText(game_over_text, (GetScreenWidth() - text_width) / 2, GetScreenHeight() / 2 - 100, 80, RED);
+        // PNG zeichnen
+        int x_center = (GetScreenWidth() - game_over_text.width) / 2;
+        int y_center = (GetScreenHeight() - game_over_text.height) / 2 - 380;
+        DrawTexture(game_over_text, x_center, y_center, WHITE);
 
         Vector2 mouse_pos = GetMousePosition();
         if (CheckCollisionPointRec(mouse_pos, return_button_rect)) {

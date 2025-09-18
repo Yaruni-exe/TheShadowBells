@@ -1,4 +1,7 @@
 #include "Level1Scene.h"
+
+#include <CarScene.h>
+#include <EndScene.h>
 #include <memory>
 #include <string>
 #include <raylib-cpp.hpp>
@@ -48,15 +51,15 @@ game::scenes::Level1Scene::Level1Scene()
 
     std::vector<enemy::Enemy_Base_Class*> enemy_List;
 
-    // Erster Spawner
+   // Erster Spawner
     Rectangle spawner_area_1 = { 936, 200, 48, 48 };
-    auto spawner_1 = std::make_shared<Level2_Spawner>(
+    auto spawner_1 = std::make_shared<Level1_Spawner>(
         spawner_area_1,
         objectManager,
         enemy_List,
         sp_mp,
-        2,
-        20.0f
+        1,
+        16.0f
     );
     objectManager.AddObject(spawner_1);
 
@@ -67,8 +70,8 @@ game::scenes::Level1Scene::Level1Scene()
         objectManager,
         enemy_List,
         sp_mp,
-        2,
-        20.0f
+        1,
+        16.0f
     );
     objectManager.AddObject(spawner_2);
 
@@ -81,7 +84,7 @@ game::scenes::Level1Scene::Level1Scene()
            enemy_List,
            sp_mp,
            2,
-           12.0f
+           8.0f
        );
     objectManager.AddObject(spawner_3);
 
@@ -93,7 +96,7 @@ game::scenes::Level1Scene::Level1Scene()
            enemy_List,
            sp_mp,
            2,
-           12.0f
+           8.0f
        );
 
     objectManager.AddObject(spawner_4);
@@ -125,27 +128,27 @@ game::scenes::Level1Scene::Level1Scene()
     objectManager.AddObject(spawner_6);
 
     // Siebter SPAWNER
-    Rectangle spawner_area_7 = { 2456, 288, 48, 128 };
+    Rectangle spawner_area_7 = { 2480, 288, 48, 96 };
     auto spawner_7 = std::make_shared<Level1_Spawner>(
         spawner_area_7,
         objectManager,
            enemy_List,
            sp_mp,
            3,
-           12.0f
+           8.0f
        );
 
     objectManager.AddObject(spawner_7);
 
     // Achter SPAWNER
-    Rectangle spawner_area_8 = { 2528, 440, 128, 48 };
+    Rectangle spawner_area_8 = { 2592, 472, 96, 48 };
     auto spawner_8 = std::make_shared<Level1_Spawner>(
         spawner_area_8,
         objectManager,
            enemy_List,
            sp_mp,
            3,
-           12.0f
+           8.0f
        );
 
     objectManager.AddObject(spawner_8);
@@ -158,142 +161,134 @@ game::scenes::Level1Scene::Level1Scene()
            enemy_List,
            sp_mp,
            2,
-           20.0f
+           16.0f
        );
 
     objectManager.AddObject(spawner_9);
 
     // Zehnter SPAWNER
-    Rectangle spawner_area_10 = { 2848, 384, 64, 36 };
+    Rectangle spawner_area_10 = { 2816, 380, 64, 36 };
     auto spawner_10 = std::make_shared<Level1_Spawner>(
         spawner_area_10,
         objectManager,
            enemy_List,
            sp_mp,
            2,
-           20.0f
+           16.0f
        );
 
     objectManager.AddObject(spawner_10);
 
     //  MÜNZEN ERSTELLT
-    objectManager.AddObject(std::make_shared<Credit>(Vector2{420, 260}, 100));
-    objectManager.AddObject(std::make_shared<Credit>(Vector2{420, 644}, 100));
+    objectManager.AddObject(std::make_shared<Credit>(Vector2{420, 260}, 200));
+    objectManager.AddObject(std::make_shared<Credit>(Vector2{420, 644}, 200));
     objectManager.AddObject(std::make_shared<Credit>(Vector2{1040, 356}, 200));
     objectManager.AddObject(std::make_shared<Credit>(Vector2{1040, 548}, 200));
     objectManager.AddObject(std::make_shared<Credit>(Vector2{1648, 468}, 200));
     objectManager.AddObject(std::make_shared<Credit>(Vector2{1952, 324}, 200));
     objectManager.AddObject(std::make_shared<Credit>(Vector2{1985, 672}, 200));
-    objectManager.AddObject(std::make_shared<Credit>(Vector2{2339, 324}, 200));
-    objectManager.AddObject(std::make_shared<Credit>(Vector2{2339, 580}, 200));
-    objectManager.AddObject(std::make_shared<Credit>(Vector2{2436, 450}, 200));
-    objectManager.AddObject(std::make_shared<Credit>(Vector2{2436, 482}, 200));
-    objectManager.AddObject(std::make_shared<Credit>(Vector2{2689, 228}, 200));
-    objectManager.AddObject(std::make_shared<Credit>(Vector2{2820, 645}, 200));
-    objectManager.AddObject(std::make_shared<Credit>(Vector2{2945, 228}, 200));
-    objectManager.AddObject(std::make_shared<Credit>(Vector2{2977, 260}, 200));
+    objectManager.AddObject(std::make_shared<Credit>(Vector2{2307, 326}, 200));
+    objectManager.AddObject(std::make_shared<Credit>(Vector2{2307, 547}, 200));
+    objectManager.AddObject(std::make_shared<Credit>(Vector2{2438, 450}, 200));
+    objectManager.AddObject(std::make_shared<Credit>(Vector2{2438, 482}, 200));
+    objectManager.AddObject(std::make_shared<Credit>(Vector2{2690, 230}, 200));
+    objectManager.AddObject(std::make_shared<Credit>(Vector2{2822, 646}, 200));
+    objectManager.AddObject(std::make_shared<Credit>(Vector2{2948, 230}, 200));
+    objectManager.AddObject(std::make_shared<Credit>(Vector2{2978, 262}, 200));
 
     // BOMBEN UND BOMBENWÄNDE ERSTELLEN
 
     Bomb_Pickup::Load_Texture();
     Bomb_Wall::Load_Destroy_Texture();   // nur noch die Zerstörungs-Animation statisch
 
-    // Hinzufügen einer Bomb Wall
+   // Hinzufügen einer Bomb Wall
     objectManager.AddObject(std::make_shared<Bomb_Wall>(
-        Vector2{1128, 240},                    // Position
-        Vector2{32, 64},                       // Hitbox
-        "assets/graphics/Items/BombWall/Wand_Sprengstoff_Wald_Sprite_Horizontal_One.png",
-        Vector2{0, 20}                         // Offset
-    ));
+    Vector2{975, 324},
+    Vector2{96, 20},
+    "assets/graphics/Items/BombWall/Wand_Sprengstoff_Wald_Sprite_Horizontal_3Tiles.png",
+    Vector2{0, 0}
+));
 
 
     // Hinzufügen eines Bomben-Pickups in der Nähe der Wand
-    objectManager.AddObject(std::make_shared<Bomb_Pickup>(Vector2{672, 448}));
+    objectManager.AddObject(std::make_shared<Bomb_Pickup>(Vector2{576, 220}));
 
 
     objectManager.AddObject(std::make_shared<Bomb_Wall>(
-    Vector2{992, 296},
-    Vector2{32, 64},
-    "assets/graphics/Items/BombWall/Wand_Sprengstoff_Wald_Sprite_Horizontal_One.png",
-    Vector2{0, 20}
+        Vector2{1167, 324},                    // Position
+        Vector2{96, 20},
+    "assets/graphics/Items/BombWall/Wand_Sprengstoff_Wald_Sprite_Horizontal_3Tiles.png",
+    Vector2{0, 0}                         // Offset
+        ));
+
+objectManager.AddObject(std::make_shared<Bomb_Wall>(
+    Vector2{975, 584},
+    Vector2{96, 20},
+    "assets/graphics/Items/BombWall/Wand_Sprengstoff_Wald_Sprite_Horizontal_3Tiles.png",
+    Vector2{0, 0}
 ));
 
 objectManager.AddObject(std::make_shared<Bomb_Wall>(
-    Vector2{992, 568},
-    Vector2{32, 64},
-    "assets/graphics/Items/BombWall/Wand_Sprengstoff_Wald_Sprite_Horizontal_One.png",
-    Vector2{0, 20}
+    Vector2{1167, 584},
+    Vector2{96, 20},
+    "assets/graphics/Items/BombWall/Wand_Sprengstoff_Wald_Sprite_Horizontal_3Tiles.png",
+    Vector2{0, 0}
 ));
 
 objectManager.AddObject(std::make_shared<Bomb_Wall>(
-    Vector2{1128, 432},
-    Vector2{32, 64},
-    "assets/graphics/Items/BombWall/Wand_Sprengstoff_Wald_Sprite_Horizontal_One.png",
-    Vector2{0, 20}
+    Vector2{2368, 400},
+    Vector2{64, 20},
+    "assets/graphics/Items/BombWall/Wand_Sprengstoff_Wald_Sprite_Horizontal_2Tiles.png",
+    Vector2{0, 0}
 ));
 
 objectManager.AddObject(std::make_shared<Bomb_Wall>(
-    Vector2{1128, 624},
-    Vector2{32, 64},
-    "assets/graphics/Items/BombWall/Wand_Sprengstoff_Wald_Sprite_Horizontal_One.png",
-    Vector2{0, 20}
+    Vector2{2496, 504},
+    Vector2{64, 20},
+    "assets/graphics/Items/BombWall/Wand_Sprengstoff_Wald_Sprite_Horizontal_2Tiles.png",
+    Vector2{0, 0}
 ));
 
 objectManager.AddObject(std::make_shared<Bomb_Wall>(
-    Vector2{2400, 240},
-    Vector2{32, 64},
-    "assets/graphics/Items/BombWall/Wand_Sprengstoff_Industrie_Sprite.png",
-    Vector2{0, 20}
+    Vector2{2656, 294},
+    Vector2{64, 20},
+    "assets/graphics/Items/BombWall/Wand_Sprengstoff_Wald_Sprite_Horizontal_2Tiles.png",
+    Vector2{0, 0}
 ));
 
 objectManager.AddObject(std::make_shared<Bomb_Wall>(
-    Vector2{2496, 480},
-    Vector2{32, 64},
-    "assets/graphics/Items/BombWall/Wand_Sprengstoff_Industrie_Sprite.png",
-    Vector2{0, 20}
+    Vector2{2656, 392},
+    Vector2{64, 20},
+    "assets/graphics/Items/BombWall/Wand_Sprengstoff_Wald_Sprite_Horizontal_2Tiles.png",
+    Vector2{0, 0}
 ));
 
 objectManager.AddObject(std::make_shared<Bomb_Wall>(
-    Vector2{2720, 480},
-    Vector2{32, 64},
-    "assets/graphics/Items/BombWall/Wand_Sprengstoff_Industrie_Sprite.png",
-    Vector2{0, 20}
+    Vector2{2720, 504},
+    Vector2{64, 20},
+    "assets/graphics/Items/BombWall/Wand_Sprengstoff_Wald_Sprite_Horizontal_2Tiles.png",
+    Vector2{0, 0}
 ));
 
 objectManager.AddObject(std::make_shared<Bomb_Wall>(
-    Vector2{2736, 318},
-    Vector2{32, 64},
-    "assets/graphics/Items/BombWall/Wand_Sprengstoff_Industrie_Sprite.png",
-    Vector2{0, 20}
-));
-
-objectManager.AddObject(std::make_shared<Bomb_Wall>(
-    Vector2{2784, 392},
-    Vector2{32, 64},
-    "assets/graphics/Items/BombWall/Wand_Sprengstoff_Industrie_Sprite.png",
-    Vector2{0, 20}
-));
-
-objectManager.AddObject(std::make_shared<Bomb_Wall>(
-    Vector2{2928, 480},
-    Vector2{32, 64},
-    "assets/graphics/Items/BombWall/Wand_Sprengstoff_Industrie_Sprite.png",
-    Vector2{0, 20}
+    Vector2{2912, 504},
+    Vector2{96, 20},
+    "assets/graphics/Items/BombWall/Wand_Sprengstoff_Wald_Sprite_Horizontal_3Tiles.png",
+    Vector2{0, 0}
 ));
 
 
-    objectManager.AddObject(std::make_shared<Bomb_Pickup>(Vector2{576, 220}));
     objectManager.AddObject(std::make_shared<Bomb_Pickup>(Vector2{576, 656}));
     objectManager.AddObject(std::make_shared<Bomb_Pickup>(Vector2{968, 448}));
     objectManager.AddObject(std::make_shared<Bomb_Pickup>(Vector2{2084, 416}));
     objectManager.AddObject(std::make_shared<Bomb_Pickup>(Vector2{2084, 480}));
-    objectManager.AddObject(std::make_shared<Bomb_Pickup>(Vector2{2560, 336}));
+    objectManager.AddObject(std::make_shared<Bomb_Pickup>(Vector2{2820, 464}));
     objectManager.AddObject(std::make_shared<Bomb_Pickup>(Vector2{2980, 228}));
 
 
     // Medipack erstellen
-    objectManager.AddObject(std::make_shared<Medipack>(Vector2{1096, 448}, 25.0f));
-    objectManager.AddObject(std::make_shared<Medipack>(Vector2{2812, 476}, 25.0f));
+    objectManager.AddObject(std::make_shared<Medipack>(Vector2{1120, 448}, 40.0f));
+    objectManager.AddObject(std::make_shared<Medipack>(Vector2{2568, 340}, 40.0f));
 
     // Hinzufügen der Level-Übergangs-Hitbox
     Rectangle level_transition_hitbox = { 2912.0f, 640.0f, 96.0f, 32.0f };
@@ -303,7 +298,8 @@ objectManager.AddObject(std::make_shared<Bomb_Wall>(
 []() {
     game::core::Store::stage->SwitchToNewScene(
         "level2"s,
-        std::make_unique<game::scenes::Level2Scene>()
+        //std::make_unique<game::scenes::Level2Scene>()
+        std::make_unique<game::scenes::Cutscene>()
     );
 }
 ));
@@ -379,14 +375,14 @@ void game::scenes::Level1Scene::Draw()
         objectManager.managed_objects[i]->Draw();
     }
 
-
+/*
     // Hitboxen anzeigen
     for (const auto& p_object : objectManager.managed_objects) {
         if (p_object != nullptr) {
             DrawRectangleLinesEx(p_object->Get_Hitbox(), 2.0f, RED);
         }
     }
-
+*/
 
     EndMode2D();
 
@@ -394,6 +390,8 @@ void game::scenes::Level1Scene::Draw()
 
     // HUD zeichnen
       this->hud_ptr->Draw();
+
+
 
    /* std::string health_text = "HP: " + std::to_string(static_cast<int>(sp_mp->Get_Health()));
     DrawText(health_text.c_str(), 100, 95, 50, BLACK);

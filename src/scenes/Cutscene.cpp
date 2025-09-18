@@ -1,48 +1,52 @@
-/*
-
 #include "Cutscene.h"
 #include <Store.h>
 #include "Level2Scene.h"
 
-
 using namespace std::string_literals;
 
 namespace game::scenes {
-    Cutscene::Cutscene() {
-        std::string video_path = "assets/videos/mein_video.mp4";
-        TraceLog(LOG_INFO, "Lade Video von: %s", video_path.c_str());
-        video_player = LoadVideo(video_path.c_str());
-        if (video_player.frameCount > 0) {
-            is_video_ready = true;
-            PlayVideo(video_player);
+
+    Cutscene::Cutscene()
+        : frameWidth(426), frameHeight(240), totalFrames(51), fps(6.0f) // fps einstellbar
+    {
+        // Spritesheet laden
+        spritesheet = LoadTexture("assets/graphics/backgrounds/Leveltransition-Sheet.png");
+        if (spritesheet.id > 0) {
+            is_ready = true;
         } else {
-            TraceLog(LOG_WARNING, "Video konnte nicht geladen werden.");
-            is_video_ready = false;
+            TraceLog(LOG_WARNING, "Spritesheet konnte nicht geladen werden.");
+            is_ready = false;
         }
+
+        // Timer starten
+        playTime = 0.0f;
+        duration = 3.0f; // Sekunden bis zum Szenenwechsel (einstellbar)
     }
 
     Cutscene::~Cutscene() {
-        if (is_video_ready) {
-            UnloadVideo(video_player);
+        if (is_ready) {
+            UnloadTexture(spritesheet);
         }
     }
 
     void Cutscene::Update() {
-        if (!is_video_ready) {
+        if (!is_ready) {
             game::core::Store::stage->SwitchToNewScene("level2"s, std::make_unique<Level2Scene>());
             return;
         }
 
-        UpdateVideo(video_player);
-        if (GetFrameTime() > 0.0f) {
-            has_played_once = true;
-        }
-        
-        if (has_played_once && GetVideoTime(video_player) >= GetVideoLength(video_player) - GetFrameTime()) {
-            TraceLog(LOG_INFO, "Video beendet, wechsle zu Level 2.");
+        float dt = GetFrameTime();
+        playTime += dt;
+
+        // aktuellen Frame berechnen
+        currentFrame = (int)(playTime * fps) % totalFrames;
+
+        // Wenn die Dauer abgelaufen ist, zur nächsten Szene wechseln
+        if (playTime >= duration) {
             game::core::Store::stage->SwitchToNewScene("level2"s, std::make_unique<Level2Scene>());
         }
 
+        // Optional: Skip mit Taste
         if (IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_SPACE)) {
             game::core::Store::stage->SwitchToNewScene("level2"s, std::make_unique<Level2Scene>());
         }
@@ -50,19 +54,22 @@ namespace game::scenes {
 
     void Cutscene::Draw() {
         ClearBackground(BLACK);
-        if (is_video_ready) {
-            Texture2D video_frame = GetVideoTexture(video_player);
-            if (video_frame.id > 0) {
-                DrawTexturePro(
-                    video_frame,
-                    { 0, 0, (float)video_frame.width, (float)video_frame.height },
-                    { 0, 0, (float)GetScreenWidth(), (float)GetScreenHeight() },
-                    { 0, 0 }, 0.0f, WHITE
-                );
-            }
+
+        if (is_ready) {
+            Rectangle source {
+                (float)(currentFrame * frameWidth),
+                0.0f,
+                (float)frameWidth,
+                (float)frameHeight
+            };
+
+            Rectangle dest {
+                0.0f, 0.0f,
+                (float)GetScreenWidth(),
+                (float)GetScreenHeight()
+            };
+
+            DrawTexturePro(spritesheet, source, dest, {0,0}, 0.0f, WHITE);
         }
     }
 }
-
-
- */

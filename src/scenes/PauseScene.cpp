@@ -61,24 +61,25 @@ namespace game::scenes {
 
 
         // Zeichnen Sie zuerst das Hintergrundbild, damit die Buttons darüber liegen
-        void PauseScene::Draw()
-        {
-            // Definiert den Bereich der Textur, der gezeichnet werden soll (die gesamte Textur)
-            Rectangle source = { 0.0f, 0.0f, (float)background_texture.width, (float)background_texture.height };
+        void PauseScene::Draw() {
+        // Definiert den Bereich der Textur, der gezeichnet werden soll (die gesamte Textur)
+        Rectangle source = { 0.0f, 0.0f, (float)background_texture.width, (float)background_texture.height };
 
-            // Definiert den Zielbereich auf dem Bildschirm (die volle Größe des Bildschirms)
-            Rectangle dest = { 0.0f, 0.0f, (float)GetScreenWidth(), (float)GetScreenHeight() };
+        // Definiert den Zielbereich auf dem Bildschirm (die volle Größe des Bildschirms)
+        Rectangle dest = { 0.0f, 0.0f, (float)GetScreenWidth(), (float)GetScreenHeight() };
 
-            // Zeichnet die Textur, skaliert auf die Größe des Bildschirms
-            DrawTexturePro(background_texture, source, dest, Vector2{ 0.0f, 0.0f }, 0.0f, WHITE);
+        // Zeichnet die Textur, skaliert auf die Größe des Bildschirms
+        DrawTexturePro(background_texture, source, dest, Vector2{ 0.0f, 0.0f }, 0.0f, WHITE);
 
-            // Zeichnet die Buttons über dem Hintergrund
-            Vector2 mouse_pos = GetMousePosition();
-            continue_button->Draw(mouse_pos);
-            menu_button->Draw(mouse_pos);
+        // Zeichnet die Buttons über dem Hintergrund
+        Vector2 mouse_pos = GetMousePosition();
+        continue_button->Draw(mouse_pos);
+        menu_button->Draw(mouse_pos);
+        /*
+                    // Debugging-Hitboxen
+                    DrawRectangleLinesEx(continue_button->rect, 2.0f, RED);
+                    DrawRectangleLinesEx(menu_button->rect, 2.0f, RED);
 
-            // Debugging-Hitboxen
-            DrawRectangleLinesEx(continue_button->rect, 2.0f, RED);
-            DrawRectangleLinesEx(menu_button->rect, 2.0f, RED);
-        }
+                */
+    }
     }

@@ -22,6 +22,7 @@ namespace game::scenes {
         Texture2D background_texture;
         Texture2D return_button_texture_normal;
         Texture2D return_button_texture_hover;
+        Texture2D game_over_text;
         Rectangle return_button_rect;
         std::shared_ptr<game::core::Game> game_;
     };

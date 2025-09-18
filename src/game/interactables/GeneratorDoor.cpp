@@ -1,35 +1,31 @@
 #include "GeneratorDoor.h"
-#include "raylib.h"
 #include "Generator.h"
 #include <iostream>
 
-// Definition der statischen Texturvariable
-Texture2D GeneratorDoor::door_texture = {0};
-
-void GeneratorDoor::Load_Texture() {
-    if (door_texture.id == 0) {
-        door_texture = LoadTexture("assets/graphics/Items/BombWall/Wand-Sprengstoff_Industrie_Base_Sprite_Horizontal.png");
-    }
-}
-
-void GeneratorDoor::Unload_Texture() {
-    if (door_texture.id != 0) {
-        UnloadTexture(door_texture);
-        door_texture.id = 0;
-    }
-}
-
-GeneratorDoor::GeneratorDoor(Vector2 position, const std::string& group_id, Object_Manager& om)
+GeneratorDoor::GeneratorDoor(Vector2 position,
+                             Vector2 size,
+                             const std::string& group_id,
+                             Object_Manager& om,
+                             const std::string& sprite_path)
     : group_id(group_id), objectManager(om) {
-    this->hitbox = {position.x, position.y, (float)door_texture.width, (float)door_texture.height};
+
+    // Hitbox individuell setzen
+    this->hitbox = { position.x, position.y, size.x, size.y };
+
+    // Textur laden, entweder eigene oder leer (kann statisch gecached werden)
+    if (!sprite_path.empty()) {
+        texture_ptr = Load_Texture(sprite_path);
+    } else {
+        texture_ptr = nullptr;
+    }
 }
 
 GeneratorDoor::~GeneratorDoor() {
-    // Die Textur wird als statische Ressource in der GameScene entladen.
+    // Shared Pointer sorgt automatisch für sauberes Entladen
 }
 
 void GeneratorDoor::Tick(float delta_time) {
-    // Überprüfe, ob alle zugehörigen Generatoren zerstört sind
+    // Überprüfe, ob alle Generatoren der Gruppe zerstört sind
     int remaining_generators = 0;
     for (const auto& obj : objectManager.managed_objects) {
         if (obj->Get_Collision_Type() == Collision_Type::GENERATOR) {
@@ -48,19 +44,29 @@ void GeneratorDoor::Tick(float delta_time) {
 }
 
 void GeneratorDoor::On_Collision(std::shared_ptr<Collidable> other) {
-    // Eine Tür blockiert alles außer Projektilen.
-    // Die tatsächliche Bewegung wird vom Spieler oder Gegner gesteuert, der kollidiert.
-    // Die Methode tut nichts, um Kollisionen zu verarbeiten, agiert aber als Kollisions-Anker.
+    // Blockiert Spieler/Gegner
     if (other->Get_Collision_Type() == Collision_Type::PLAYER ||
         other->Get_Collision_Type() == Collision_Type::ENEMY) {
-        // Die Kollision wurde erkannt. Die Tür kann als feste Wand behandelt werden.
+        // Logik wird extern über Hitboxen gehandhabt
     }
 }
 
 void GeneratorDoor::Draw() {
-    DrawTexture(door_texture, hitbox.x, hitbox.y, WHITE);
+    if (!texture_ptr) return;
+
+    // Textur mittig in der Hitbox zeichnen
+    float draw_x = hitbox.x + (hitbox.width - texture_ptr->width) / 2.0f;
+    float draw_y = hitbox.y + (hitbox.height - texture_ptr->height) / 2.0f;
+
+    DrawTexture(*texture_ptr, draw_x, draw_y, WHITE);
 }
 
 Collision_Type GeneratorDoor::Get_Collision_Type() const {
     return Collision_Type::DOOR;
+}
+
+// Hilfsfunktion: lädt Textur und gibt Shared Pointer zurück
+std::shared_ptr<Texture2D> GeneratorDoor::Load_Texture(const std::string& path) {
+    auto tex = std::make_shared<Texture2D>(LoadTexture(path.c_str()));
+    return tex;
 }

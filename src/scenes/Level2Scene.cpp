@@ -1,4 +1,6 @@
 #include "Level2Scene.h"
+
+#include <EndScene.h>
 #include <memory>
 #include <string>
 #include <raylib-cpp.hpp>
@@ -13,6 +15,7 @@
 #include "../game/interactables/BombPickup.h"
 #include "../game/interactables/Medipack.h"
 #include "../game/spawner/Level1Spawner.h" // Wiederverwendeter Spawner
+#include "../game/spawner/Level2Spawner.h"
 #include "../config_enemys.h.in"
 #include "../game/interactables/Generator.h"
 #include "../game/interactables/GeneratorDoor.h"
@@ -109,7 +112,7 @@ game::scenes::Level2Scene::Level2Scene()
     objectManager.AddObject(spawner_5);
 
     Rectangle spawner_area_6 = { 2368, 1952, 128, 64 };
-    auto spawner_6 = std::make_shared<Level1_Spawner>(
+    auto spawner_6 = std::make_shared<Level2_Spawner>(
         spawner_area_6,
         objectManager,
            enemy_List,
@@ -131,12 +134,12 @@ game::scenes::Level2Scene::Level2Scene()
     objectManager.AddObject(spawner_7);
 
     Rectangle spawner_area_8 = { 2528, 1504, 96, 64 };
-    auto spawner_8 = std::make_shared<Level1_Spawner>(
+    auto spawner_8 = std::make_shared<Level2_Spawner>(
         spawner_area_8,
         objectManager,
            enemy_List,
            sp_mp,
-           6,
+           5,
            10.0f
        );
     objectManager.AddObject(spawner_8);
@@ -153,35 +156,35 @@ game::scenes::Level2Scene::Level2Scene()
     objectManager.AddObject(spawner_9);
 
     Rectangle spawner_area_10 = { 3200, 1248, 160, 224 };
-    auto spawner_10 = std::make_shared<Level1_Spawner>(
+    auto spawner_10 = std::make_shared<Level2_Spawner>(
         spawner_area_10,
         objectManager,
            enemy_List,
            sp_mp,
-           6,
-           10.0f
+           5,
+           15.0f
        );
     objectManager.AddObject(spawner_10);
 
     Rectangle spawner_area_11 = { 3872, 1248, 160, 224 };
-    auto spawner_11 = std::make_shared<Level1_Spawner>(
+    auto spawner_11 = std::make_shared<Level2_Spawner>(
         spawner_area_11,
         objectManager,
            enemy_List,
            sp_mp,
-           6,
-           10.0f
+           4,
+           20.0f
        );
     objectManager.AddObject(spawner_11);
 
     Rectangle spawner_area_12 = { 3552, 1472, 128, 160 };
-    auto spawner_12 = std::make_shared<Level1_Spawner>(
+    auto spawner_12 = std::make_shared<Level2_Spawner>(
         spawner_area_12,
         objectManager,
            enemy_List,
            sp_mp,
-           6,
-           10.0f
+           4,
+           20.0f
        );
     objectManager.AddObject(spawner_12);
 
@@ -200,48 +203,58 @@ game::scenes::Level2Scene::Level2Scene()
     objectManager.AddObject(std::make_shared<Credit>(Vector2{3616, 1376}, 100));
 
 
-
-
-
-
-
-
-
+    // Load the generator texture once for all generators
+     Generator::Load_Texture();
+    // Load the door texture
+    //GeneratorDoor::Load_Texture();
 
     // GENERATOR UND TÜR GRUPPE 1
-    // Load the generator texture once for all generators
-    Generator::Load_Texture();
-
-    // Load the door texture
-    GeneratorDoor::Load_Texture();
-
-    // Two generators and one door linked by "generator_group_1"
+    // Generatoren erstellen (unverändert)
     objectManager.AddObject(std::make_shared<Generator>(Vector2{3264, 1184}, "generator_group_1", 300.0f));
     objectManager.AddObject(std::make_shared<Generator>(Vector2{3926, 1184}, "generator_group_1", 300.0f));
-    objectManager.AddObject(std::make_shared<GeneratorDoor>(Vector2{3584, 1408}, "generator_group_1", objectManager));
+
+    // Tür individuell mit eigener Hitbox und Sprite
+    objectManager.AddObject(std::make_shared<GeneratorDoor>(
+        Vector2{3584, 1408},       // Position bleibt gleich
+        Vector2{64, 90},           // neue Hitbox
+        "generator_group_1",       // Gruppierung
+        objectManager,
+        "assets/graphics/Items/Generator/Zauntor_Base_Sprite.png" // optional individuelles Sprite
+    ));
 
     // GENERATOR UND TÜR GRUPPE 2
-    // One generator and one door linked by "generator_group_2"
     objectManager.AddObject(std::make_shared<Generator>(Vector2{992, 736}, "generator_group_2", 1.0f));
-    objectManager.AddObject(std::make_shared<GeneratorDoor>(Vector2{1216, 896}, "generator_group_2", objectManager));
+    objectManager.AddObject(std::make_shared<GeneratorDoor>(
+        Vector2{1216, 896},        // Position
+        Vector2{40, 100},           // eigene Hitbox
+        "generator_group_2",
+        objectManager,
+        "assets/graphics/Items/Generator/Zauntor_Base_Sprite.png"
+    ));
 
+    // GENERATOR UND TÜR GRUPPE 3
     objectManager.AddObject(std::make_shared<Generator>(Vector2{2208, 672}, "generator_group_3", 1.0f));
-    objectManager.AddObject(std::make_shared<GeneratorDoor>(Vector2{2304, 896}, "generator_group_3", objectManager));
-
+    objectManager.AddObject(std::make_shared<GeneratorDoor>(
+        Vector2{2304, 896},        // Position
+        Vector2{70, 85},           // eigene Hitbox
+        "generator_group_3",
+        objectManager,
+        "assets/graphics/Items/Generator/Zauntor_Base_Sprite.png"
+    ));
 
 
     // Medipack erstellen
     objectManager.AddObject(std::make_shared<Medipack>(Vector2{3232, 1568}, 25.0f));
 
     // Hinzufügen der Level-Übergangs-Hitbox
-    Rectangle level_transition_hitbox = { 3500.0f, 3500.0f, 100.0f, 200.0f };
+    Rectangle level_transition_hitbox = { 3584.0f, 1056.0f, 64.0f, 64.0f };
     objectManager.AddObject(std::make_shared<LevelTransition>(
         level_transition_hitbox,
         // Diese Lambda-Funktion ruft einfach die VideoScene auf, ohne den Pfad zu kennen.
         []() {
             game::core::Store::stage->SwitchToNewScene(
                 "menu"s,
-                std::make_unique<game::scenes::MenuScene>()
+                std::make_unique<game::scenes::EndScene>()
             );
         }
     ));
@@ -315,14 +328,14 @@ void game::scenes::Level2Scene::Draw()
     for (int i = 0; i < objectManager.managed_objects.size(); ++i) {
         objectManager.managed_objects[i]->Draw();
     }
-/*
+
     // Debugging-Hitboxen
     for (const auto& p_object : objectManager.managed_objects) {
         if (p_object != nullptr) {
             DrawRectangleLinesEx(p_object->Get_Hitbox(), 2.0f, RED);
         }
     }
-*/
+
     EndMode2D();
 
     screen.Draw_Level(this->cam, true);

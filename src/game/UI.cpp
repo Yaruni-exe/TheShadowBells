@@ -79,4 +79,9 @@ void HUD::Draw()
             DrawText(bomb_text.c_str(), (int)bomb_text_pos.x, (int)bomb_text_pos.y, 40, WHITE);
         }
     }
+    const char* objective_text = "Erreiche das Auto!";
+    int font_size = 40;
+    int text_width = MeasureText(objective_text, font_size);
+    int margin = 30; // Abstand vom Rand
+    DrawText(objective_text, GetScreenWidth() - text_width - margin, GetScreenHeight() - font_size - margin, font_size, (Color){ 255, 255, 255, 180 });
 }

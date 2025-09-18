@@ -2211,7 +2211,7 @@
  "tilesets":[
         {
          "firstgid":1,
-         "source":"..\/Tilesets\/Level2fertig.tsj"
+         "source":"../Tilesets/Level2fertig.tsj"
         }],
  "tilewidth":32,
  "type":"map",
